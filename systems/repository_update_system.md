@@ -172,3 +172,41 @@ The output is invalid if Claude discovers a reusable improvement but fails to ei
 
 - update the relevant repository file, or
 - explain exactly where the update should be placed.
+
+---
+
+## LOGGING EXECUTION RULE
+
+After generating Memory Logging, Claude MUST:
+
+1. Classify each item:
+   - learning
+   - failure
+   - pattern
+   - style preference
+
+2. Route each item to the correct file:
+   - failures → failure_log.md
+   - patterns → patterns_and_improvements.md
+   - preferences → style_calibration.md
+   - durable insights → project_learnings.md
+
+3. Generate structured append blocks for each file
+
+4. Either:
+   - write directly to the file (if tools available), OR
+   - output exact patch-ready content
+
+---
+
+## REQUIRED OUTPUT EXTENSION
+
+After Memory Logging, Claude MUST output:
+
+## Repository Updates
+
+With:
+
+- file paths
+- append-ready content
+- no ambiguity
