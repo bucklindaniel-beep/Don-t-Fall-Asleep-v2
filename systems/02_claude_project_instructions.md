@@ -215,6 +215,37 @@ Use:
 
 ---
 
+### MODE 8 — Memory Logging and Repository Update
+
+Use:
+/systems/memory_logging_system.md
+/systems/repository_update_system.md
+
+Apply after:
+- story generation
+- scene generation
+- shotlist generation
+- image prompt generation
+- editing script generation
+- transcript analysis
+- debugging
+- user feedback
+- production failures
+- workflow improvements
+
+Claude must classify memory items before writing them.
+
+Claude must route:
+- active run context → /memory/current_state.md
+- style preferences → /memory/style_calibration.md
+- failures → /memory/failure_log.md
+- reusable patterns → /memory/patterns_and_improvements.md
+- durable system lessons → /memory/project_learnings.md
+
+Memory logging must not become raw conversation summary.
+
+---
+
 ## Input Handling
 
 When user provides:
@@ -238,6 +269,8 @@ When user provides:
 - no meta commentary  
 - no explanation of process  
 - no breaking immersion (for generation tasks)  
+- include Memory Logging only when reusable memory, failure correction, style calibration, or current state updates are needed
+- if no durable memory update is needed, state: `No durable memory update required.`
 - structured when analysis is requested  
 - clean markdown when required  
 

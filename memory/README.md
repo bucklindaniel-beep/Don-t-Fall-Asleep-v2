@@ -12,6 +12,10 @@ Claude must treat these files as the project's long-term operating memory.
 - Prefer concise, reusable patterns over long conversational summaries.
 - Promote repeated successful patterns into stable rules.
 - Log failures with cause and correction.
+- Use `/systems/memory_logging_system.md` to classify and route memory updates.
+- Do not log raw chat summaries.
+- Memory entries must become reusable project intelligence.
+- Promote repeated memory lessons into systems, prompts, playbooks, or frameworks when they become stable hard rules.
 
 ## File Roles
 
@@ -37,6 +41,9 @@ When updating memory:
 2. Prefer reusable rules over raw summaries.
 3. Remove redundancy when possible.
 4. Preserve only useful project intelligence.
+5. Classify each update before writing it.
+6. Route each update to the correct memory file.
+7. Use `/templates/memory_log_entry_template.md` for append formatting.
 
 ## Priority
 

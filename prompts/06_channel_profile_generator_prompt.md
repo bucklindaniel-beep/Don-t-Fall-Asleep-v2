@@ -18,7 +18,7 @@
 - Related Files:
   - /analysis/channel_profiles/*
   - /analysis/style_profiles/*
-  - /prompts/04_transcript_analysis_prompt.md
+  - /prompts/05_transcript_analysis_prompt.md
 - Status: active
 - Confidence: high
 

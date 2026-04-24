@@ -85,6 +85,11 @@ You MUST apply the following systems:
 - /systems/narrator_identity_system.md  
 - /systems/narration_review_pass_system.md  
 
+### Memory and Repository Persistence
+
+- /systems/repository_update_system.md
+- /systems/memory_logging_system.md
+
 ---
 
 ## Framework Dependencies
@@ -196,6 +201,12 @@ If continuity issues exist:
 
 - fix them before outputting results  
 
+After every meaningful generation, revision, analysis, debugging session, or production run, Claude MUST apply:
+
+/systems/memory_logging_system.md
+
+Claude must classify useful lessons, failures, style preferences, active state, and reusable patterns before deciding whether repository memory files need updates.
+
 For narration scripts:
 
 You MUST also apply:
@@ -205,6 +216,12 @@ You MUST also apply:
 If narration quality issues exist:
 
 - fix them before outputting results  
+
+After every meaningful generation, revision, analysis, debugging session, or production run, Claude MUST apply:
+
+/systems/memory_logging_system.md
+
+Claude must classify useful lessons, failures, style preferences, active state, and reusable patterns before deciding whether repository memory files need updates.
 
 ---
 

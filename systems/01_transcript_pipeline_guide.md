@@ -125,14 +125,14 @@ Output:
 
 Store in:
 
-/transcripts/processed/
+/transcripts/structured/
 
 ---
 
 ### Step 4 — Extract Techniques
 
 Use:
-/prompts/06_technique_extraction_prompt.md
+/prompts/07_technique_extraction_prompt.md
 
 Output:
 
@@ -154,7 +154,7 @@ Rule:
 ### Step 5 — Extract Patterns
 
 Use:
-/prompts/07_pattern_extraction_prompt.md
+/prompts/08_pattern_extraction_prompt.md
 
 Output:
 
@@ -254,7 +254,7 @@ Final structure:
 
 /transcripts/raw/  
 /transcripts/cleaned/  
-/transcripts/processed/  
+/transcripts/structured/  
 /analysis/techniques/  
 /analysis/patterns/  
 /analysis/channel_profiles/  

@@ -487,7 +487,7 @@ Combine with Section 1 + 2:
 
 Psychological language MUST align with:
 
-- escalation stage from `/maps/escalation_map.md`
+- escalation stage from `/maps/escalation_flow_map.md`
 - scene progression from `/maps/scene_flow_map.md`
 - entity behavior from `/analysis/entities/`
 

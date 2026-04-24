@@ -91,7 +91,7 @@ If conflict is detected:
 
 You MUST:
 
-- reference /analysis/stories/story_memory.md
+- reference /analysis/story_memory.md
 - compare narrative concept against recent stories
 
 You MUST NOT:

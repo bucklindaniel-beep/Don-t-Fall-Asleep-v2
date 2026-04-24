@@ -18,7 +18,7 @@
 - Related Files:
   - /analysis/patterns/*
   - /analysis/techniques/*
-  - /prompts/04_transcript_analysis_prompt.md
+  - /prompts/05_transcript_analysis_prompt.md
 - Status: active
 - Confidence: high
 

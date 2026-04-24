@@ -17,7 +17,7 @@
   - expands and refines the technique library
 - Related Files:
   - /analysis/techniques/*
-  - /prompts/04_transcript_analysis_prompt.md
+  - /prompts/05_transcript_analysis_prompt.md
 - Status: active
 - Confidence: high
 
