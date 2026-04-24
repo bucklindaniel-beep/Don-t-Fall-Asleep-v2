@@ -13,20 +13,24 @@ This file defines:
 
 ---
 
-## Dev Logs Exclusion Rule
+## Non-Production File Exclusion Rule
 
-Claude MUST completely disregard `/dev_logs/` during production execution.
+Claude MUST completely disregard the following directories during production execution:
 
-Files inside `/dev_logs/` are development notes for the human system designer only.
+- /dev_logs/
+- /testing/
+
+These directories are for development and testing purposes only.
 
 Claude MUST NOT:
-- use `/dev_logs/` as production logic
-- cite `/dev_logs/` as system authority
-- follow tasks listed in `/dev_logs/`
-- treat `/dev_logs/` as memory
-- modify `/dev_logs/` unless explicitly instructed by the user
+- use these directories as production logic
+- cite them as system authority
+- follow tasks listed within them
+- treat them as memory
+- reference them during generation
+- modify them unless explicitly instructed by the user
 
-During story generation, scene generation, shotlist generation, prompt generation, narration formatting, and review passes, `/dev_logs/` is out of scope.
+During story generation, scene generation, shotlist generation, prompt generation, narration formatting, and review passes, these directories are out of scope.
 
 ---
 
