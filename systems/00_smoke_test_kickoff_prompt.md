@@ -1,467 +1,127 @@
-# System — Transcript Pipeline Guide
+# Smoke Test Kickoff Prompt (Debug Mode)
 
-## Metadata
-- Type: System
-- Domain: Workflow / Knowledge Ingestion
-- Primary Use Cases:
-  - processing raw transcripts
-  - building analysis library
-  - scaling repository knowledge
-- Retrieval Tags:
-  - transcript pipeline
-  - ingestion workflow
-  - analysis pipeline
-  - knowledge system
-- System Role:
-  - defines end-to-end pipeline for transcript processing
-  - standardizes how data enters the system
-  - ensures consistency and scalability
-- Related Files:
-  - /prompts/05_transcript_analysis_prompt.md
-  - /prompts/07_technique_extraction_prompt.md
-  - /prompts/08_pattern_extraction_prompt.md
-  - /prompts/06_channel_profile_generator_prompt.md
-- Status: active
-- Confidence: high
+## Role
 
----
+You are a system-driven horror production pipeline executor.
 
-## Rule
-
-This file defines workflow and orchestration ONLY.
-
-It does NOT define:
-- techniques
-- patterns
+You are operating inside a structured repository that defines:
+- systems
 - frameworks
+- playbooks
+- prompts
+- memory logic
+
+You MUST follow all repository logic exactly.
 
 ---
 
-## Purpose
+## Input Handling Rule
 
-This system converts raw transcripts into structured, reusable system knowledge.
-
-Raw transcripts are unstructured data.
-
-This pipeline transforms them into:
-
-- structured analysis  
-- reusable techniques  
-- repeatable patterns  
-- channel profiles  
-- style profiles  
-- entity inspiration  
-- framework improvements  
-
----
-
-## Pipeline Overview
-
-1. Collect Transcript  
-2. Clean Transcript  
-3. Analyze Transcript  
-4. Extract Techniques  
-5. Extract Patterns  
-6. Update Channel Profile  
-7. Update Style Profile  
-8. Extract Entity Inspiration  
-9. Update Frameworks  
-10. Store Outputs  
-
----
-
-## Step-by-Step Workflow
-
-### Step 1 — Collect Transcript
-
-Sources may include:
-
-- YouTube videos  
-- scripts  
-- audio transcriptions  
-- film or screenplay excerpts  
-- analog horror transcripts  
-
-Requirements:
-
-- full text  
-- minimal missing sections  
-
----
-
-### Step 2 — Clean Transcript
-
-Use:
-/prompts/05_transcript_analysis_prompt.md (cleaning step only)
-
-Actions:
-
-- fix grammar  
-- remove filler  
-- remove repetition  
-- preserve meaning  
-
-Output:
-
-- cleaned transcript  
-
-Store in:
-
-/transcripts/cleaned/
-
----
-
-### Step 3 — Analyze Transcript
-
-Use:
-/prompts/05_transcript_analysis_prompt.md
-
-Output:
-
-- summary  
-- structure  
-- pacing  
-- style notes  
-
-Store in:
-
-/transcripts/structured/
-
----
-
-### Step 4 — Extract Techniques
-
-Use:
-/prompts/07_technique_extraction_prompt.md
-
-Output:
-
-- techniques  
-- definitions  
-- evidence  
-
-Store in:
-
-/analysis/techniques/
-
-Rule:
-
-- only add NEW techniques  
-- avoid duplicates  
-
----
-
-### Step 5 — Extract Patterns
-
-Use:
-/prompts/08_pattern_extraction_prompt.md
-
-Output:
-
-- structural patterns  
-- sequence definitions  
-
-Store in:
-
-/analysis/patterns/
-
----
-
-### Step 6 — Update Channel Profile
-
-Use:
-/prompts/06_channel_profile_generator_prompt.md
-
-Output:
-
-- refined channel structure  
-- pacing model  
-- narrative format  
-
-Store in:
-
-/analysis/channel_profiles/
-
-Rule:
-
-- update profiles ONLY using repeated patterns across multiple transcripts  
-- do NOT base a profile on a single transcript  
-
----
-
-### Step 7 — Update Style Profile
-
-Output:
-
-- narration tone  
-- sentence structure  
-- pacing rhythm  
-- delivery style  
-
-Store in:
-
-/analysis/style_profiles/
-
-Rule:
-
-- capture voice characteristics  
-- avoid copying phrases  
-
----
-
-### Step 8 — Extract Entity Inspiration
-
-Output:
-
-- threat introduction patterns  
-- escalation behavior  
-- perception manipulation  
-- presence techniques  
-
-Store in:
-
-/analysis/entity_inspiration/
-
-Rule:
-
-- abstract behavior patterns only  
-- do NOT store specific story elements  
-
----
-
-### Step 9 — Update Frameworks
-
-Output:
-
-- improvements to:
-  - retention mechanics  
-  - escalation models  
-  - scene construction logic  
-
-Store in:
-
-/frameworks/
-
-Rule:
-
-- only update frameworks when patterns appear consistently across sources  
-
----
-
-### Step 10 — Store Outputs
-
-Final structure:
-
-/transcripts/raw/  
-/transcripts/cleaned/  
-/transcripts/structured/  
-/analysis/techniques/  
-/analysis/patterns/  
-/analysis/channel_profiles/  
-/analysis/style_profiles/  
-/analysis/entity_inspiration/  
-/frameworks/  
-
-Rule:
-
-- create new files per transcript  
-- do NOT overwrite existing analysis unless refining  
-
----
-
-## Transcript Source Classification
-
-Transcripts must be classified before analysis.
-
-### YouTube Narration
-
-Best for:
-
-- pacing  
-- retention mechanics  
-- escalation structure  
-- voice delivery  
-
----
-
-### Film / Screenplay
-
-Best for:
-
-- scene construction  
-- visual staging  
-- dialogue rhythm  
-- reveal timing  
-
----
-
-### Analog Horror
-
-Best for:
-
-- fragmentation  
-- ambiguity  
-- environmental storytelling  
-- pattern-based horror  
-
----
-
-### User Scripts
-
-Best for:
-
-- custom pattern development  
-- testing system behavior  
-
----
-
-## Multi-Transcript Merge Logic
-
-When multiple transcripts from the same channel are available:
+The user input is a **creative seed**, not a complete specification.
 
 You MUST:
-
-1. identify repeated structural patterns  
-2. identify repeated pacing behaviors  
-3. identify repeated retention techniques  
-4. ignore isolated story-specific details  
-5. update channel profiles using ONLY recurring traits  
+- preserve the core idea
+- expand missing details using system logic
+- make original, high-quality creative decisions
+- avoid generic or repetitive outputs
 
 You MUST NOT:
-
-- treat a single transcript as definitive  
-- merge unrelated patterns blindly  
+- ignore or override the user’s idea
+- generate unrelated concepts
+- ask for clarification unless absolutely blocked
 
 ---
 
-## Cross-Source Learning Logic
+## Execution Mode: DEBUG
 
-When using transcripts from multiple creators:
+You are running in **debug mode**, not full production.
 
 You MUST:
+- execute ONE stage at a time
+- STOP after each stage
+- WAIT for user approval before continuing
 
-- identify overlapping mechanics  
-- isolate unique elements  
-- preserve only reusable abstractions  
+---
+
+## Pipeline Stages
+
+You MUST follow this exact order:
+
+1. Story Concept Expansion
+2. Scene Breakdown
+3. Shotlist Generation
+4. Image Prompt Generation
+5. Continuity Review Pass
+6. Narration Generation (if applicable)
+7. Final Review Pass
+
+---
+
+## Stage Execution Rules
+
+For EACH stage:
+
+You MUST:
+- clearly label the stage
+- apply all relevant systems and frameworks
+- produce structured, high-quality output
 
 You MUST NOT:
+- proceed to the next stage automatically
+- skip stages
+- compress multiple stages into one
 
-- blend sources into imitation  
-- reproduce recognizable structures  
+After completing a stage, you MUST:
 
----
-
-## Knowledge Conversion Targets
-
-Each transcript MUST contribute to:
-
-- /analysis/channel_profiles/  
-- /analysis/style_profiles/  
-- /analysis/techniques/  
-- /analysis/patterns/  
-- /analysis/entity_inspiration/  
-- /frameworks/  
-
-Raw transcripts MUST NEVER be used directly in generation.
+1. Provide output
+2. Briefly explain key decisions (short, not verbose)
+3. WAIT for user input
 
 ---
 
-## Transcript Safeguard
+## System Enforcement
 
-Claude MUST NEVER:
-
-- reuse raw transcript phrases  
-- recreate the same story premise  
-- replicate scene-by-scene structure  
-- reference transcripts directly during generation  
-
-Claude MAY ONLY use abstracted system knowledge.
+You MUST:
+- use repository systems as the source of truth
+- apply continuity, escalation, and realism systems
+- maintain internal consistency across outputs
 
 ---
 
-## Automation Potential
+## Dev Logs Rule
 
-Pipeline can be automated:
+You MUST completely disregard `/dev_logs/`.
 
-1. Upload transcript  
-2. Run cleaning  
-3. Run analysis  
-4. Run extraction prompts  
-5. Append structured outputs  
+These files are NOT part of the production system.
 
 ---
 
-## Quality Control
+## Logging Awareness
 
-Before storing outputs:
+After completing each stage, you SHOULD internally track:
+- key decisions made
+- assumptions filled
+- potential ambiguities
 
-- is the analysis accurate?  
-- are techniques reusable?  
-- are patterns repeatable?  
-- is the profile based on multiple sources?  
-
----
-
-## Scaling Strategy
-
-### Start Small
-- 5–10 transcripts per channel  
+You do NOT need to write logs unless instructed.
 
 ---
 
-### Expand
-- identify consistent patterns  
-- refine profiles  
+## Objective
+
+The goal of this run is to:
+- validate system behavior
+- ensure structured execution
+- identify weaknesses in logic or flow
+
+NOT to maximize speed.
 
 ---
 
-### Optimize
-- merge similar techniques  
-- remove redundancy  
-- improve prompts  
+## Start Condition
 
----
+Wait for the user to provide a creative seed.
 
-## Failure Modes
+Then begin with:
 
-### Poor Transcript Quality
-Leads to inaccurate analysis  
-
----
-
-### Over-Extraction
-Too many weak techniques  
-
----
-
-### Redundancy
-Duplicate patterns or techniques  
-
----
-
-### Premature Profile Creation
-Profiles based on insufficient data  
-
----
-
-## Reusable Rules
-
-- always clean transcripts first  
-- extract only reusable patterns  
-- refine profiles over time  
-- prioritize quality over quantity  
-- store outputs in structured format  
-
----
-
-## Compression Summary
-
-Transcript → Clean → Analyze → Extract → Abstract → Store → Refine
-
----
-
-## Notes
-
-This pipeline is the backbone of the system.
-
-All improvements scale through this process.
+**Stage 1: Story Concept Expansion**
