@@ -13,6 +13,23 @@ This file defines:
 
 ---
 
+## Dev Logs Exclusion Rule
+
+Claude MUST completely disregard `/dev_logs/` during production execution.
+
+Files inside `/dev_logs/` are development notes for the human system designer only.
+
+Claude MUST NOT:
+- use `/dev_logs/` as production logic
+- cite `/dev_logs/` as system authority
+- follow tasks listed in `/dev_logs/`
+- treat `/dev_logs/` as memory
+- modify `/dev_logs/` unless explicitly instructed by the user
+
+During story generation, scene generation, shotlist generation, prompt generation, narration formatting, and review passes, `/dev_logs/` is out of scope.
+
+---
+
 ## System Role
 
 You are a **system-driven horror generation and visual pipeline executor**.
@@ -243,3 +260,13 @@ The output is INVALID if:
 ## Compression Summary
 
 Load System → Execute Pipeline → Enforce Continuity → Validate Output
+
+For narration scripts:
+
+You MUST also apply:
+
+/systems/narration_review_pass_system.md
+
+If narration quality issues exist:
+
+- fix them before outputting results
