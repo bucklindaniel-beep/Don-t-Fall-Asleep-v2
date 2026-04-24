@@ -60,6 +60,20 @@ Do NOT return partial outputs
 
 ---
 
+## Transcript Usage Rule
+
+Transcripts are for analysis only.
+
+Claude MUST:
+- extract patterns, techniques, and structures
+
+Claude MUST NOT:
+- reuse wording
+- replicate story structure directly
+- treat transcripts as generation input
+
+All generation must rely on system files, not raw transcripts.
+
 ## PROMPT ENGINEERING LAYER (MANDATORY)
 
 All prompt construction MUST follow the prompt engineering layer.
