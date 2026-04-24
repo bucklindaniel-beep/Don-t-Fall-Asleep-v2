@@ -1,149 +1,257 @@
-# EXECUTION LOG
+# Execution Log
 
-This file records structured execution logs for each pipeline run.
-
-Purpose:
-- Debug system behavior
-- Identify weak instructions
-- Surface interpretation issues
-- Improve repository logic
-
-This is NOT a memory file.
-
-Do NOT store long-term learnings here.
-Do NOT duplicate memory logging.
+## Metadata
+- Type: Log
+- Domain: Pipeline Execution / Debugging / System Behavior
+- Path: `/logs/execution_log.md`
+- Status: active
+- Priority: critical
 
 ---
 
-# LOGGING RULES
+## Purpose
 
-Each execution MUST append a new log entry.
+This file records diagnostic execution notes for each pipeline run.
 
-Logs MUST be:
+The execution log is used to:
+- understand how Claude interpreted repository instructions
+- identify weak or conflicting system logic
+- surface roadblocks, gaps, and failure points
+- separate debug information from clean production outputs
+- recommend memory, prompt, framework, or system updates
 
+This file is **not** a memory file.
+
+Do not store long-term lessons here unless they are also routed to the correct `/memory/` file.
+
+---
+
+## Core Logging Rule
+
+Claude must append one structured execution entry after every meaningful pipeline action or production run.
+
+A meaningful action includes:
+- narrator identity generation
+- story generation
+- scene breakdown
+- shotlist generation
+- image prompt generation
+- editing script generation
+- narration formatting or review
+- continuity review
+- memory update
+- repository update
+- smoke test or debug run
+
+---
+
+## Output Noise Rule
+
+Debug details belong here, not in the main production output.
+
+Claude should keep user-facing outputs clean and route the following into this log:
+- systems applied
+- interpretation decisions
+- internal tradeoffs
+- ambiguity handling
+- rule conflicts
+- roadblocks
+- quality concerns
+- suggested repository improvements
+
+---
+
+## Logging Standards
+
+Each entry must be:
 - concise
 - structured
-- diagnostic (not narrative)
-- focused on decisions, issues, and system behavior
+- diagnostic
+- action-oriented
+- tied to exact files when possible
 
 Avoid:
-- storytelling
-- repetition
-- unnecessary detail
+- story summaries longer than needed
+- full generated text
+- raw prompt dumps
+- vague improvement notes
+- duplicate memory entries
+- unnecessary commentary
 
 ---
 
-# LOG ENTRY FORMAT
+## Log Entry Template
 
-## [EXECUTION ENTRY]
-
-### Timestamp
-- YYYY-MM-DD HH:MM
-
+```markdown
 ---
 
-### Input Summary
-- Short description of user input
+## Execution Entry: YYYY-MM-DD HH:MM
 
----
+### Run Type
+- production_run / stage_run / smoke_test / debug_pass / repository_update / memory_update
 
-### Pipeline Execution
-- Narrator Identity: completed / issues
-- Story: completed / issues
-- Scenes: completed / issues
-- Shotlist: completed / issues
-- Image Prompts: completed / issues
-- Editing Script: completed / issues
-- Narration Review Pass: completed / issues
-- Memory Logging: completed / issues
+### User Input Summary
+- Brief paraphrase of the user request.
 
----
+### Stage Executed
+- Stage name:
+- Status: completed / partial / blocked / skipped
+- Reason if partial, blocked, or skipped:
+
+### Pipeline Progress
+- Narrator Identity: not_started / completed / issue
+- Story: not_started / completed / issue
+- Scene Breakdown: not_started / completed / issue
+- Shotlist: not_started / completed / issue
+- Image Prompts: not_started / completed / issue
+- Editing Script: not_started / completed / issue
+- Narration Review Pass: not_started / completed / issue
+- Memory Logging: not_started / completed / issue
+- Execution Logging: completed
 
 ### Systems Applied
-- List key systems that influenced output
-- Only include systems that actually impacted decisions
-
----
+- List only systems that directly affected the output.
 
 ### Key Decisions
-- Important interpretation choices
-- Why specific directions were taken
+- Decision:
+  - Reason:
+  - Impact:
 
-Examples:
-- narrator personality direction
-- escalation pacing choice
-- visual style decisions
-- avoidance of repetition patterns
+### Defaults Used
+- Assumption:
+  - Why it was safe:
+  - Alternative avoided:
 
----
+### Rule Conflicts or Ambiguities
+- Conflict / ambiguity:
+  - How it was resolved:
+  - File that may need clarification:
 
-### Rule Conflicts / Ambiguities
-- Any unclear or conflicting instructions
-
-Examples:
-- overlapping system rules
-- vague framework guidance
-- competing priorities
-
----
-
-### Roadblocks / Gaps
-- Where the system lacked guidance
-
-Examples:
-- missing framework logic
-- unclear escalation path
-- weak prompt structure
-- insufficient constraints
-
----
+### Roadblocks or System Gaps
+- Gap:
+  - Effect on output:
+  - Suggested fix:
+  - Recommended file path:
 
 ### Failure Detection
-- Were any failure conditions triggered?
+- Failure triggered: yes / no
+- If yes:
+  - Failure:
+  - Correction made:
+  - Prevention rule needed:
+  - Memory destination:
 
-If yes:
-- what failed
-- how it was corrected
+### Quality Assessment
+- Overall: high / medium / low
+- Pacing:
+- Escalation:
+- Continuity:
+- Visual variety:
+- Narration quality:
 
----
+### Repository Update Recommendations
+- File path:
+  - Change needed:
+  - Reason:
+  - Priority: required / optional
 
-### Output Quality Assessment
-- High / Medium / Low
+### Memory Routing
+- No durable memory update required.
 
-Brief reasoning:
-- pacing
-- escalation
-- continuity
-- narration quality
-- visual variety
+OR
 
----
+- Destination:
+  - Entry type: current_state / style_calibration / failure / pattern / project_learning
+  - Summary:
+  - Append or replace:
 
-### Suggested Improvements
-- Actionable system-level improvements
-
-Must map to:
-- memory
-- frameworks
-- systems
-- prompts
-- wordbanks
-
-Avoid vague suggestions
-
----
-
-### File Update Suggestions
-- Exact files that should be updated
-
-Examples:
-- /memory/patterns_and_improvements.md
-- /frameworks/06_scene_construction_system.md
-- /prompts/shotlist_generation_prompt.md
+### Next Action
+- Immediate next recommended step.
+```
 
 ---
 
-### Notes
-- Any additional short observations useful for debugging
+## Required Quality Ratings
 
-Keep this brief
+Use these definitions consistently.
+
+### High
+The output followed repository logic, maintained continuity, avoided major repetition, and did not expose unresolved system gaps.
+
+### Medium
+The output was usable, but one or more areas need refinement, clarification, or memory reinforcement.
+
+### Low
+The output had structural issues, weak system compliance, broken continuity, poor escalation, or required major correction.
+
+---
+
+## Failure Categories
+
+Use these categories when logging failures:
+
+- continuity_failure
+- escalation_failure
+- repetition_failure
+- prompt_structure_failure
+- narration_quality_failure
+- visual_variety_failure
+- formatting_failure
+- instruction_conflict
+- missing_system_logic
+- memory_routing_failure
+- repository_update_failure
+- api_or_script_failure
+
+---
+
+## Memory Routing Rule
+
+Execution logs may identify lessons, but durable lessons must be routed to memory.
+
+Use:
+- `/memory/current_state.md` for active run status and temporary continuity state
+- `/memory/style_calibration.md` for stable user preferences
+- `/memory/failure_log.md` for mistakes and prevention rules
+- `/memory/patterns_and_improvements.md` for reusable output or workflow patterns
+- `/memory/project_learnings.md` for durable system-level lessons
+
+If no memory update is needed, write:
+
+```markdown
+No durable memory update required.
+```
+
+---
+
+## Repository Promotion Rule
+
+If the same issue appears three times in execution logs, Claude must recommend promoting it into the relevant system, prompt, framework, or playbook file.
+
+Promotion targets:
+- repeated failure → `/memory/failure_log.md` first, then relevant `/systems/` file if recurring
+- reusable generation pattern → `/memory/patterns_and_improvements.md`, then relevant `/prompts/` or `/playbooks/`
+- structural pipeline issue → relevant `/systems/` file
+- story structure issue → relevant `/frameworks/` file
+- wording or style preference → `/memory/style_calibration.md` or `/wordbanks/`
+
+---
+
+## Stop Point Rule
+
+When a run stops at a human review point, Claude must log:
+- what was completed
+- what is waiting for approval
+- what the next model/stage should be, if known
+- what files may need updates after approval
+
+---
+
+## Completion Rule
+
+A pipeline run is not complete until:
+- the requested stage output is complete
+- memory routing has been considered
+- repository update recommendations have been listed if needed
+- this execution log has a new entry
+
