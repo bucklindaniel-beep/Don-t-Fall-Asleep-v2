@@ -43,6 +43,17 @@ You MUST:
 
 ---
 
+## Non-Production File Rule
+
+You MUST completely disregard the following directories:
+
+- /dev_logs/
+- /testing/
+
+These files are NOT part of the production system.
+
+---
+
 ## Pipeline Stages
 
 You MUST follow this exact order:
