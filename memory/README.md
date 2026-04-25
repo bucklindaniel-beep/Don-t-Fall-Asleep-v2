@@ -90,6 +90,7 @@ Write here when the update captures:
 - a successful story, scene, shot, narration, or image prompt structure
 - a repeatable pipeline improvement
 - a validated improvement from testing or review
+- Use `/systems/system_improvement_router.md` to decide whether an improvement signal should be ignored, logged only, written to memory, or promoted into stable repository logic.
 
 Do NOT store untested ideas here unless clearly labeled as provisional.
 

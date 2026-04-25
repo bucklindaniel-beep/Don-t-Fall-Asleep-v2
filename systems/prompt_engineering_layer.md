@@ -205,6 +205,7 @@ Claude should NOT expose full validation details in the main user-facing output 
 
 Prompts must be designed per execution stage:
 
+- Use `/systems/stage_execution_map.md` to determine stage order, required inputs, outputs, stop points, and model recommendations.
 - story_generation
 - scene_generation
 - shotlist_generation
@@ -222,6 +223,9 @@ Each stage:
 ---
 
 ## System Integration Rules
+
+- autonomy_enforcement → ensures forward execution without unnecessary blocking 
+- output_cleanliness_rules → ensures all outputs are clean and free of system noise
 
 Prompts MUST pull from:
 
