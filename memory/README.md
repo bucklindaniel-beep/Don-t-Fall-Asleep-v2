@@ -16,6 +16,7 @@ Claude must treat these files as the project's long-term operating memory.
 - Do not log raw chat summaries.
 - Memory entries must become reusable project intelligence.
 - Promote repeated memory lessons into systems, prompts, playbooks, or frameworks when they become stable hard rules.
+- Use /systems/pattern_promotion_system.md when repeated failures, successful patterns, prompt weaknesses, or user preferences should become stable repository rules.
 
 ## File Roles
 
