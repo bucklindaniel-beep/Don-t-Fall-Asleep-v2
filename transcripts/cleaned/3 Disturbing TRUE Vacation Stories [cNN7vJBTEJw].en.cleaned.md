@@ -11,7 +11,7 @@
 - Video ID: cNN7vJBTEJw
 - Upload Date: 20260423
 - Duration Seconds: 1722
-- Processed At: 2026-04-25 01:17:55
+- Processed At: 2026-04-25 02:24:32
 - Pipeline Stage: cleaned
 - Next Stage: structured
 - Usage Rule: Analysis only. Do not copy source language directly into generation.
