@@ -1,4 +1,4 @@
-# Structured Transcript
+﻿# Structured Transcript
 
 ## Metadata
 
@@ -11,14 +11,11 @@
 - Video ID: cNN7vJBTEJw
 - Upload Date: 20260423
 - Duration Seconds: 1722
-- Processed At: 2026-04-25 00:46:08
-- Next Stage: structured
-- Usage Rule: Analysis only. Do not copy source language directly into generation.
-
+- Processed At: 2026-04-25 01:17:55
 - Pipeline Stage: structured
 - Previous Stage: cleaned
 - Next Stage: distilled
-- Structured At: 2026-04-25 00:52:53
+- Structured At: 2026-04-25 01:17:55
 - Usage Rule: Analysis only. Do not copy source language directly into generation.
 
 ## Structuring Instructions

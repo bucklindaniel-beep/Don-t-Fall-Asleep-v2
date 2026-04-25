@@ -2,13 +2,19 @@
 
 ## Purpose
 
-Define how transcript source metadata must be represented after raw transcript ingestion.
+Define how transcript source metadata is represented, preserved, and used across the transcript pipeline.
+
+Metadata exists to keep analysis source-aware without allowing transcript content to become generation material.
+
+---
 
 ## Core Rule
 
-All cleaned transcript files must include a structured metadata block before transcript content.
+All cleaned, structured, distilled, and indexed transcript files must include a structured metadata block before analysis content.
 
-Metadata is added during post-processing, not during ingestion.
+Metadata is added during post-processing, not during raw ingestion.
+
+---
 
 ## Required Metadata Fields
 
@@ -20,6 +26,8 @@ Every cleaned transcript must include:
 - Pipeline Stage
 - Next Stage
 - Usage Rule
+
+---
 
 ## YouTube Metadata Fields
 
@@ -34,45 +42,84 @@ For YouTube transcripts, use:
 - Duration Seconds
 - Metadata File
 
+---
+
 ## Pipeline Placement
 
 Metadata tagging belongs in:
 
 ```text
-/scripts/post_process_transcript.ps1
+/powershell_scripts/post_process_transcript.ps1
 ```
 
 Do not add source classification logic to:
 
 ```text
-/scripts/ingest_youtube_transcript.ps1
+/powershell_scripts/ingest_youtube_transcript.ps1
 ```
 
 The ingestion script must remain a simple file-acquisition layer.
+
+---
+
+## Valid Raw Ingestion Files
+
+The raw transcript folder may contain source-acquisition formats such as:
+
+- `.srt`
+- `.vtt`
+- `.txt`
+- `.info.json`
+
+This is allowed because raw ingestion preserves original source artifacts.
+
+All later stages should use Markdown:
+
+```text
+/transcripts/cleaned/*.md
+/transcripts/structured/*.md
+/transcripts/distilled/*.md
+/transcripts/indexed/*.md
+```
+
+---
 
 ## Claude Usage Rules
 
 Claude may use transcript metadata for:
 
-- source-aware analysis
-- transcript organization
-- pattern extraction
-- source category filtering
-- future comparison across YouTube, Reddit, books, scripts, or other sources
+- Source-aware analysis.
+- Transcript organization.
+- Duplicate detection.
+- Pattern extraction.
+- Source category filtering.
+- Future comparison across YouTube, Reddit, books, scripts, or other sources.
 
 Claude must not:
 
-- copy source phrasing into generation
-- treat raw transcripts as generation material
-- infer missing metadata when structured fields are absent
-- bypass the transcript pipeline stages
+- Copy source phrasing into generation.
+- Treat raw transcripts as generation material.
+- Infer missing metadata unless clearly marked as inferred.
+- Bypass transcript pipeline stages.
+
+---
 
 ## Approved Flow
 
 ```text
 raw
-→ cleaned with metadata
-→ structured
-→ distilled
-→ indexed
+-> cleaned with metadata
+-> structured with metadata preserved
+-> distilled with source-safe insights
+-> indexed for reusable system knowledge
 ```
+
+---
+
+## Boundary Rule
+
+PowerShell may preserve and transfer metadata.
+
+Claude is responsible for analysis, segmentation, pattern extraction, and distillation.
+
+Scripts must not replace Claude's reasoning layer.

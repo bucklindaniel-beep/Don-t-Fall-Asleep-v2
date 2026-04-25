@@ -1,110 +1,60 @@
 param (
-    [string]$InputFolder = "C:\Users\bigpa\Videos\Don't Fall Asleep\transcripts\raw",
-    [string]$OutputFolder = "C:\Users\bigpa\Videos\Don't Fall Asleep\transcripts\cleaned"
+    [string]$Url = "PASTE_YOUTUBE_URL_HERE",
+    [string]$RepositoryRoot = "C:\AI Production\Don't Fall Asleep\Dont' Fall Asleep Development\Don't Fall Asleep - Claude Repository Copy\Don-t-Fall-Asleep-v2"
 )
 
-# ===== CONFIG =====
-# Cleans raw .srt, .vtt, and .txt transcript files into .md files.
-# Uses single-quoted regex strings to avoid PowerShell parsing issues.
+# ===== PURPOSE =====
+# Ingests YouTube transcript/subtitle files and metadata into /transcripts/raw.
+# Uses absolute tool paths so this script can run from any directory.
+
+# ===== TOOL PATHS =====
+$ytDlpPath = "C:\AI Production\Tools\yt-dlp\yt-dlp.exe"
+$ffmpegPath = "C:\AI Production\Tools\ffmpeg\bin"
+
+# ===== OUTPUT PATHS =====
+$RawFolder = Join-Path $RepositoryRoot "transcripts\raw"
 
 # ===== VALIDATION =====
-if (!(Test-Path -LiteralPath $InputFolder)) {
-    Write-Host "Input folder not found: $InputFolder"
+if ($Url -eq "PASTE_YOUTUBE_URL_HERE" -or [string]::IsNullOrWhiteSpace($Url)) {
+    Write-Host "ERROR: Please provide a valid YouTube URL."
     exit 1
 }
 
-if (!(Test-Path -LiteralPath $OutputFolder)) {
-    New-Item -ItemType Directory -Path $OutputFolder -Force | Out-Null
-    Write-Host "Created output folder: $OutputFolder"
+if (!(Test-Path -LiteralPath $RepositoryRoot)) {
+    Write-Host "ERROR: Repository root not found: $RepositoryRoot"
+    exit 1
 }
 
-# ===== FILE DISCOVERY =====
-$files = Get-ChildItem -LiteralPath $InputFolder -File | Where-Object {
-    $_.Extension -in ".srt", ".vtt", ".txt"
+if (!(Test-Path -LiteralPath $ytDlpPath)) {
+    Write-Host "ERROR: yt-dlp.exe not found at: $ytDlpPath"
+    exit 1
 }
 
-if ($files.Count -eq 0) {
-    Write-Host "No .srt, .vtt, or .txt transcript files found in: $InputFolder"
-    exit 0
+if (!(Test-Path -LiteralPath $ffmpegPath)) {
+    Write-Host "ERROR: FFmpeg bin folder not found at: $ffmpegPath"
+    exit 1
 }
 
-# ===== PROCESS FILES =====
-foreach ($file in $files) {
-    Write-Host "Processing: $($file.Name)"
+New-Item -ItemType Directory -Path $RawFolder -Force | Out-Null
 
-    $raw = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
-    $clean = $raw
+# ===== EXECUTION =====
+Write-Host "STEP: Ingesting YouTube transcript..."
+Write-Host "URL: $Url"
+Write-Host "Raw folder: $RawFolder"
 
-    # Remove WEBVTT header
-    $clean = $clean -replace 'WEBVTT[\s\S]*?\r?\n\r?\n', ''
+& $ytDlpPath `
+    --ffmpeg-location $ffmpegPath `
+    --write-auto-subs `
+    --skip-download `
+    --convert-subs srt `
+    --write-info-json `
+    -P $RawFolder `
+    $Url
 
-    # Remove SRT numbering lines
-    $clean = $clean -replace '(?m)^\d+\s*$', ''
-
-    # Remove SRT/VTT timestamp lines
-    $clean = $clean -replace '(?m)^\d{2}:\d{2}:\d{2}[\.,]\d{3}\s+-->\s+\d{2}:\d{2}:\d{2}[\.,]\d{3}.*$', ''
-
-    # Remove VTT inline timestamp tags
-    $clean = $clean -replace '<\d{2}:\d{2}:\d{2}\.\d{3}>', ''
-
-    # Remove common subtitle tags
-    $clean = $clean -replace '</?c[^>]*>', ''
-    $clean = $clean -replace '</?v[^>]*>', ''
-    $clean = $clean -replace '</?i>', ''
-
-    # Normalize common HTML entities
-    $clean = $clean -replace '&amp;', '&'
-    $clean = $clean -replace '&quot;', '"'
-    $clean = $clean -replace '&#39;', "'"
-    $clean = $clean -replace '&lt;', '<'
-    $clean = $clean -replace '&gt;', '>'
-
-    # Trim each line and remove blanks
-    $lines = $clean -split '\r?\n' |
-        ForEach-Object { $_.Trim() } |
-        Where-Object { $_ -ne '' }
-
-    # Remove consecutive duplicate subtitle lines
-    $deduped = New-Object System.Collections.Generic.List[string]
-    $previous = $null
-
-    foreach ($line in $lines) {
-        if ($line -ne $previous) {
-            $deduped.Add($line)
-        }
-        $previous = $line
-    }
-
-    $body = ($deduped -join ' ')
-    $body = $body -replace '\s{2,}', ' '
-    $body = $body.Trim()
-
-    # Build output markdown
-    $baseName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
-    $outputFile = Join-Path $OutputFolder "$baseName.cleaned.md"
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-
-    $markdown = @"
-# Cleaned Transcript
-
-## Metadata
-
-- Source File: $($file.Name)
-- Processed At: $timestamp
-- Pipeline Stage: cleaned
-- Next Stage: structured
-- Usage Rule: Analysis only. Do not copy source language directly into generation.
-
-## Cleaned Transcript
-
-$body
-"@
-
-    Set-Content -LiteralPath $outputFile -Value $markdown -Encoding UTF8
-    Write-Host "Saved: $outputFile"
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERROR: yt-dlp ingestion failed."
+    exit $LASTEXITCODE
 }
 
-Write-Host ""
-Write-Host "Post-processing complete."
-Write-Host "Output folder: $OutputFolder"
+Write-Host "DONE: Raw transcript and metadata saved."
 exit 0

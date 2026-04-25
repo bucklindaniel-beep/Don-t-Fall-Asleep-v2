@@ -1,24 +1,38 @@
 param (
-    [string]$InputFolder = "C:\Users\bigpa\Videos\Don't Fall Asleep\transcripts\raw",
-    [string]$OutputFolder = "C:\Users\bigpa\Videos\Don't Fall Asleep\transcripts\cleaned"
+    [string]$InputFolder = "",
+    [string]$OutputFolder = "",
+    [string]$RepositoryRoot = "C:\AI Production\Don't Fall Asleep\Dont' Fall Asleep Development\Don't Fall Asleep - Claude Repository Copy\Don-t-Fall-Asleep-v2"
 )
 
-# ===== CONFIG =====
+# ===== PURPOSE =====
 # Cleans raw transcript files and creates metadata-rich .md files.
-# Source type is intentionally assigned here, not during ingestion.
+# Adds Source Type metadata during post-processing.
+# Uses safe regex matching for YouTube video IDs wrapped in brackets.
+# Uses repo-relative defaults so this script can run from any directory.
+
+# ===== DEFAULT PATHS =====
+if ([string]::IsNullOrWhiteSpace($InputFolder)) {
+    $InputFolder = Join-Path $RepositoryRoot "transcripts\raw"
+}
+
+if ([string]::IsNullOrWhiteSpace($OutputFolder)) {
+    $OutputFolder = Join-Path $RepositoryRoot "transcripts\cleaned"
+}
 
 $SourceType = "youtube_video"
 
 # ===== VALIDATION =====
-if (!(Test-Path -LiteralPath $InputFolder)) {
-    Write-Host "Input folder not found: $InputFolder"
+if (!(Test-Path -LiteralPath $RepositoryRoot)) {
+    Write-Host "ERROR: Repository root not found: $RepositoryRoot"
     exit 1
 }
 
-if (!(Test-Path -LiteralPath $OutputFolder)) {
-    New-Item -ItemType Directory -Path $OutputFolder -Force | Out-Null
-    Write-Host "Created output folder: $OutputFolder"
+if (!(Test-Path -LiteralPath $InputFolder)) {
+    Write-Host "ERROR: Input folder not found: $InputFolder"
+    exit 1
 }
+
+New-Item -ItemType Directory -Path $OutputFolder -Force | Out-Null
 
 # ===== FILE DISCOVERY =====
 $files = Get-ChildItem -LiteralPath $InputFolder -File | Where-Object {
@@ -42,21 +56,27 @@ function Get-NearestInfoJson {
         return $null
     }
 
-    # yt-dlp commonly outputs:
-    # Title [video_id].en.srt
-    # Title [video_id].info.json
     $videoIdMatch = [regex]::Match($TranscriptBaseName, '\[([A-Za-z0-9_-]{6,})\]')
+
     if ($videoIdMatch.Success) {
         $videoId = $videoIdMatch.Groups[1].Value
-        $match = $jsonFiles | Where-Object { $_.BaseName -like "*[$videoId]*" } | Select-Object -First 1
+        $escapedBracketedVideoId = [regex]::Escape("[$videoId]")
+
+        $match = $jsonFiles | Where-Object {
+            $_.Name -match $escapedBracketedVideoId
+        } | Select-Object -First 1
+
         if ($match) {
             return $match.FullName
         }
     }
 
-    # Fallback: compare base names loosely.
     $looseBase = $TranscriptBaseName -replace '\.en$', ''
-    $match = $jsonFiles | Where-Object { $_.BaseName -like "$looseBase*" } | Select-Object -First 1
+    $escapedLooseBase = [regex]::Escape($looseBase)
+
+    $match = $jsonFiles | Where-Object {
+        $_.BaseName -match "^$escapedLooseBase"
+    } | Select-Object -First 1
 
     if ($match) {
         return $match.FullName
@@ -66,10 +86,15 @@ function Get-NearestInfoJson {
 }
 
 function Get-SafeMetadataValue {
-    param ($Object, [string]$Name, [string]$Fallback = "")
+    param (
+        $Object,
+        [string]$Name,
+        [string]$Fallback = ""
+    )
 
     if ($null -ne $Object -and $Object.PSObject.Properties.Name -contains $Name) {
         $value = $Object.$Name
+
         if ($null -ne $value -and "$value".Trim() -ne "") {
             return "$value"
         }
@@ -78,43 +103,29 @@ function Get-SafeMetadataValue {
     return $Fallback
 }
 
-# ===== PROCESS FILES =====
 foreach ($file in $files) {
     Write-Host "Processing: $($file.Name)"
 
     $raw = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
     $clean = $raw
 
-    # Remove WEBVTT header
     $clean = $clean -replace 'WEBVTT[\s\S]*?\r?\n\r?\n', ''
-
-    # Remove SRT numbering lines
     $clean = $clean -replace '(?m)^\d+\s*$', ''
-
-    # Remove SRT/VTT timestamp lines
     $clean = $clean -replace '(?m)^\d{2}:\d{2}:\d{2}[\.,]\d{3}\s+-->\s+\d{2}:\d{2}:\d{2}[\.,]\d{3}.*$', ''
-
-    # Remove VTT inline timestamp tags
     $clean = $clean -replace '<\d{2}:\d{2}:\d{2}\.\d{3}>', ''
-
-    # Remove common subtitle tags
     $clean = $clean -replace '</?c[^>]*>', ''
     $clean = $clean -replace '</?v[^>]*>', ''
     $clean = $clean -replace '</?i>', ''
-
-    # Normalize common HTML entities
     $clean = $clean -replace '&amp;', '&'
     $clean = $clean -replace '&quot;', '"'
     $clean = $clean -replace '&#39;', "'"
     $clean = $clean -replace '&lt;', '<'
     $clean = $clean -replace '&gt;', '>'
 
-    # Trim each line and remove blanks
     $lines = $clean -split '\r?\n' |
         ForEach-Object { $_.Trim() } |
         Where-Object { $_ -ne '' }
 
-    # Remove consecutive duplicate subtitle lines
     $deduped = New-Object System.Collections.Generic.List[string]
     $previous = $null
 
@@ -122,6 +133,7 @@ foreach ($file in $files) {
         if ($line -ne $previous) {
             $deduped.Add($line)
         }
+
         $previous = $line
     }
 
@@ -129,7 +141,6 @@ foreach ($file in $files) {
     $body = $body -replace '\s{2,}', ' '
     $body = $body.Trim()
 
-    # ===== METADATA EXTRACTION =====
     $baseName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
     $jsonPath = Get-NearestInfoJson -Folder $InputFolder -TranscriptBaseName $baseName
     $metadata = $null
@@ -139,7 +150,7 @@ foreach ($file in $files) {
             $metadata = Get-Content -LiteralPath $jsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
         }
         catch {
-            Write-Host "Warning: Could not parse metadata JSON: $jsonPath"
+            Write-Host "WARNING: Could not parse metadata JSON: $jsonPath"
         }
     }
 
@@ -152,6 +163,11 @@ foreach ($file in $files) {
 
     $processedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $outputFile = Join-Path $OutputFolder "$baseName.cleaned.md"
+    $metadataFileName = ""
+
+    if ($jsonPath) {
+        $metadataFileName = [System.IO.Path]::GetFileName($jsonPath)
+    }
 
     $markdown = @"
 # Cleaned Transcript
@@ -160,7 +176,7 @@ foreach ($file in $files) {
 
 - Source Type: $SourceType
 - Source File: $($file.Name)
-- Metadata File: $([System.IO.Path]::GetFileName($jsonPath))
+- Metadata File: $metadataFileName
 - Title: $title
 - Channel: $channel
 - URL: $webpageUrl

@@ -1,15 +1,15 @@
 param (
     [string]$InputFolder = "",
     [string]$OutputFolder = "",
-    [string]$FileName = ""
+    [string]$FileName = "",
+    [string]$RepositoryRoot = "C:\AI Production\Don't Fall Asleep\Dont' Fall Asleep Development\Don't Fall Asleep - Claude Repository Copy\Don-t-Fall-Asleep-v2"
 )
 
 # ===== PURPOSE =====
 # Creates a structured transcript scaffold from cleaned transcript files.
 # Does NOT perform analysis or segmentation logic.
-
-# ===== DEFAULT PATHS =====
-$RepositoryRoot = "C:\AI Production\Don't Fall Asleep\Dont' Fall Asleep Development\Don't Fall Asleep - Claude Repository Copy\Don-t-Fall-Asleep-v2"
+# Normalizes metadata to prevent duplicate/conflicting stage fields.
+# Uses repo-relative defaults so this script can run from any directory.
 
 if ([string]::IsNullOrWhiteSpace($InputFolder)) {
     $InputFolder = Join-Path $RepositoryRoot "transcripts\cleaned"
@@ -19,7 +19,11 @@ if ([string]::IsNullOrWhiteSpace($OutputFolder)) {
     $OutputFolder = Join-Path $RepositoryRoot "transcripts\structured"
 }
 
-# ===== VALIDATION =====
+if (!(Test-Path -LiteralPath $RepositoryRoot)) {
+    Write-Host "ERROR: Repository root not found: $RepositoryRoot"
+    exit 1
+}
+
 if (!(Test-Path -LiteralPath $InputFolder)) {
     Write-Host "ERROR: Input folder not found: $InputFolder"
     exit 1
@@ -43,24 +47,38 @@ if ($files.Count -eq 0) {
     exit 0
 }
 
+function Normalize-MetadataForStructuredStage {
+    param (
+        [string]$MetadataText
+    )
+
+    $lines = $MetadataText -split "`r?`n"
+
+    $filtered = $lines | ForEach-Object { $_.Trim() } | Where-Object {
+        $_ -ne "" -and
+        $_ -notmatch '^- Pipeline Stage:' -and
+        $_ -notmatch '^- Previous Stage:' -and
+        $_ -notmatch '^- Next Stage:' -and
+        $_ -notmatch '^- Structured At:' -and
+        $_ -notmatch '^- Usage Rule:'
+    }
+
+    return ($filtered -join "`r`n")
+}
+
 foreach ($file in $files) {
     Write-Host "Structuring: $($file.Name)"
 
     $content = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
 
-    # Extract metadata
     $metadataMatch = [regex]::Match($content, '(?s)## Metadata\s*(.*?)## Cleaned Transcript')
     $metadata = ""
     if ($metadataMatch.Success) {
         $metadata = $metadataMatch.Groups[1].Value.Trim()
     }
 
-    # Remove any existing pipeline stage lines to avoid duplication
-    $metadata = ($metadata -split "`r?`n") | Where-Object {
-        $_ -notmatch "Pipeline Stage"
-    } | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" } | Out-String
+    $metadata = Normalize-MetadataForStructuredStage -MetadataText $metadata
 
-    # Extract cleaned transcript
     $bodyMatch = [regex]::Match($content, '(?s)## Cleaned Transcript\s*(.*)$')
     $body = ""
     if ($bodyMatch.Success) {
@@ -216,3 +234,4 @@ TBD
 }
 
 Write-Host "Done."
+exit 0
