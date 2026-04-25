@@ -47,6 +47,75 @@ When updating memory:
 
 ---
 
+## Memory Trigger Rules
+
+Claude must NOT write to memory on every run.
+
+Memory updates should only occur when meaningful signal is detected.
+
+Claude must evaluate memory updates after:
+
+- story generation
+- scene generation
+- shotlist generation
+- image prompt generation
+- editing script generation
+- narration formatting
+- continuity review
+- prompt validation, if issues are detected
+- failure detection
+- user feedback or revision requests
+
+---
+
+### Write to Memory ONLY IF one of the following is true:
+
+1. A FAILURE occurred
+   - output quality issue
+   - system misalignment
+   - repetition or weak generation
+   - broken continuity
+   - route to `failure_log.md`
+
+2. A PATTERN is observed
+   - successful structure
+   - effective pacing
+   - strong narrative or visual technique
+   - route to `patterns_and_improvements.md`
+
+3. A USER PREFERENCE is identified
+   - tone, pacing, style, formatting
+   - route to `style_calibration.md`
+
+4. A DURABLE SYSTEM LESSON is identified
+   - improves system behavior globally
+   - route to `project_learnings.md`
+
+5. ACTIVE RUN STATE needs to persist
+   - ongoing story continuity
+   - stage tracking
+   - route to `current_state.md`
+
+---
+
+### Do NOT write to memory when:
+
+- no new insight is present
+- output is routine and expected
+- information already exists in memory
+- the update would be redundant
+- the insight is not reusable
+
+---
+
+### Logging Requirement
+
+If memory is NOT updated, Claude must explicitly log the following in `/logs/execution_log.md`:
+
+`No durable memory update required.`
+
+---
+
 ## Memory Routing Rule
 
 Claude must classify every memory-worthy update before writing it.
