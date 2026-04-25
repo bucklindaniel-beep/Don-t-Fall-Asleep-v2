@@ -2,71 +2,50 @@
 
 ## Purpose
 
-This template converts a cleaned transcript into a structured, Claude-optimized analysis unit.
+This template converts a cleaned transcript into structured analysis without copying source phrasing.
 
 Use this file for every transcript in:
 
 `/transcripts/structured/`
 
-This stage identifies how the transcript works without preserving source wording as reusable logic.
-
----
-
-## Instructions
-
-- Fill every applicable section.
-- Keep responses concise and specific.
-- Do not repeat transcript text unless necessary.
-- Focus on structure, pacing, and function.
-- Do not promote insights yet.
-- Use `.md` format only.
-
 ---
 
 # Transcript — Structured
 
-## Source Metadata
+## Transcript Metadata
 
 - Source Name:
+- Source Type:
+- Source Category:
+- Channel / Creator:
+- Title:
+- Genre:
+- Production Level:
+- Intended Use: analysis_only
 - Cleaned File:
-- Original Format:
-- POV:
-- Tone:
-- Structure Type:
+- Date Structured:
 
 ---
 
-## Clean Summary
+## Core Premise
 
-(3–6 sentences max. Summarize content without copying distinctive phrasing.)
-
----
-
-## Narrative Breakdown
-
-### Hook
-
-How the story begins and captures attention.
-
-### Setup
-
-Baseline reality and initial context.
-
-### Escalation
-
-How tension increases over time.
-
-### Peak
-
-Highest tension or most revealing moment.
-
-### Ending
-
-Resolution, ambiguity, reversal, or cliffhanger.
+Summarize the premise in abstract functional terms.
 
 ---
 
-## Event Sequence
+## Source-Type Context
+
+Describe how the source type affects structure.
+
+Examples:
+- YouTube narration may prioritize hooks and retention pacing.
+- Reddit stories may prioritize conversational believability.
+- Movie scripts may prioritize scene construction and visual action.
+- Book excerpts may prioritize prose density and interiority.
+
+---
+
+## Event / Beat Sequence
 
 1.
 2.
@@ -76,70 +55,35 @@ Resolution, ambiguity, reversal, or cliffhanger.
 
 ---
 
-## Tension Mechanics
+## Structural Mechanics
 
-- 
-- 
-- 
+- Hook:
+- Setup:
+- Escalation Pattern:
+- Reveal Timing:
+- Tension Peak:
+- Ending Type:
 
 ---
 
 ## Retention Mechanics
 
-- 
-- 
-- 
+- Opening pull:
+- Midpoint tension device:
+- Curiosity loop:
+- Payoff mechanism:
 
 ---
 
-## Language Patterns
+## Source-Specific Notes
 
-### Sentence Structure
-
-(short, long, fragmented, rhythmic, etc.)
-
-### Vocabulary Style
-
-(simple, descriptive, technical, vague, etc.)
-
-### Tone Consistency
-
-(stable, shifting, escalating, etc.)
+- What appears specific to this source type:
+- What may be reusable across source types:
 
 ---
 
-## Emotional Progression
+## Safety Check
 
-Example:
-
-`unease → dread → panic → terror → release`
-
----
-
-## Environmental Usage
-
-(How the setting contributes to tension.)
-
----
-
-## Psychological Elements
-
-(Perception, doubt, paranoia, ambiguity.)
-
----
-
-## Physical Elements
-
-(Body reactions, movement, contact, sensation.)
-
----
-
-## Pattern Signals
-
-(Repeated behaviors or structures that may become generalized later.)
-
----
-
-## Notes
-
-(Optional observations, anomalies, or unique elements.)
+- Source phrasing copied: No
+- Story structure copied as reusable template: No
+- Analysis-only status preserved: Yes

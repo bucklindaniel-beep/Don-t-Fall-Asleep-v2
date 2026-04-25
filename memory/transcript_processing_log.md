@@ -8,6 +8,16 @@ This file is the durable duplicate guard for the transcript pipeline.
 
 ---
 
+## Source of Truth Rule
+
+This log is the source of truth.
+
+Existing files are the validation layer.
+
+If this log and repository files disagree, Claude must record the inconsistency before continuing.
+
+---
+
 ## Rules
 
 - Claude must check this file before processing raw transcripts.
@@ -16,6 +26,7 @@ This file is the durable duplicate guard for the transcript pipeline.
 - Claude must not overwrite previous entries.
 - Claude must only reprocess transcripts when explicitly instructed.
 - All referenced transcript pipeline files must use `.md`.
+- Each completed transcript must include required metadata.
 
 ---
 
@@ -24,15 +35,23 @@ This file is the durable duplicate guard for the transcript pipeline.
 ```markdown
 ### {source_name}
 
-- Raw file: `/transcripts/raw/{source_name}.md`
+- Source Type:
+- Source Category:
+- Channel / Creator:
+- Title:
+- Genre:
+- Production Level:
+- Intended Use: analysis_only
+- Raw file: `/transcripts/raw/{source_type}/{source_name}.md`
 - Cleaned: `/transcripts/cleaned/{source_name}.md`
 - Structured: `/transcripts/structured/{source_name}.md`
 - Distilled: `/transcripts/distilled/{source_name}.md`
 - Indexed pattern(s):
   - `/transcripts/indexed/{pattern_name}.md`
-- Status: processed / skipped / reprocessed
+- Status: pending / completed / skipped / reprocessed / incomplete
 - Date processed: YYYY-MM-DD
 - Reprocessing reason: none
+- Duplicate check result:
 - Notes:
 ```
 

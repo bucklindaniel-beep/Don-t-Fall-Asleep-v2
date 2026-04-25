@@ -5,7 +5,7 @@
 **File Name:** transcript_storage_router.md  
 **Location:** /systems/transcript_storage_router.md  
 **System Area:** Transcript Processing Pipeline  
-**Primary Role:** Route transcript pipeline outputs to the correct repository locations.
+**Primary Role:** Route transcript pipeline outputs to correct repository locations.
 
 ---
 
@@ -13,7 +13,7 @@
 
 The Transcript Storage Router defines where Claude must place each output created during transcript processing.
 
-This file prevents transcript-derived insights from being stored randomly, duplicated across folders, or mixed into generation logic before they have been properly distilled.
+It prevents transcript-derived insights from being stored randomly, duplicated across folders, or mixed into generation logic before they have been properly distilled.
 
 ---
 
@@ -31,6 +31,27 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 ---
 
+## Classification Storage Rule
+
+Each transcript must include metadata in every stage file.
+
+Required metadata:
+
+- Source Name
+- Source Type
+- Source Category
+- Channel / Creator
+- Title
+- Genre
+- Production Level
+- Intended Use
+
+Source Type controls the raw folder.
+
+Channel / Creator must remain metadata unless a future volume threshold justifies channel-level folders.
+
+---
+
 ## File Format Rule
 
 All transcript pipeline outputs must use `.md`.
@@ -41,14 +62,16 @@ No transcript stage should output `.txt`.
 
 ## Duplicate Storage Guard
 
-Before writing transcript pipeline outputs, Claude must check whether the same `source_name` already exists in:
+Before writing transcript pipeline outputs, Claude must check:
 
-- `/transcripts/cleaned/`
-- `/transcripts/structured/`
-- `/transcripts/distilled/`
-- `/memory/transcript_processing_log.md`
+1. `/memory/transcript_processing_log.md`
+2. Existing transcript stage files
 
-If a processed record exists, Claude must not overwrite or duplicate files unless the user explicitly requests reprocessing.
+The log is the source of truth.
+
+Existing files are the validation layer.
+
+Claude must not overwrite or duplicate files unless the user explicitly requests reprocessing.
 
 Skipped transcripts must be recorded in:
 
@@ -63,7 +86,17 @@ Skipped transcripts must be recorded in:
 
 **Folder:**
 
-`/transcripts/raw/`
+`/transcripts/raw/{source_type}/`
+
+Examples:
+
+- `/transcripts/raw/youtube_video/`
+- `/transcripts/raw/reddit_story/`
+- `/transcripts/raw/movie_script/`
+- `/transcripts/raw/book_excerpt/`
+- `/transcripts/raw/podcast_transcript/`
+- `/transcripts/raw/original_test_seed/`
+- `/transcripts/raw/other/`
 
 **File name:**
 
@@ -79,13 +112,7 @@ Skipped transcripts must be recorded in:
 - pasted source material
 - unedited exports
 - rough source notes
-
-**Rules:**
-
-- Preserve source material as-is.
-- Do not rewrite for style.
-- Do not extract generation rules here.
-- Do not use raw transcript text during story generation.
+- classification metadata
 
 ---
 
@@ -110,13 +137,7 @@ Skipped transcripts must be recorded in:
 - removed repeated filler
 - normalized speaker labels
 - readable source text
-
-**Rules:**
-
-- Preserve meaning.
-- Do not add new ideas.
-- Do not improve the source creatively.
-- Do not copy cleaned phrasing into future generated content.
+- preserved metadata
 
 ---
 
@@ -136,19 +157,13 @@ Skipped transcripts must be recorded in:
 
 **Stores:**
 
+- source-type context
 - scene/section breakdowns
 - pacing blocks
 - hook/setup/payoff structure
 - escalation sequence
 - narrative function labels
 - emotional beat mapping
-
-**Rules:**
-
-- Focus on structure, not wording.
-- Summarize sections instead of quoting them.
-- Identify what each section does.
-- Do not preserve distinctive source phrasing.
 
 ---
 
@@ -168,19 +183,13 @@ Skipped transcripts must be recorded in:
 
 **Stores:**
 
+- universal patterns
+- source-type-specific patterns
+- genre-specific patterns
+- production-level observations
 - reusable observations
 - engagement patterns
 - pacing lessons
-- tension mechanics
-- narrative techniques
-- structure notes
-
-**Rules:**
-
-- Convert source-specific observations into generalized insights.
-- Remove source names unless needed for internal traceability.
-- Do not include copied sentences.
-- Do not preserve the exact sequence of a single source as a reusable template.
 
 ---
 
@@ -203,112 +212,20 @@ Skipped transcripts must be recorded in:
 - short metadata records
 - searchable summaries
 - tags
+- related source types
+- related genres
 - technique references
-- links to distilled insights
 - routing notes for promotion
-
-**Rules:**
-
-- Keep entries short.
-- Focus on retrieval.
-- Do not store source content.
-- Identify whether insights should route to transcript-only storage, pattern promotion, memory, or system improvement.
 
 ---
 
 ## Promotion Targets
 
-### Patterns
+Transcript-derived insights may route to:
 
-**Folder:**
+- `/analysis/patterns/`
+- `/analysis/techniques/`
+- `/frameworks/`
+- `/memory/patterns_and_improvements.md`
 
-`/analysis/patterns/`
-
-**Use when:**
-
-- a technique appears repeatedly across multiple sources
-- a structure improves retention
-- a pacing method is reusable
-- a suspense pattern can guide future generation
-
-**Do not use when:**
-
-- the insight is from only one source
-- the pattern is too source-specific
-- the idea risks copying a source structure too closely
-
----
-
-### Frameworks
-
-**Folder:**
-
-`/frameworks/`
-
-**Use when:**
-
-- the insight becomes reusable execution logic
-- Claude needs a repeatable decision model
-- the concept affects how stories, scenes, tension, or visuals are generated
-
-**Do not use when:**
-
-- the insight is only an observation
-- the rule has not been validated
-- the idea belongs in transcript storage or analysis first
-
----
-
-### Memory System
-
-**Folder:**
-
-`/memory/`
-
-**Use when:**
-
-- the insight affects long-term system behavior
-- Claude should remember a recurring production preference
-- the insight changes future execution behavior
-
----
-
-## Required Log Targets
-
-### Transcript Processing Log
-
-`/memory/transcript_processing_log.md`
-
-Use for:
-
-- processed transcripts
-- skipped duplicates
-- reprocessed transcripts
-- output file paths
-- indexed pattern paths
-
-### Execution Log
-
-`/logs/execution_log.md`
-
-Use for:
-
-- stage decisions
-- missing references
-- skipped files
-- exceptions
-- promotion blockers
-
----
-
-## Final Directive
-
-Route transcript outputs conservatively.
-
-Raw and cleaned material stay isolated.
-
-Structured material supports analysis.
-
-Distilled and indexed material support safe retrieval.
-
-Framework promotion requires validation.
+Only after pattern promotion rules are satisfied.

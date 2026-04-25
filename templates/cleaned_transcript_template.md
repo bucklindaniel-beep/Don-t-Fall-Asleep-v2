@@ -8,8 +8,6 @@ Use this file for every transcript in:
 
 `/transcripts/cleaned/`
 
-This stage prepares the transcript for structured analysis.
-
 ---
 
 ## Instructions
@@ -22,18 +20,24 @@ This stage prepares the transcript for structured analysis.
 - Do not change story structure.
 - Do not extract techniques or patterns.
 - Use `.md` format only.
+- Preserve metadata from the raw transcript.
 
 ---
 
 # Transcript — Cleaned
 
-## Source
+## Transcript Metadata
 
 - Source Name:
+- Source Type:
+- Source Category:
 - Channel / Creator:
 - Title:
-- Original Format:
+- Genre:
+- Production Level:
+- Intended Use: analysis_only
 - Raw File:
+- Date Cleaned:
 - Notes:
 
 ---

@@ -5,6 +5,7 @@
 - Domain: Transcript Processing / Knowledge Ingestion
 - Primary Use Cases:
   - process source transcripts safely
+  - classify transcript source type and production context
   - convert source material into reusable abstract knowledge
   - prevent duplicate transcript processing
   - prepare validated insights for pattern promotion
@@ -21,31 +22,91 @@ Transcript processing must follow this exact stage order:
 
 Claude must not skip, merge, rename, or reorder stages unless the user explicitly instructs otherwise.
 
----
-
-## Purpose
-
-This pipeline converts raw transcripts into structured, reusable production knowledge without copying source material.
-
-Raw and cleaned transcript content must remain source-only material.
-
-Only distilled and indexed abstractions may inform future system logic, and framework promotion requires separate approval or repeated pattern evidence.
+All transcript stages must use the matching template from `/templates/`.
 
 ---
 
-## Required References
+## Transcript Classification Rule
 
-Before running the transcript pipeline, Claude must reference:
+Every transcript must include metadata before processing.
 
-- `/systems/transcript_pipeline.md`
-- `/systems/transcript_stage_executor.md`
-- `/systems/transcript_storage_router.md`
-- `/systems/transcript_analysis_rules.md`
-- `/systems/pattern_promotion_system.md`
-- `/logs/execution_log.md`
-- `/memory/transcript_processing_log.md`
+Required metadata:
 
-If a file is missing, Claude must continue with best effort and record the missing reference in the execution log.
+- Source Name
+- Source Type
+- Source Category
+- Channel / Creator
+- Title
+- Genre
+- Production Level
+- Intended Use
+
+Claude must use this metadata to compare transcripts correctly.
+
+Claude must not compare YouTube narration, Reddit stories, movie scripts, book excerpts, or other source types as if they use the same structure.
+
+---
+
+## Source Type Values
+
+Use one of:
+
+- `youtube_video`
+- `reddit_story`
+- `movie_script`
+- `book_excerpt`
+- `podcast_transcript`
+- `original_test_seed`
+- `other`
+
+---
+
+## Source Category Values
+
+Use one of:
+
+- `horror_narration`
+- `psychological_horror`
+- `paranormal_horror`
+- `true_story_style`
+- `analog_horror`
+- `thriller`
+- `screenwriting`
+- `general_storytelling`
+- `other`
+
+---
+
+## Production Level Values
+
+Use one of:
+
+- `amateur`
+- `semi_professional`
+- `professional`
+- `unknown`
+
+---
+
+## Folder Grouping Rule
+
+Primary grouping should be by Source Type, not by channel or creator.
+
+Recommended raw transcript structure:
+
+```text
+/transcripts/raw/youtube_video/
+/transcripts/raw/reddit_story/
+/transcripts/raw/movie_script/
+/transcripts/raw/book_excerpt/
+/transcripts/raw/podcast_transcript/
+/transcripts/raw/original_test_seed/
+/transcripts/raw/other/
+```
+
+Do not create a folder for every YouTube channel unless the repository later contains enough volume to justify it.
+
+Channel / Creator must be stored in metadata, not used as the primary folder structure.
 
 ---
 
@@ -53,34 +114,28 @@ If a file is missing, Claude must continue with best effort and record the missi
 
 Before processing any transcript in `/transcripts/raw/`, Claude must check whether the transcript has already been processed.
 
-Claude must compare the raw transcript filename stem against:
+The processing log is the source of truth.
 
-- `/transcripts/cleaned/`
-- `/transcripts/structured/`
-- `/transcripts/distilled/`
-- `/transcripts/indexed/`
-- `/memory/transcript_processing_log.md`
+Existing files are the validation layer.
 
-If matching processed files or a completed log entry already exist, Claude must skip the transcript unless the user explicitly requests reprocessing.
+Claude must check:
 
-### Required Duplicate Check
+1. `/memory/transcript_processing_log.md`
+2. Existing files in:
+   - `/transcripts/cleaned/`
+   - `/transcripts/structured/`
+   - `/transcripts/distilled/`
+   - `/transcripts/indexed/`
 
-For each raw transcript:
+If the log shows `Status: completed`, Claude must skip the transcript unless the user explicitly requests reprocessing.
 
-1. Extract `source_name` from the raw filename.
-2. Check for:
-   - `/transcripts/cleaned/{source_name}.md`
-   - `/transcripts/structured/{source_name}.md`
-   - `/transcripts/distilled/{source_name}.md`
-3. Check `/memory/transcript_processing_log.md` for prior processing.
-4. If already processed:
-   - do not rewrite output files
-   - do not create duplicate indexed entries
-   - log the transcript as skipped
-5. If not processed:
-   - continue through the full pipeline.
+If files exist but the log is missing, Claude must pause promotion, log the inconsistency, and ask whether to repair the log or reprocess.
 
-### Reprocessing Rule
+If the log exists but expected files are missing, Claude must log the inconsistency and regenerate only the missing stage files when safe.
+
+---
+
+## Reprocessing Rule
 
 Claude may only reprocess an existing transcript when the user explicitly says:
 
@@ -107,40 +162,22 @@ This applies to:
 - `/transcripts/distilled/`
 - `/transcripts/indexed/`
 
-Rationale:
-
-- improves Claude retrieval
-- supports metadata
-- preserves consistent structure
-- supports future automation
-
 ---
 
 ## Naming Rule
 
 Use lowercase, underscore-separated names.
 
-### Transcript-Based Stages
+Transcript-based stages:
 
-Use the transcript source name:
-
-- `/transcripts/raw/{source_name}.md`
+- `/transcripts/raw/{source_type}/{source_name}.md`
 - `/transcripts/cleaned/{source_name}.md`
 - `/transcripts/structured/{source_name}.md`
 - `/transcripts/distilled/{source_name}.md`
 
-### Pattern-Based Index Stage
-
-Use the pattern name when the indexed output represents a reusable pattern:
+Pattern-based index stage:
 
 - `/transcripts/indexed/{pattern_name}.md`
-
-Example:
-
-- `/transcripts/cleaned/cabinet_shift.md`
-- `/transcripts/structured/cabinet_shift.md`
-- `/transcripts/distilled/cabinet_shift.md`
-- `/transcripts/indexed/environmental_desynchronization.md`
 
 ---
 
@@ -150,18 +187,20 @@ Example:
 
 Path:
 
-`/transcripts/raw/`
-
-Purpose:
-
-Preserve the original source transcript without edits.
+`/transcripts/raw/{source_type}/`
 
 Template:
 
 `/templates/raw_transcript_template.md`
 
+Purpose:
+
+Preserve the original source transcript without edits.
+
 Rules:
 
+- preserve source material as-is
+- include required metadata
 - do not clean
 - do not summarize
 - do not analyze
@@ -175,18 +214,18 @@ Path:
 
 `/transcripts/cleaned/`
 
-Purpose:
-
-Convert raw transcript text into readable Markdown while preserving meaning and sequence.
-
 Template:
 
 `/templates/cleaned_transcript_template.md`
 
+Purpose:
+
+Convert raw transcript text into readable Markdown while preserving meaning and sequence.
+
 Allowed:
 
 - remove timestamps
-- remove transcription noise
+- remove caption artifacts
 - fix spacing
 - fix obvious punctuation
 - remove filler only when meaning is unaffected
@@ -206,25 +245,31 @@ Path:
 
 `/transcripts/structured/`
 
-Purpose:
-
-Break the cleaned transcript into analytical structure.
-
 Template:
 
 `/templates/structured_transcript_template.md`
+
+Purpose:
+
+Break the cleaned transcript into analytical structure.
 
 Output should identify:
 
 - hook
 - setup
-- escalation
-- peak
-- ending
+- escalation beats
+- reveal timing
+- tension peaks
 - pacing shifts
-- tension mechanics
 - narrator behavior
 - retention mechanics
+- source-type-specific structure
+
+Rules:
+
+- describe function, not phrasing
+- do not quote distinctive source language
+- classify patterns in context of source type and production level
 
 ---
 
@@ -234,20 +279,28 @@ Path:
 
 `/transcripts/distilled/`
 
-Purpose:
-
-Convert source-specific analysis into generalized, reusable insights.
-
 Template:
 
 `/templates/distilled_transcript_template.md`
 
+Purpose:
+
+Convert structured analysis into generalized principles and techniques.
+
+Output should extract:
+
+- reusable storytelling patterns
+- pacing tactics
+- suspense-building methods
+- escalation structures
+- narration techniques
+- source-type-specific lessons
+
 Rules:
 
-- remove source-specific phrasing
-- remove source-specific plot identity
-- generalize techniques
-- mark promotion candidates without promoting them automatically
+- remove source-specific details
+- do not copy source language
+- separate universal patterns from source-type-specific patterns
 
 ---
 
@@ -257,70 +310,64 @@ Path:
 
 `/transcripts/indexed/`
 
-Purpose:
-
-Create a short retrieval record for safe, abstract insights.
-
 Template:
 
 `/templates/indexed_transcript_template.md`
 
+Purpose:
+
+Create searchable references that help Claude retrieve safe, abstract insights.
+
+Output should include:
+
+- pattern name
+- tags
+- related source types
+- related genres
+- related production levels
+- related distilled file
+- promotion readiness
+
 Rules:
 
 - keep entries short
-- use tags
-- link to distilled file paths
-- do not include raw or cleaned transcript text
+- index patterns, not transcript content
+- do not store source wording
+
+---
+
+## Batch Processing Mode
+
+When multiple transcripts exist in `/transcripts/raw/`, Claude must:
+
+1. Process files sequentially.
+2. Apply the duplicate guard per transcript.
+3. Preserve source metadata per transcript.
+4. Use templates for every stage.
+5. Add or update one log entry per transcript.
+6. Report skipped transcripts separately from processed transcripts.
+
+---
+
+## Completion Rule
+
+A transcript is fully processed only when:
+
+- cleaned file exists
+- structured file exists
+- distilled file exists
+- at least one indexed entry exists or `No indexable pattern` is recorded
+- `/memory/transcript_processing_log.md` contains `Status: completed`
 
 ---
 
 ## Promotion Rule
 
-Claude must not promote transcript insights into `/frameworks/`, `/analysis/patterns/`, or generation-facing systems unless:
+Transcript processing does not automatically create or modify framework files.
 
-1. the user explicitly approves promotion, or
-2. the same pattern appears across multiple transcripts and passes the pattern promotion system.
+Pattern promotion must route through:
 
-Single-transcript findings must remain in:
+- `/systems/pattern_promotion_system.md`
+- `/systems/system_improvement_router.md`
 
-- `/transcripts/distilled/`
-- `/transcripts/indexed/`
-
----
-
-## Logging Rule
-
-Every transcript run must update:
-
-- `/logs/execution_log.md`
-- `/memory/transcript_processing_log.md`
-
-The processing log is the durable duplicate guard.
-
-The execution log is the debugging record.
-
----
-
-## Completion Checklist
-
-Before finishing a transcript run, Claude must confirm:
-
-- duplicate check completed
-- all stage outputs are `.md`
-- transcript-based stages use the same `source_name`
-- indexed entries are pattern-based when appropriate
-- raw and cleaned text were not used as generation material
-- distilled insights are abstracted
-- promotion candidates were not promoted without approval
-- processing log was updated
-- execution log was updated
-
----
-
-## Final Directive
-
-The transcript pipeline is a controlled learning system.
-
-Its purpose is not to copy successful horror content.
-
-Its purpose is to convert source material into safe, abstract, reusable production intelligence.
+Patterns should only be promoted when they repeat across sources or are explicitly approved by the user.

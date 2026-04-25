@@ -2,54 +2,43 @@
 
 ## Purpose
 
-This template creates short, searchable records for safe transcript-derived insights.
+This template creates a searchable pattern index entry from distilled transcript insights.
 
-Use this file for every transcript index entry in:
+Use this file for every pattern stored in:
 
 `/transcripts/indexed/`
 
-This stage supports retrieval without exposing raw or cleaned source wording.
-
 ---
 
-## Instructions
+# Pattern Index Entry
 
-- Keep entries short.
-- Use tags for retrieval.
-- Link to the distilled source file.
-- Do not include raw transcript text.
-- Do not include cleaned transcript text.
-- Use pattern-based file naming when appropriate.
-- Use `.md` format only.
+## Pattern Metadata
 
----
-
-# Transcript Pattern Index Entry
-
-## Pattern Name
-
+- Pattern Name:
+- Pattern File Name:
+- Related Source Name(s):
+- Related Source Type(s):
+- Related Source Category:
+- Related Genre(s):
+- Related Production Level(s):
+- Distilled Source File(s):
+- Date Indexed:
 
 ---
 
 ## Description
 
-(Short generalized description of the reusable pattern.)
-
----
-
-## Source Reference
-
-- Source Name:
-- Distilled File:
-- Structured File:
+Briefly describe the pattern in abstract, reusable terms.
 
 ---
 
 ## Tags
 
-- 
-- 
-- 
+- Source Type Tags:
+- Genre Tags:
+- Technique Tags:
+- Tension Tags:
+- Structure Tags:
 
 ---
 
@@ -61,41 +50,27 @@ This stage supports retrieval without exposing raw or cleaned source wording.
 
 ---
 
-## Key Signals
+## Caution / Restrictions
 
-- 
-- 
-- 
-
----
-
-## Escalation Path
-
-1.
-2.
-3.
-4.
-5.
-
----
-
-## Related Systems
-
-- `/systems/pattern_promotion_system.md`
-- `/systems/transcript_analysis_rules.md`
+- Do not copy source phrasing.
+- Do not replicate a single source structure.
+- Use only as abstract guidance.
 
 ---
 
 ## Promotion Status
 
-- Promotion Candidate: Yes / No
-- Promotion Approved: No
-- Reason:
+- Promotion Candidate: yes / no
+- Evidence Count:
+- Appears Across Multiple Sources: yes / no
+- Recommended Destination:
+  - `/analysis/patterns/`
+  - `/frameworks/`
+  - `/memory/patterns_and_improvements.md`
+  - no promotion yet
 
 ---
 
-## Safety Status
+## Related Files
 
-- Contains raw source text: No
-- Contains copied phrasing: No
-- Safe for retrieval: Yes / No
+- 

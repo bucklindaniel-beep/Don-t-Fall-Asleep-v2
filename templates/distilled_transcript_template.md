@@ -2,106 +2,97 @@
 
 ## Purpose
 
-This template converts structured transcript analysis into generalized, reusable insights.
+This template converts structured transcript analysis into generalized insights.
 
 Use this file for every transcript in:
 
 `/transcripts/distilled/`
 
-This stage removes source-specific identity and preserves only safe, abstract production knowledge.
-
 ---
 
-## Instructions
+# Transcript — Distilled
 
-- Generalize all insights.
-- Remove source-specific story details.
-- Do not copy phrases or preserve scene-by-scene structure.
-- Mark promotion candidates without promoting them automatically.
-- Use `.md` format only.
-
----
-
-# Transcript — Distilled Insights
-
-## Source Metadata
+## Transcript Metadata
 
 - Source Name:
+- Source Type:
+- Source Category:
+- Channel / Creator:
+- Title:
+- Genre:
+- Production Level:
+- Intended Use: analysis_only
 - Structured File:
-- Distilled File:
-- Date Processed:
+- Date Distilled:
 
 ---
 
-## Core Abstract Pattern
+## Universal Patterns
 
-### Pattern Name
+Patterns that may transfer across source types:
 
-
-### Generalized Description
-
-
-### Use Cases
-
-- 
-- 
-- 
-
-### Source Dependence Risk
-
-Low / Medium / High
-
-### Safety Notes
-
+1.
+2.
+3.
 
 ---
 
-## High-Value Techniques
+## Source-Type-Specific Patterns
 
-### 1. Technique Name
+Patterns that should stay associated with this transcript type:
 
-- Description:
-- Why it works:
-- Safe reusable form:
-- Source dependence risk:
-
-### 2. Technique Name
-
-- Description:
-- Why it works:
-- Safe reusable form:
-- Source dependence risk:
-
-### 3. Technique Name
-
-- Description:
-- Why it works:
-- Safe reusable form:
-- Source dependence risk:
+1.
+2.
+3.
 
 ---
 
-## Behavioral Rules Extracted
+## Genre-Specific Patterns
 
-- 
-- 
-- 
+Patterns connected to genre expectations:
+
+1.
+2.
+3.
 
 ---
 
-## Promotion Candidate Review
+## Production-Level Observations
 
-- Candidate for `/analysis/patterns/`: Yes / No
-- Candidate for `/frameworks/`: Yes / No
-- Candidate for `/memory/`: Yes / No
-- Promotion allowed now: No, unless explicitly approved or repeated across multiple transcripts
+How production level affects pacing, polish, structure, or audience expectations:
+
+- Amateur:
+- Semi-professional:
+- Professional:
+
+---
+
+## Reusable Techniques
+
+### Technique 1
+- Name:
+- Function:
+- Safe Use:
+- Risk:
+
+### Technique 2
+- Name:
+- Function:
+- Safe Use:
+- Risk:
+
+---
+
+## Do Not Reuse
+
+- Source-specific phrasing:
+- Source-specific sequence:
+- Source-specific character/event details:
+
+---
+
+## Promotion Readiness
+
+- Ready for indexing: yes / no
+- Ready for framework promotion: no
 - Reason:
-
----
-
-## Safety Check
-
-- Copied wording removed: Yes / No
-- Source-specific plot removed: Yes / No
-- Exact sequence avoided as reusable template: Yes / No
-- Safe for indexing: Yes / No
