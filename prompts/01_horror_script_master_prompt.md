@@ -62,7 +62,7 @@ You MUST also consider:
 - narrator identity requirements
 - spoken narration formatting requirements
 
-If the user seed is incomplete, make reasonable default decisions using `/systems/autonomy_rules.md` if available.
+If the user seed is incomplete, make reasonable default decisions using Claude Project Instructions and `/systems/stage_execution_map.md` defaults.
 
 Do NOT stop to ask clarification unless the input is impossible to execute safely or coherently.
 

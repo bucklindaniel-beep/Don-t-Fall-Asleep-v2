@@ -11,7 +11,7 @@ Convert approved shotlists into GPT-image-ready cinematic image prompts that pre
 This prompt MUST comply with:
 
 - /systems/prompt_engineering_layer.md
-- /systems/output_format_rules.md
+- /systems/output_cleanliness_rules.md
 
 Before execution, validate that the prompt contains:
 

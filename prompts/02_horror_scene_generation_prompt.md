@@ -79,7 +79,7 @@ Before generating scenes, identify or infer:
 - setting and environmental baseline
 - prior scene state, if available
 - channel profile guidance, if provided
-- required output format from `/systems/output_format_rules.md`, if applicable
+- required output format from `/systems/output_cleanliness_rules.md`, if applicable
 
 If a detail is not provided, make a grounded default decision that supports continuity and output quality.
 

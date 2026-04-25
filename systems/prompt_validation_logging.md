@@ -17,8 +17,9 @@ It exists to protect reliability without adding unnecessary token cost.
 
 This file extends:
 - `/systems/prompt_engineering_layer.md`
-- `/systems/execution_stages.md`
-- `/systems/autonomy_rules.md`
+- `/systems/stage_execution_map.md`
+- Claude Project Instructions
+- `/systems/output_cleanliness_rules.md`
 - `/logs/execution_log.md`
 
 ---

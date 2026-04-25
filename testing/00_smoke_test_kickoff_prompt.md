@@ -36,7 +36,9 @@ You MUST NOT:
 
 You are running in **debug mode**, not full production.
 
-You MUST:
+Use `/systems/stage_execution_map.md` as the stage and stop-point authority.
+
+For this smoke test only:
 - execute ONE stage at a time
 - STOP after each stage
 - WAIT for user approval before continuing
@@ -74,7 +76,7 @@ For EACH stage:
 
 You MUST:
 - clearly label the stage
-- apply all relevant systems and frameworks
+- apply only the systems required for the active stage
 - produce structured, high-quality output
 
 You MUST NOT:
@@ -85,7 +87,7 @@ You MUST NOT:
 After completing a stage, you MUST:
 
 1. Provide output
-2. Briefly explain key decisions (short, not verbose)
+2. Provide only brief next-step guidance
 3. WAIT for user input
 
 ---

@@ -107,7 +107,7 @@ Constraints must be:
 ### 6. OUTPUT FORMAT
 Defines EXACT structure of output.
 
-- Must align with `output_format_rules.md`
+- Must align with `output_cleanliness_rules.md`
 - No deviations allowed
 - Use clearly labeled sections
 
@@ -224,7 +224,8 @@ Each stage:
 
 ## System Integration Rules
 
-- autonomy_enforcement → ensures forward execution without unnecessary blocking 
+- Claude Project Instructions → govern autonomy and clarification behavior
+- stage_execution_map → governs stage order, stop points, and model recommendations
 - output_cleanliness_rules → ensures all outputs are clean and free of system noise
 
 Prompts MUST pull from:
@@ -276,7 +277,7 @@ This ensures:
 - Vague objectives
 - Overly generic instructions
 - Repeating system logic inside prompts
-- Ignoring output format rules
+- Ignoring output cleanliness rules
 - Direct imitation of source material
 - Running prompts without validation
 - Asking clarification questions for minor fixable issues
