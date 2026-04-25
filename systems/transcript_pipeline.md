@@ -1,112 +1,149 @@
 # transcript_pipeline.md
 
 ## Purpose
-Define the structure for moving horror narration transcripts through the repository so they can be transformed into reusable storytelling patterns without copying or imitating source material.
 
-This file is a structure and workflow guide only. Full automation and optimization will be handled later as a separate system improvement.
-
----
-
-## Current Status
-This pipeline is not yet automated.
-
-At this stage, transcripts must be processed manually or semi-manually from one stage to the next.
-
-Future work should define:
-- automatic transcript intake
-- cleaning scripts
-- structured analysis prompts
-- pattern extraction rules
-- indexing format
-- validation checks
-- memory update workflow
+Define the required flow for moving horror narration transcripts through the repository so they become reusable storytelling intelligence without copying or imitating source material.
 
 ---
 
 ## Core Rule
+
 Raw transcripts are reference material only.
 
 Claude must never generate new stories by copying, rewriting, or directly imitating transcript content.
 
-Transcripts may only be used to extract:
-- pacing patterns
-- structure patterns
-- escalation techniques
-- narration techniques
-- retention mechanics
-- scene transition methods
-- audience engagement strategies
+All transcript processing must follow:
+
+`raw → cleaned → structured → distilled → indexed`
 
 ---
 
-## Transcript Folder Flow
+## Current Status
 
-```text
-/transcripts/
-  raw/
-  cleaned/
-  structured/
-  distilled/
-  indexed/
-```
+This pipeline is semi-manual.
+
+Claude may run the full pipeline when explicitly instructed, but must:
+
+- follow every stage
+- use the required templates
+- check for duplicates before processing
+- avoid automatic framework promotion
+- update logs after processing
 
 ---
 
-## Stage 1: Raw
+## Required Duplicate Guard
+
+Before processing any raw transcript, Claude must check:
+
+- `/transcripts/cleaned/{source_name}.md`
+- `/transcripts/structured/{source_name}.md`
+- `/transcripts/distilled/{source_name}.md`
+- `/memory/transcript_processing_log.md`
+
+If prior processing exists, Claude must skip the transcript unless the user explicitly requests reprocessing.
+
+Skipped transcripts must be logged.
+
+---
+
+## File Format Rule
+
+All transcript pipeline outputs must use `.md`.
+
+No `.txt` files should be used for transcript stages.
+
+---
+
+## Naming Rule
+
+Use lowercase, underscore-separated names.
+
+Transcript-based stages:
+
+- `/transcripts/raw/{source_name}.md`
+- `/transcripts/cleaned/{source_name}.md`
+- `/transcripts/structured/{source_name}.md`
+- `/transcripts/distilled/{source_name}.md`
+
+Pattern-based index stage:
+
+- `/transcripts/indexed/{pattern_name}.md`
+
+---
+
+## Stage 1 — Raw
 
 ### Path
+
 `/transcripts/raw/`
 
+### Template
+
+`/templates/raw_transcript_template.md`
+
 ### Purpose
+
 Store untouched source transcripts exactly as collected.
 
 ### Rules
-- Do not edit meaning
-- Do not summarize
-- Do not restructure
-- Preserve original source text
-- Keep each transcript in its own file
 
-### Output
-A raw transcript file ready for cleaning.
+- preserve original text
+- do not clean
+- do not summarize
+- do not analyze
+- keep each transcript in its own file
 
 ---
 
-## Stage 2: Cleaned
+## Stage 2 — Cleaned
 
 ### Path
+
 `/transcripts/cleaned/`
 
+### Template
+
+`/templates/cleaned_transcript_template.md`
+
 ### Purpose
-Convert raw transcript text into readable formatting.
+
+Convert raw transcript text into readable Markdown while preserving original meaning and sequence.
 
 ### Allowed Changes
-- fix punctuation
-- break into paragraphs
-- remove obvious filler
-- correct spacing
-- improve readability
+
+- remove timestamps
+- remove caption artifacts
+- fix spacing
+- fix obvious punctuation
+- remove filler only when meaning is unaffected
 
 ### Not Allowed
-- adding new meaning
-- changing story events
-- rewriting style
-- summarizing too aggressively
 
-### Output
-A readable transcript that preserves original meaning.
+- adding new meaning
+- changing events
+- rewriting style creatively
+- summarizing aggressively
+- extracting patterns
 
 ---
 
-## Stage 3: Structured
+## Stage 3 — Structured
 
 ### Path
+
 `/transcripts/structured/`
 
+### Template
+
+`/templates/structured_transcript_template.md`
+
 ### Purpose
+
 Break the cleaned transcript into identifiable storytelling components.
 
 ### Extract
+
 - hook
 - setup
 - escalation beats
@@ -119,20 +156,28 @@ Break the cleaned transcript into identifiable storytelling components.
 - narrator behavior
 - audience retention moments
 
-### Output
-A structured analysis file showing how the transcript works.
+### Rule
+
+Structured outputs must describe function, not preserve source phrasing.
 
 ---
 
-## Stage 4: Distilled
+## Stage 4 — Distilled
 
 ### Path
+
 `/transcripts/distilled/`
 
+### Template
+
+`/templates/distilled_transcript_template.md`
+
 ### Purpose
-Convert structured analysis into reusable principles and techniques.
+
+Convert structured analysis into generalized principles and techniques.
 
 ### Extract
+
 - repeatable storytelling patterns
 - pacing tactics
 - suspense-building methods
@@ -143,100 +188,84 @@ Convert structured analysis into reusable principles and techniques.
 - engagement strategies
 
 ### Not Allowed
+
 - copying phrases
 - copying scenes
 - copying characters
 - copying plot events
 - preserving source-specific identity
 
-### Output
-A distilled pattern file that can safely inform future generation.
-
 ---
 
-## Stage 5: Indexed
+## Stage 5 — Indexed
 
 ### Path
+
 `/transcripts/indexed/`
 
+### Template
+
+`/templates/indexed_transcript_template.md`
+
 ### Purpose
-Create searchable references that help Claude retrieve useful patterns without relying on raw transcript text.
 
-### Index Entries Should Include
-- source title or internal ID
-- genre tags
+Create searchable references that help Claude retrieve safe, abstract insights without relying on raw transcript text.
+
+### Include
+
+- pattern name
 - technique tags
-- pacing notes
+- tension tags
 - structure type
-- ending type
-- reusable pattern references
-- related distilled file path
+- related distilled file
+- promotion status
 
-### Output
-An index record that points to safe, reusable learnings.
+### Rule
+
+Indexed entries must be short and retrieval-focused.
 
 ---
 
 ## Manual Processing Workflow
 
-Until automation exists, process one transcript at a time:
-
 1. Save original transcript in `/transcripts/raw/`
-2. Create cleaned version in `/transcripts/cleaned/`
-3. Analyze cleaned version into `/transcripts/structured/`
-4. Convert analysis into reusable patterns in `/transcripts/distilled/`
-5. Add searchable reference entry in `/transcripts/indexed/`
+2. Run duplicate guard
+3. Create cleaned version in `/transcripts/cleaned/`
+4. Analyze cleaned version into `/transcripts/structured/`
+5. Convert analysis into reusable insights in `/transcripts/distilled/`
+6. Create searchable index entry in `/transcripts/indexed/`
+7. Update `/memory/transcript_processing_log.md`
+8. Update `/logs/execution_log.md`
 
 Do not skip stages.
 
 ---
 
-## Future Automation Requirement
+## Promotion Rule
 
-This item remains open on the system To-Do list.
+Transcript-derived insights must not be promoted into frameworks or generation-facing rules unless:
 
-The future automated version should allow Claude or a script to move one transcript through:
-
-```text
-raw → cleaned → structured → distilled → indexed
-```
-
-The automation should include:
-- stage-specific prompts
-- validation checks
-- safe-use restrictions
-- file naming rules
-- duplicate detection
-- pattern promotion hooks
-- logging to `execution_log.md`
+- the user explicitly approves promotion, or
+- the pattern repeats across multiple transcripts and passes `/systems/pattern_promotion_system.md`
 
 ---
 
 ## Relationship to Other Files
 
-### Connects to:
+Connects to:
+
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_analysis_rules.md`
+- `/systems/pattern_promotion_system.md`
 - `/logs/execution_log.md`
-- `/systems/autonomy_rules.md`
-- `/systems/output_format_rules.md`
-- future `/systems/pattern_promotion_system.md`
-
-### Supports:
-- safe transcript use
-- originality protection
-- future pattern extraction
-- long-term memory improvement
-- higher-quality story generation
-
----
-
-## Safety Rule
-Transcript content must be transformed into abstract, reusable system knowledge before it can influence generation.
-
-Raw or cleaned transcript content should never be used directly as generation material.
+- `/memory/transcript_processing_log.md`
 
 ---
 
 ## Summary Rule
+
 Do not copy transcripts.
 
-Study them, structure them, distill them, index them, and convert them into reusable production logic.
+Study them, clean them, structure them, distill them, index them, and convert only validated abstractions into reusable production logic.

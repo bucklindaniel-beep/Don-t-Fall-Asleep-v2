@@ -1,61 +1,90 @@
 # Template — Structured Transcript
 
 ## Purpose
+
 This template converts a cleaned transcript into a structured, Claude-optimized analysis unit.
 
 Use this file for every transcript in:
-/transcripts/structured
 
-This is the most important transformation stage in the system.
+`/transcripts/structured/`
+
+This stage identifies how the transcript works without preserving source wording as reusable logic.
 
 ---
 
 ## Instructions
-- Fill every section
-- Keep responses concise and specific
-- Do not repeat transcript text unless necessary
-- Focus on extracting patterns, not summarizing loosely
+
+- Fill every applicable section.
+- Keep responses concise and specific.
+- Do not repeat transcript text unless necessary.
+- Focus on structure, pacing, and function.
+- Do not promote insights yet.
+- Use `.md` format only.
 
 ---
 
-# Transcript Analysis
+# Transcript — Structured
 
 ## Source Metadata
-- Channel:
-- Title:
-- Original Format: (story, compilation, analog horror, etc.)
-- POV: (first person, third person, mixed)
-- Tone: (calm, tense, frantic, detached, etc.)
-- Structure Type: (linear, anecdotal, escalating, looping, fragmented)
+
+- Source Name:
+- Cleaned File:
+- Original Format:
+- POV:
+- Tone:
+- Structure Type:
 
 ---
 
 ## Clean Summary
-(3–6 sentences max)
+
+(3–6 sentences max. Summarize content without copying distinctive phrasing.)
 
 ---
 
 ## Narrative Breakdown
 
 ### Hook
+
 How the story begins and captures attention.
 
 ### Setup
+
 Baseline reality and initial context.
 
 ### Escalation
+
 How tension increases over time.
 
 ### Peak
+
 Highest tension or most revealing moment.
 
 ### Ending
-Resolution, ambiguity, or cliffhanger.
+
+Resolution, ambiguity, reversal, or cliffhanger.
 
 ---
 
-## Techniques Identified
-(List only clear, repeatable techniques)
+## Event Sequence
+
+1.
+2.
+3.
+4.
+5.
+
+---
+
+## Tension Mechanics
+
+- 
+- 
+- 
+
+---
+
+## Retention Mechanics
 
 - 
 - 
@@ -66,52 +95,51 @@ Resolution, ambiguity, or cliffhanger.
 ## Language Patterns
 
 ### Sentence Structure
+
 (short, long, fragmented, rhythmic, etc.)
 
 ### Vocabulary Style
+
 (simple, descriptive, technical, vague, etc.)
 
 ### Tone Consistency
+
 (stable, shifting, escalating, etc.)
 
 ---
 
 ## Emotional Progression
-(Map using fear escalation model)
 
 Example:
-unease → dread → panic → terror → release
+
+`unease → dread → panic → terror → release`
 
 ---
 
 ## Environmental Usage
-(How the setting contributes to tension)
+
+(How the setting contributes to tension.)
 
 ---
 
 ## Psychological Elements
-(Perception, doubt, paranoia, ambiguity)
+
+(Perception, doubt, paranoia, ambiguity.)
 
 ---
 
 ## Physical Elements
-(Body reactions, movement, contact, sensation)
+
+(Body reactions, movement, contact, sensation.)
 
 ---
 
 ## Pattern Signals
-(Repeated behaviors or structures)
 
----
-
-## Reusable Insights
-(Short, actionable lessons)
-
-- 
-- 
-- 
+(Repeated behaviors or structures that may become generalized later.)
 
 ---
 
 ## Notes
-(Optional observations, anomalies, or unique elements)
+
+(Optional observations, anomalies, or unique elements.)

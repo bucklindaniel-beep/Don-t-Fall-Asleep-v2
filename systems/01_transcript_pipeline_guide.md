@@ -2,466 +2,325 @@
 
 ## Metadata
 - Type: System
-- Domain: Workflow / Knowledge Ingestion
+- Domain: Transcript Processing / Knowledge Ingestion
 - Primary Use Cases:
-  - processing raw transcripts
-  - building analysis library
-  - scaling repository knowledge
-- Retrieval Tags:
-  - transcript pipeline
-  - ingestion workflow
-  - analysis pipeline
-  - knowledge system
-- System Role:
-  - defines end-to-end pipeline for transcript processing
-  - standardizes how data enters the system
-  - ensures consistency and scalability
-- Related Files:
-  - /prompts/05_transcript_analysis_prompt.md
-  - /prompts/07_technique_extraction_prompt.md
-  - /prompts/08_pattern_extraction_prompt.md
-  - /prompts/06_channel_profile_generator_prompt.md
+  - process source transcripts safely
+  - convert source material into reusable abstract knowledge
+  - prevent duplicate transcript processing
+  - prepare validated insights for pattern promotion
 - Status: active
 - Confidence: high
 
 ---
 
-## Rule
+## Core Rule
 
-This file defines workflow and orchestration ONLY.
+Transcript processing must follow this exact stage order:
 
-It does NOT define:
-- techniques
-- patterns
-- frameworks
+`raw → cleaned → structured → distilled → indexed`
+
+Claude must not skip, merge, rename, or reorder stages unless the user explicitly instructs otherwise.
 
 ---
 
 ## Purpose
 
-This system converts raw transcripts into structured, reusable system knowledge.
+This pipeline converts raw transcripts into structured, reusable production knowledge without copying source material.
 
-Raw transcripts are unstructured data.
+Raw and cleaned transcript content must remain source-only material.
 
-This pipeline transforms them into:
-
-- structured analysis  
-- reusable techniques  
-- repeatable patterns  
-- channel profiles  
-- style profiles  
-- entity inspiration  
-- framework improvements  
+Only distilled and indexed abstractions may inform future system logic, and framework promotion requires separate approval or repeated pattern evidence.
 
 ---
 
-## Pipeline Overview
+## Required References
 
-1. Collect Transcript  
-2. Clean Transcript  
-3. Analyze Transcript  
-4. Extract Techniques  
-5. Extract Patterns  
-6. Update Channel Profile  
-7. Update Style Profile  
-8. Extract Entity Inspiration  
-9. Update Frameworks  
-10. Store Outputs  
+Before running the transcript pipeline, Claude must reference:
 
----
+- `/systems/transcript_pipeline.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_analysis_rules.md`
+- `/systems/pattern_promotion_system.md`
+- `/logs/execution_log.md`
+- `/memory/transcript_processing_log.md`
 
-## Step-by-Step Workflow
-
-### Step 1 — Collect Transcript
-
-Sources may include:
-
-- YouTube videos  
-- scripts  
-- audio transcriptions  
-- film or screenplay excerpts  
-- analog horror transcripts  
-
-Requirements:
-
-- full text  
-- minimal missing sections  
+If a file is missing, Claude must continue with best effort and record the missing reference in the execution log.
 
 ---
 
-### Step 2 — Clean Transcript
+## Duplicate Processing Guard
 
-Use:
-/prompts/05_transcript_analysis_prompt.md (cleaning step only)
+Before processing any transcript in `/transcripts/raw/`, Claude must check whether the transcript has already been processed.
 
-Actions:
+Claude must compare the raw transcript filename stem against:
 
-- fix grammar  
-- remove filler  
-- remove repetition  
-- preserve meaning  
+- `/transcripts/cleaned/`
+- `/transcripts/structured/`
+- `/transcripts/distilled/`
+- `/transcripts/indexed/`
+- `/memory/transcript_processing_log.md`
 
-Output:
+If matching processed files or a completed log entry already exist, Claude must skip the transcript unless the user explicitly requests reprocessing.
 
-- cleaned transcript  
+### Required Duplicate Check
 
-Store in:
+For each raw transcript:
 
-/transcripts/cleaned/
+1. Extract `source_name` from the raw filename.
+2. Check for:
+   - `/transcripts/cleaned/{source_name}.md`
+   - `/transcripts/structured/{source_name}.md`
+   - `/transcripts/distilled/{source_name}.md`
+3. Check `/memory/transcript_processing_log.md` for prior processing.
+4. If already processed:
+   - do not rewrite output files
+   - do not create duplicate indexed entries
+   - log the transcript as skipped
+5. If not processed:
+   - continue through the full pipeline.
 
----
+### Reprocessing Rule
 
-### Step 3 — Analyze Transcript
+Claude may only reprocess an existing transcript when the user explicitly says:
 
-Use:
-/prompts/05_transcript_analysis_prompt.md
+- reprocess
+- rerun
+- overwrite
+- regenerate
+- update this transcript
+- process again
 
-Output:
-
-- summary  
-- structure  
-- pacing  
-- style notes  
-
-Store in:
-
-/transcripts/structured/
-
----
-
-### Step 4 — Extract Techniques
-
-Use:
-/prompts/07_technique_extraction_prompt.md
-
-Output:
-
-- techniques  
-- definitions  
-- evidence  
-
-Store in:
-
-/analysis/techniques/
-
-Rule:
-
-- only add NEW techniques  
-- avoid duplicates  
+When reprocessing, Claude must record the reason in `/memory/transcript_processing_log.md`.
 
 ---
 
-### Step 5 — Extract Patterns
+## File Format Rule
 
-Use:
-/prompts/08_pattern_extraction_prompt.md
+All transcript pipeline files must use `.md`.
 
-Output:
+This applies to:
 
-- structural patterns  
-- sequence definitions  
+- `/transcripts/raw/`
+- `/transcripts/cleaned/`
+- `/transcripts/structured/`
+- `/transcripts/distilled/`
+- `/transcripts/indexed/`
 
-Store in:
+Rationale:
 
-/analysis/patterns/
-
----
-
-### Step 6 — Update Channel Profile
-
-Use:
-/prompts/06_channel_profile_generator_prompt.md
-
-Output:
-
-- refined channel structure  
-- pacing model  
-- narrative format  
-
-Store in:
-
-/analysis/channel_profiles/
-
-Rule:
-
-- update profiles ONLY using repeated patterns across multiple transcripts  
-- do NOT base a profile on a single transcript  
+- improves Claude retrieval
+- supports metadata
+- preserves consistent structure
+- supports future automation
 
 ---
 
-### Step 7 — Update Style Profile
+## Naming Rule
 
-Output:
+Use lowercase, underscore-separated names.
 
-- narration tone  
-- sentence structure  
-- pacing rhythm  
-- delivery style  
+### Transcript-Based Stages
 
-Store in:
+Use the transcript source name:
 
-/analysis/style_profiles/
+- `/transcripts/raw/{source_name}.md`
+- `/transcripts/cleaned/{source_name}.md`
+- `/transcripts/structured/{source_name}.md`
+- `/transcripts/distilled/{source_name}.md`
 
-Rule:
+### Pattern-Based Index Stage
 
-- capture voice characteristics  
-- avoid copying phrases  
+Use the pattern name when the indexed output represents a reusable pattern:
 
----
+- `/transcripts/indexed/{pattern_name}.md`
 
-### Step 8 — Extract Entity Inspiration
+Example:
 
-Output:
-
-- threat introduction patterns  
-- escalation behavior  
-- perception manipulation  
-- presence techniques  
-
-Store in:
-
-/analysis/entity_inspiration/
-
-Rule:
-
-- abstract behavior patterns only  
-- do NOT store specific story elements  
+- `/transcripts/cleaned/cabinet_shift.md`
+- `/transcripts/structured/cabinet_shift.md`
+- `/transcripts/distilled/cabinet_shift.md`
+- `/transcripts/indexed/environmental_desynchronization.md`
 
 ---
 
-### Step 9 — Update Frameworks
+## Stage Overview
 
-Output:
+### Stage 1 — Raw
 
-- improvements to:
-  - retention mechanics  
-  - escalation models  
-  - scene construction logic  
+Path:
 
-Store in:
+`/transcripts/raw/`
 
-/frameworks/
+Purpose:
 
-Rule:
+Preserve the original source transcript without edits.
 
-- only update frameworks when patterns appear consistently across sources  
+Template:
 
----
+`/templates/raw_transcript_template.md`
 
-### Step 10 — Store Outputs
+Rules:
 
-Final structure:
-
-/transcripts/raw/  
-/transcripts/cleaned/  
-/transcripts/structured/  
-/analysis/techniques/  
-/analysis/patterns/  
-/analysis/channel_profiles/  
-/analysis/style_profiles/  
-/analysis/entity_inspiration/  
-/frameworks/  
-
-Rule:
-
-- create new files per transcript  
-- do NOT overwrite existing analysis unless refining  
+- do not clean
+- do not summarize
+- do not analyze
+- do not extract patterns
 
 ---
 
-## Transcript Source Classification
+### Stage 2 — Cleaned
 
-Transcripts must be classified before analysis.
+Path:
 
-### YouTube Narration
+`/transcripts/cleaned/`
 
-Best for:
+Purpose:
 
-- pacing  
-- retention mechanics  
-- escalation structure  
-- voice delivery  
+Convert raw transcript text into readable Markdown while preserving meaning and sequence.
 
----
+Template:
 
-### Film / Screenplay
+`/templates/cleaned_transcript_template.md`
 
-Best for:
+Allowed:
 
-- scene construction  
-- visual staging  
-- dialogue rhythm  
-- reveal timing  
+- remove timestamps
+- remove transcription noise
+- fix spacing
+- fix obvious punctuation
+- remove filler only when meaning is unaffected
 
----
+Not allowed:
 
-### Analog Horror
-
-Best for:
-
-- fragmentation  
-- ambiguity  
-- environmental storytelling  
-- pattern-based horror  
+- changing events
+- improving story quality creatively
+- adding details
+- extracting patterns
 
 ---
 
-### User Scripts
+### Stage 3 — Structured
 
-Best for:
+Path:
 
-- custom pattern development  
-- testing system behavior  
+`/transcripts/structured/`
 
----
+Purpose:
 
-## Multi-Transcript Merge Logic
+Break the cleaned transcript into analytical structure.
 
-When multiple transcripts from the same channel are available:
+Template:
 
-You MUST:
+`/templates/structured_transcript_template.md`
 
-1. identify repeated structural patterns  
-2. identify repeated pacing behaviors  
-3. identify repeated retention techniques  
-4. ignore isolated story-specific details  
-5. update channel profiles using ONLY recurring traits  
+Output should identify:
 
-You MUST NOT:
-
-- treat a single transcript as definitive  
-- merge unrelated patterns blindly  
-
----
-
-## Cross-Source Learning Logic
-
-When using transcripts from multiple creators:
-
-You MUST:
-
-- identify overlapping mechanics  
-- isolate unique elements  
-- preserve only reusable abstractions  
-
-You MUST NOT:
-
-- blend sources into imitation  
-- reproduce recognizable structures  
+- hook
+- setup
+- escalation
+- peak
+- ending
+- pacing shifts
+- tension mechanics
+- narrator behavior
+- retention mechanics
 
 ---
 
-## Knowledge Conversion Targets
+### Stage 4 — Distilled
 
-Each transcript MUST contribute to:
+Path:
 
-- /analysis/channel_profiles/  
-- /analysis/style_profiles/  
-- /analysis/techniques/  
-- /analysis/patterns/  
-- /analysis/entity_inspiration/  
-- /frameworks/  
+`/transcripts/distilled/`
 
-Raw transcripts MUST NEVER be used directly in generation.
+Purpose:
 
----
+Convert source-specific analysis into generalized, reusable insights.
 
-## Transcript Safeguard
+Template:
 
-Claude MUST NEVER:
+`/templates/distilled_transcript_template.md`
 
-- reuse raw transcript phrases  
-- recreate the same story premise  
-- replicate scene-by-scene structure  
-- reference transcripts directly during generation  
+Rules:
 
-Claude MAY ONLY use abstracted system knowledge.
+- remove source-specific phrasing
+- remove source-specific plot identity
+- generalize techniques
+- mark promotion candidates without promoting them automatically
 
 ---
 
-## Automation Potential
+### Stage 5 — Indexed
 
-Pipeline can be automated:
+Path:
 
-1. Upload transcript  
-2. Run cleaning  
-3. Run analysis  
-4. Run extraction prompts  
-5. Append structured outputs  
+`/transcripts/indexed/`
 
----
+Purpose:
 
-## Quality Control
+Create a short retrieval record for safe, abstract insights.
 
-Before storing outputs:
+Template:
 
-- is the analysis accurate?  
-- are techniques reusable?  
-- are patterns repeatable?  
-- is the profile based on multiple sources?  
+`/templates/indexed_transcript_template.md`
 
----
+Rules:
 
-## Scaling Strategy
-
-### Start Small
-- 5–10 transcripts per channel  
+- keep entries short
+- use tags
+- link to distilled file paths
+- do not include raw or cleaned transcript text
 
 ---
 
-### Expand
-- identify consistent patterns  
-- refine profiles  
+## Promotion Rule
+
+Claude must not promote transcript insights into `/frameworks/`, `/analysis/patterns/`, or generation-facing systems unless:
+
+1. the user explicitly approves promotion, or
+2. the same pattern appears across multiple transcripts and passes the pattern promotion system.
+
+Single-transcript findings must remain in:
+
+- `/transcripts/distilled/`
+- `/transcripts/indexed/`
 
 ---
 
-### Optimize
-- merge similar techniques  
-- remove redundancy  
-- improve prompts  
+## Logging Rule
+
+Every transcript run must update:
+
+- `/logs/execution_log.md`
+- `/memory/transcript_processing_log.md`
+
+The processing log is the durable duplicate guard.
+
+The execution log is the debugging record.
 
 ---
 
-## Failure Modes
+## Completion Checklist
 
-### Poor Transcript Quality
-Leads to inaccurate analysis  
+Before finishing a transcript run, Claude must confirm:
 
----
-
-### Over-Extraction
-Too many weak techniques  
-
----
-
-### Redundancy
-Duplicate patterns or techniques  
-
----
-
-### Premature Profile Creation
-Profiles based on insufficient data  
+- duplicate check completed
+- all stage outputs are `.md`
+- transcript-based stages use the same `source_name`
+- indexed entries are pattern-based when appropriate
+- raw and cleaned text were not used as generation material
+- distilled insights are abstracted
+- promotion candidates were not promoted without approval
+- processing log was updated
+- execution log was updated
 
 ---
 
-## Reusable Rules
+## Final Directive
 
-- always clean transcripts first  
-- extract only reusable patterns  
-- refine profiles over time  
-- prioritize quality over quantity  
-- store outputs in structured format  
+The transcript pipeline is a controlled learning system.
 
----
+Its purpose is not to copy successful horror content.
 
-## Compression Summary
-
-Transcript → Clean → Analyze → Extract → Abstract → Store → Refine
-
----
-
-## Notes
-
-This pipeline is the backbone of the system.
-
-All improvements scale through this process.
+Its purpose is to convert source material into safe, abstract, reusable production intelligence.

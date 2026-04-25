@@ -13,11 +13,7 @@
 
 The Transcript Stage Executor controls how Claude moves a transcript through each pipeline stage.
 
-It prevents Claude from skipping stages, blending stages together, or promoting transcript-derived insights before they are safe for reuse.
-
-This file does not define the entire transcript system. It executes the stages defined in:
-
-`/systems/transcript_pipeline_system.md`
+It prevents Claude from skipping stages, blending stages together, duplicating prior work, or promoting transcript-derived insights before they are safe for reuse.
 
 ---
 
@@ -43,19 +39,47 @@ Each stage must produce:
 
 Before processing transcripts, Claude must reference:
 
-- `/systems/transcript_pipeline_system.md`
+- `/systems/transcript_pipeline.md`
 - `/systems/transcript_storage_router.md`
 - `/systems/transcript_analysis_rules.md`
-- `/systems/execution_log.md`
 - `/systems/pattern_promotion_system.md`
 - `/systems/system_improvement_router.md`
-- `/memory/memory_system.md`
+- `/logs/execution_log.md`
+- `/memory/transcript_processing_log.md`
 
 If a referenced file is unavailable, Claude must continue with best effort and log the missing reference.
 
 ---
 
-## Stage 1: Raw Intake
+## Preflight Duplicate Check
+
+Before processing any raw transcript, Claude must:
+
+1. determine `source_name`
+2. check whether these files already exist:
+   - `/transcripts/cleaned/{source_name}.md`
+   - `/transcripts/structured/{source_name}.md`
+   - `/transcripts/distilled/{source_name}.md`
+3. check `/memory/transcript_processing_log.md` for a completed entry matching `source_name`
+4. skip the transcript if it was already processed
+5. only reprocess if the user explicitly requests reprocessing
+
+Skipped transcripts must be logged in:
+
+- `/memory/transcript_processing_log.md`
+- `/logs/execution_log.md`
+
+---
+
+## File Format Rule
+
+All transcript stage outputs must be Markdown files using `.md`.
+
+No transcript pipeline stage should output `.txt`.
+
+---
+
+## Stage 1 — Raw Intake
 
 ### Input
 
@@ -65,19 +89,26 @@ If a referenced file is unavailable, Claude must continue with best effort and l
 - rough source notes
 - other long-form source text
 
+### Template
+
+`/templates/raw_transcript_template.md`
+
 ### Task
 
-Claude must identify the input as raw source material and preserve it as source-only material.
+Preserve the input as source-only material.
 
 ### Output
 
-A raw intake summary containing:
+A raw transcript file with:
 
 - source label
-- approximate content type
-- estimated length
-- obvious formatting issues
-- recommended raw storage path
+- source type
+- raw content
+- intake notes
+
+### Storage Target
+
+`/transcripts/raw/{source_name}.md`
 
 ### Rules
 
@@ -88,21 +119,17 @@ Claude must not:
 - promote any insight
 - rewrite the transcript creatively
 
-### Storage Target
-
-`/transcripts/raw/`
-
-### Stop Condition
-
-Proceed to cleaning only after raw intake is identified and logged.
-
 ---
 
-## Stage 2: Cleaning
+## Stage 2 — Cleaning
 
 ### Input
 
 Raw transcript text.
+
+### Template
+
+`/templates/cleaned_transcript_template.md`
 
 ### Task
 
@@ -119,7 +146,11 @@ Clean the transcript for readability and future analysis.
 
 ### Output
 
-A cleaned transcript or cleaned excerpt.
+A cleaned transcript.
+
+### Storage Target
+
+`/transcripts/cleaned/{source_name}.md`
 
 ### Rules
 
@@ -131,21 +162,17 @@ Claude must not:
 - convert the transcript into a story
 - extract reusable system rules yet
 
-### Storage Target
-
-`/transcripts/cleaned/`
-
-### Stop Condition
-
-Proceed to structuring only after the cleaned version is safe to analyze.
-
 ---
 
-## Stage 3: Structuring
+## Stage 3 — Structuring
 
 ### Input
 
 Cleaned transcript.
+
+### Template
+
+`/templates/structured_transcript_template.md`
 
 ### Task
 
@@ -163,6 +190,10 @@ A structured analysis containing:
 - narrative function labels
 - retention mechanics
 
+### Storage Target
+
+`/transcripts/structured/{source_name}.md`
+
 ### Rules
 
 Claude must:
@@ -177,21 +208,17 @@ Claude must not:
 - copy the sequence into generation logic
 - promote patterns from one source without review
 
-### Storage Target
-
-`/transcripts/structured/`
-
-### Stop Condition
-
-Proceed to distillation only after source-specific structure has been converted into analytical notes.
-
 ---
 
-## Stage 4: Distillation
+## Stage 4 — Distillation
 
 ### Input
 
 Structured transcript analysis.
+
+### Template
+
+`/templates/distilled_transcript_template.md`
 
 ### Task
 
@@ -199,17 +226,18 @@ Convert source-specific observations into generalized insights.
 
 ### Output
 
-Distilled insights formatted as:
+Distilled insights containing:
 
-```markdown
-## Distilled Insight
+- insight name
+- generalized description
+- use case
+- source dependence risk
+- promotion candidate status
+- safety notes
 
-- Insight Name:
-- Description:
-- Use Case:
-- Source Dependence Risk:
-- Promotion Candidate: Yes/No
-```
+### Storage Target
+
+`/transcripts/distilled/{source_name}.md`
 
 ### Rules
 
@@ -226,21 +254,17 @@ Claude must not:
 - promote a pattern simply because it is interesting
 - treat a single transcript as proof of a rule
 
-### Storage Target
-
-`/transcripts/distilled/`
-
-### Stop Condition
-
-Proceed to indexing only after insights are generalized and safety-checked.
-
 ---
 
-## Stage 5: Indexing
+## Stage 5 — Indexing
 
 ### Input
 
 Distilled transcript insights.
+
+### Template
+
+`/templates/indexed_transcript_template.md`
 
 ### Task
 
@@ -250,19 +274,17 @@ Create a short retrieval record that helps Claude find and compare transcript-de
 
 An index entry containing:
 
-```markdown
-## Transcript Index Entry
+- pattern name
+- related source
+- distilled file path
+- primary techniques
+- retention patterns
+- tension patterns
+- promotion status
 
-- Source Label:
-- Content Type:
-- Primary Techniques:
-- Retention Patterns:
-- Tension Patterns:
-- Distilled Insight Files:
-- Promotion Candidates:
-- System Improvement Candidates:
-- Safety Status:
-```
+### Storage Target
+
+`/transcripts/indexed/{pattern_name}.md`
 
 ### Rules
 
@@ -278,14 +300,6 @@ Claude must not:
 - include source text
 - include copied phrasing
 - store raw or cleaned transcript material in the index
-
-### Storage Target
-
-`/transcripts/indexed/`
-
-### Stop Condition
-
-The transcript processing cycle is complete after indexing and final routing review.
 
 ---
 
@@ -316,7 +330,7 @@ Use when the insight affects long-term operating behavior or user preference.
 
 Reference:
 
-`/memory/memory_system.md`
+`/memory/`
 
 ### Route to System Improvement Router
 
@@ -325,6 +339,25 @@ Use when the transcript reveals a system gap, weak instruction, missing rule, or
 Reference:
 
 `/systems/system_improvement_router.md`
+
+---
+
+## Required Processing Log Entry
+
+After each completed or skipped transcript, Claude must update:
+
+`/memory/transcript_processing_log.md`
+
+Required fields:
+
+- source name
+- raw file path
+- output file paths
+- indexed pattern files
+- status
+- date processed
+- reprocessing reason, if applicable
+- notes
 
 ---
 
@@ -392,57 +425,19 @@ Claude may ask for clarification only when:
 
 ---
 
-## File Naming Rules
-
-Use lowercase, underscore-separated file names.
-
-Recommended format:
-
-`source_topic_stage.md`
-
-Examples:
-
-- `apartment_changes_raw.md`
-- `apartment_changes_cleaned.md`
-- `apartment_changes_structured.md`
-- `apartment_changes_distilled.md`
-- `apartment_changes_index.md`
-
-Avoid:
-
-- spaces
-- mixed casing
-- vague names
-- source-branded names when unnecessary
-- names like `notes.md`, `final.md`, or `analysis.md`
-
----
-
 ## Quality Control Checklist
 
 Before completing transcript processing, Claude must confirm:
 
+- duplicate check completed
 - raw content stayed isolated
 - cleaned content was not promoted
 - structured analysis avoids copied phrasing
 - distilled insights are generalized
 - indexed output contains retrieval metadata only
 - promotion candidates are routed through the correct systems
+- processing log captures processed or skipped status
 - execution log captures stage decisions
-
----
-
-## Integration Summary
-
-This executor works with:
-
-- transcript pipeline system for stage definitions
-- transcript storage router for file placement
-- transcript analysis rules for safety
-- execution logging for traceability
-- memory system for long-term reusable behavior
-- pattern promotion system for reusable pattern review
-- system improvement router for repository/system gaps
 
 ---
 

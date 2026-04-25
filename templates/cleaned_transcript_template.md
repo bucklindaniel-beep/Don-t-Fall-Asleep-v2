@@ -1,44 +1,52 @@
 # Template — Cleaned Transcript
 
 ## Purpose
-This template standardizes raw transcripts into clean, readable, Claude-optimized text.
+
+This template standardizes raw transcripts into clean, readable, Claude-optimized Markdown.
 
 Use this file for every transcript in:
-/transcripts/cleaned
+
+`/transcripts/cleaned/`
 
 This stage prepares the transcript for structured analysis.
 
 ---
 
 ## Instructions
-- Preserve original meaning and order
-- Fix grammar, punctuation, and sentence flow
-- Remove filler words (um, uh, repeated phrases)
-- Remove timestamps, captions artifacts, and noise
-- Do NOT summarize or interpret
-- Do NOT change story structure
-- Keep language natural and readable
+
+- Preserve original meaning and order.
+- Fix grammar, punctuation, and sentence flow only when needed for readability.
+- Remove filler words only when they do not affect meaning.
+- Remove timestamps, caption artifacts, and transcription noise.
+- Do not summarize or interpret.
+- Do not change story structure.
+- Do not extract techniques or patterns.
+- Use `.md` format only.
 
 ---
 
 # Transcript — Cleaned
 
 ## Source
-- Channel:
+
+- Source Name:
+- Channel / Creator:
 - Title:
-- Original Format: (story, compilation, analog horror, etc.)
-- Notes: (optional context, e.g. auto-generated captions)
+- Original Format:
+- Raw File:
+- Notes:
 
 ---
 
 ## Cleaned Transcript
 
-(Paste the fully cleaned transcript below)
+(Paste the fully cleaned transcript below.)
 
 ---
 
-## Cleaning Notes (Optional)
-- Any major corrections made
-- Sections that were unclear or reconstructed
-- Repeated phrases removed
-- Ambiguous lines preserved intentionally
+## Cleaning Notes
+
+- Major corrections:
+- Removed artifacts:
+- Ambiguous lines preserved:
+- Meaning changed: No

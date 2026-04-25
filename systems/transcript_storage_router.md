@@ -15,8 +15,6 @@ The Transcript Storage Router defines where Claude must place each output create
 
 This file prevents transcript-derived insights from being stored randomly, duplicated across folders, or mixed into generation logic before they have been properly distilled.
 
-Claude must use this router after each transcript pipeline stage.
-
 ---
 
 ## Core Rule
@@ -33,6 +31,32 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 ---
 
+## File Format Rule
+
+All transcript pipeline outputs must use `.md`.
+
+No transcript stage should output `.txt`.
+
+---
+
+## Duplicate Storage Guard
+
+Before writing transcript pipeline outputs, Claude must check whether the same `source_name` already exists in:
+
+- `/transcripts/cleaned/`
+- `/transcripts/structured/`
+- `/transcripts/distilled/`
+- `/memory/transcript_processing_log.md`
+
+If a processed record exists, Claude must not overwrite or duplicate files unless the user explicitly requests reprocessing.
+
+Skipped transcripts must be recorded in:
+
+- `/memory/transcript_processing_log.md`
+- `/logs/execution_log.md`
+
+---
+
 ## Storage Structure
 
 ### 1. Raw Transcript Storage
@@ -40,6 +64,14 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 **Folder:**
 
 `/transcripts/raw/`
+
+**File name:**
+
+`{source_name}.md`
+
+**Template:**
+
+`/templates/raw_transcript_template.md`
 
 **Stores:**
 
@@ -63,6 +95,14 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 `/transcripts/cleaned/`
 
+**File name:**
+
+`{source_name}.md`
+
+**Template:**
+
+`/templates/cleaned_transcript_template.md`
+
 **Stores:**
 
 - cleaned grammar
@@ -85,6 +125,14 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 **Folder:**
 
 `/transcripts/structured/`
+
+**File name:**
+
+`{source_name}.md`
+
+**Template:**
+
+`/templates/structured_transcript_template.md`
 
 **Stores:**
 
@@ -110,6 +158,14 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 `/transcripts/distilled/`
 
+**File name:**
+
+`{source_name}.md`
+
+**Template:**
+
+`/templates/distilled_transcript_template.md`
+
 **Stores:**
 
 - reusable observations
@@ -134,6 +190,14 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 `/transcripts/indexed/`
 
+**File name:**
+
+`{pattern_name}.md`
+
+**Template:**
+
+`/templates/indexed_transcript_template.md`
+
 **Stores:**
 
 - short metadata records
@@ -148,7 +212,7 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 - Keep entries short.
 - Focus on retrieval.
 - Do not store source content.
-- Identify whether insights should route to analysis, frameworks, memory, or pattern promotion.
+- Identify whether insights should route to transcript-only storage, pattern promotion, memory, or system improvement.
 
 ---
 
@@ -191,7 +255,7 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 - the insight is only an observation
 - the rule has not been validated
-- the idea belongs in analysis first
+- the idea belongs in transcript storage or analysis first
 
 ---
 
@@ -205,212 +269,46 @@ Only distilled, generalized, reusable insights may be promoted into system logic
 
 - the insight affects long-term system behavior
 - Claude should remember a recurring production preference
-- user feedback changes how future outputs should be handled
-- a transcript-derived insight becomes a stable operating rule
-
-**Do not use when:**
-
-- the insight is untested
-- the information is source-specific
-- the note belongs in transcript analysis only
+- the insight changes future execution behavior
 
 ---
 
-### Pattern Promotion System
+## Required Log Targets
 
-**Related File:**
+### Transcript Processing Log
 
-`/systems/pattern_promotion_system.md`
+`/memory/transcript_processing_log.md`
 
-**Use when:**
+Use for:
 
-- a distilled insight may become a reusable pattern
-- the same technique appears across multiple transcript analyses
-- Claude identifies a repeatable structure that improves output quality
+- processed transcripts
+- skipped duplicates
+- reprocessed transcripts
+- output file paths
+- indexed pattern paths
 
-**Required action:**
+### Execution Log
 
-Claude must route candidate patterns through the Pattern Promotion System before treating them as generation rules.
+`/logs/execution_log.md`
 
----
+Use for:
 
-### System Improvement Router
-
-**Related File:**
-
-`/systems/system_improvement_router.md`
-
-**Use when transcript analysis reveals:**
-
-- missing system logic
-- weak prompt instructions
-- gaps in memory routing
-- unclear stage rules
-- repeated quality failures
-- needed repository improvements
-
-**Required action:**
-
-Claude must log the improvement candidate instead of silently changing unrelated files.
-
----
-
-## Routing Decision Rules
-
-Claude must classify each transcript output before storage.
-
-### Store in `/transcripts/cleaned/` when:
-
-- the output is a cleaned version of the source
-- the source wording is still present
-- the file is not safe for generation use
-
-### Store in `/transcripts/structured/` when:
-
-- the output describes source structure
-- the content is organized by sections, beats, or pacing
-- the file is analytical but not yet generalized
-
-### Store in `/transcripts/distilled/` when:
-
-- source-specific details have been removed
-- the output is expressed as reusable insight
-- the lesson can inform future production without copying
-
-### Store in `/transcripts/indexed/` when:
-
-- the output is a retrieval summary
-- the file points to related analysis or promotion targets
-- the entry is short and tag-based
-
-### Store in `/analysis/` when:
-
-- the insight is useful but not yet system logic
-- it describes a recurring creative or retention pattern
-- it supports future comparison across sources
-
-### Store in `/frameworks/` when:
-
-- the insight becomes a repeatable decision model
-- it changes how Claude should construct outputs
-- it has been validated or promoted
-
-### Store in `/memory/` when:
-
-- the insight changes persistent operating behavior
-- it reflects user feedback or long-term preference
-- it must influence future runs
-
----
-
-## File Naming Rules
-
-Use lowercase, underscore-separated names.
-
-Preferred format:
-
-`source_topic_stage.md`
-
-Examples:
-
-- `apartment_horror_cleaned.md`
-- `apartment_horror_structured.md`
-- `apartment_horror_distilled.md`
-- `apartment_horror_index.md`
-
-Do not use:
-
-- spaces
-- vague names
-- mixed casing
-- source titles that expose copyrighted source branding unnecessarily
-- names like `notes.md`, `analysis.md`, or `final.md`
-
----
-
-## Required Routing Log
-
-Whenever Claude stores or recommends storing a transcript output, it must log:
-
-```markdown
-## Transcript Routing Log
-
-- Source/Input:
-- Current Stage:
-- Output File:
-- Storage Location:
-- Reason:
-- Promotion Candidate: Yes/No
-- Routed To Pattern Promotion: Yes/No
-- Routed To System Improvement Router: Yes/No
-- Safety Check: Confirmed analysis-only; no copied source wording promoted.
-```
-
-This log may be placed in the execution log or appended to the relevant transcript processing output.
-
----
-
-## Safety Rules
-
-Claude must not:
-
-- copy source phrasing into generation-facing files
-- treat one transcript as a template
-- store raw transcript text in `/frameworks/`, `/analysis/patterns/`, or `/memory/`
-- promote source-specific beats as universal rules
-- generate stories directly from raw transcript files
-- bypass distilled and indexed stages
-
-Claude may:
-
-- extract pacing principles
-- summarize structure
-- identify retention mechanics
-- generalize reusable creative techniques
-- recommend system improvements based on recurring transcript findings
-
----
-
-## Integration Points
-
-### Transcript Pipeline System
-
-Use this router after each stage defined in:
-
-`/systems/transcript_pipeline_system.md`
-
-### Transcript Stage Executor
-
-Use this router when a stage output is complete and needs placement.
-
-`/systems/transcript_stage_executor.md`
-
-### Memory System
-
-Route only stable, reusable, long-term operating insights into memory.
-
-### Pattern Promotion System
-
-Route candidate recurring patterns into promotion review before they become generation rules.
-
-### System Improvement Router
-
-Route system gaps or repository issues into improvement tracking.
-
-### Execution Logging
-
-Log all routing decisions that affect storage, promotion, or system behavior.
+- stage decisions
+- missing references
+- skipped files
+- exceptions
+- promotion blockers
 
 ---
 
 ## Final Directive
 
-Claude must treat transcript storage as part of the production pipeline, not as casual note-taking.
+Route transcript outputs conservatively.
 
-Every transcript-derived output must have:
+Raw and cleaned material stay isolated.
 
-1. a stage
-2. a storage location
-3. a routing reason
-4. an analysis-only safety check
-5. a promotion decision
+Structured material supports analysis.
+
+Distilled and indexed material support safe retrieval.
+
+Framework promotion requires validation.
