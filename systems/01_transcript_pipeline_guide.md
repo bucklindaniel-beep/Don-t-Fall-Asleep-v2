@@ -4,7 +4,26 @@
 
 This guide defines how transcripts move through the repository from raw source material into reusable system knowledge.
 
-The transcript pipeline exists to help Claude analyze high-performing horror narration content, extract reusable storytelling mechanics, and improve future outputs without copying source material.
+The transcript pipeline helps Claude analyze high-performing horror narration content, extract reusable storytelling mechanics, and improve future outputs without copying source material.
+
+---
+
+## Active Source of Truth
+
+Primary transcript pipeline files:
+
+- `/systems/01_transcript_pipeline_guide.md` = stage overview
+- `/systems/transcript_stage_executor.md` = execution rules
+- `/systems/transcript_storage_router.md` = file routing
+- `/systems/transcript_source_metadata_rules.md` = metadata rules
+
+Legacy transcript files must not be treated as active execution sources unless the user explicitly asks to inspect or migrate them.
+
+Legacy/reference files:
+
+- `/systems/transcript_pipeline.md`
+- `/systems/transcript_pipeline_guide.md`
+- `/systems/transcript_pipeline_system.md`
 
 ---
 
@@ -39,16 +58,13 @@ Store source-acquisition artifacts exactly as collected.
 
 ### Allowed Files
 
-Raw may contain:
-
 - `.srt`
 - `.vtt`
 - `.txt`
 - `.info.json`
 - source notes
 - metadata exports
-
-This stage does not need to be Markdown-only.
+- manual `.md` intake files
 
 ### Rules
 
@@ -73,27 +89,17 @@ Convert raw transcript material into readable Markdown while preserving metadata
 
 ### Required Content
 
-Cleaned transcript files must include:
-
-- Metadata block.
-- Source Type.
-- Source File.
-- Metadata File when available.
-- Title when available.
-- Channel or author when available.
-- URL when available.
-- Video ID when available.
-- Pipeline Stage.
-- Next Stage.
-- Usage Rule.
-- Cleaned transcript body.
+- Metadata block
+- Source identity fields available from raw/metadata files
+- Usage rule
+- Cleaned transcript body
 
 ### Rules
 
 - Remove timestamps, subtitle numbering, and formatting artifacts.
-- Preserve the cleaned transcript content for analysis.
-- Do not analyze at this stage.
-- Do not infer story segments at this stage.
+- Preserve meaning.
+- Do not analyze.
+- Do not infer story segments.
 
 ---
 
@@ -101,7 +107,7 @@ Cleaned transcript files must include:
 
 ### Purpose
 
-Prepare a Claude-readable scaffold for analysis.
+Prepare a Claude-readable analytical structure.
 
 ### Output Format
 
@@ -109,29 +115,26 @@ Prepare a Claude-readable scaffold for analysis.
 /transcripts/structured/*.structured.md
 ```
 
+### Required Analysis
+
+- segment/story boundaries
+- narrator / POV
+- setting
+- core situation
+- threat type
+- tension pattern
+- escalation beats
+- payoff / ending
+- reusable observations
+- notes for distillation
+
 ### Rules
 
-- Preserve metadata from the cleaned stage.
+- Preserve metadata from cleaned stage.
 - Remove duplicate pipeline-stage metadata.
-- Include the full cleaned transcript reference.
-- Provide scaffold sections for Claude analysis.
-- Claude, not PowerShell, determines the actual story count and story boundaries.
-
-### Claude Responsibilities
-
-Claude must determine:
-
-- Number of stories or source segments.
-- Story boundaries.
-- Narrator / POV.
-- Setting.
-- Core situation.
-- Threat type.
-- Tension pattern.
-- Escalation beats.
-- Payoff / ending.
-- Reusable patterns.
-- Notes for distillation.
+- Reference the cleaned transcript file.
+- Claude, not PowerShell, determines final story count and boundaries.
+- Do not copy distinctive source wording.
 
 ---
 
@@ -139,7 +142,7 @@ Claude must determine:
 
 ### Purpose
 
-Convert structured transcript analysis into source-safe reusable insights.
+Convert structured analysis into source-safe reusable insights.
 
 ### Output Format
 
@@ -147,16 +150,14 @@ Convert structured transcript analysis into source-safe reusable insights.
 /transcripts/distilled/*.distilled.md
 ```
 
-### Distilled Outputs Should Include
+### Required Analysis
 
-- Reusable storytelling patterns.
-- Tension mechanics.
-- Escalation structures.
-- Narrator behavior patterns.
-- Environment usage patterns.
-- Threat or entity behavior patterns.
-- Pacing observations.
-- Avoidance notes.
+- reusable patterns
+- retention lessons
+- pacing lessons
+- narration / POV lessons
+- anti-copying check
+- indexing candidates
 
 ### Rules
 
@@ -164,6 +165,7 @@ Convert structured transcript analysis into source-safe reusable insights.
 - Do not preserve plot structure as a reusable template.
 - Convert observations into generalizable system logic.
 - Avoid overfitting to one source.
+- Do not promote patterns yet.
 
 ---
 
@@ -171,7 +173,7 @@ Convert structured transcript analysis into source-safe reusable insights.
 
 ### Purpose
 
-Store distilled knowledge in a searchable, reusable format for future system use.
+Store distilled knowledge in a searchable, reusable format for future review.
 
 ### Output Format
 
@@ -179,15 +181,15 @@ Store distilled knowledge in a searchable, reusable format for future system use
 /transcripts/indexed/*.indexed.md
 ```
 
-### Indexed Outputs Should Include
+### Required Analysis
 
-- Pattern name.
-- Pattern category.
-- Source type.
-- Applicable use cases.
-- Reuse guidance.
-- Risks or misuse cases.
-- Promotion recommendation.
+- pattern name
+- source type
+- reusable summary
+- tags
+- reuse guidance
+- risks
+- promotion status
 
 ---
 
@@ -197,12 +199,12 @@ Before processing any transcript, check whether the same source already exists i
 
 For YouTube sources, use:
 
-- Video ID
-- URL
-- Metadata File
-- Title as fallback only
+1. Video ID
+2. URL
+3. metadata file name
+4. title as fallback only
 
-If a cleaned, structured, distilled, or indexed file already exists for the same Video ID, do not duplicate it unless the user explicitly requests reprocessing.
+If a later-stage file already exists for the same source identity, do not duplicate it unless the user explicitly requests reprocessing.
 
 ---
 
@@ -211,16 +213,15 @@ If a cleaned, structured, distilled, or indexed file already exists for the same
 Transcripts are for analysis only.
 
 Claude must:
-- Extract reusable patterns, techniques, and structures.
-- Convert useful observations into generalized system knowledge.
-- Preserve source metadata for traceability.
+- extract reusable patterns, techniques, and structures
+- convert observations into generalized system knowledge
+- preserve source metadata for traceability
 
 Claude must not:
-- Copy source phrases.
-- Copy sentences.
-- Recreate the source story.
-- Treat transcript content as generation material.
-- Use raw or cleaned transcript language directly in story generation.
+- copy source phrases or sentences
+- recreate the source story
+- treat transcript content as generation material
+- use raw or cleaned transcript language directly in story generation
 
 During generation, Claude may only use approved reusable knowledge from:
 
@@ -234,21 +235,19 @@ During generation, Claude may only use approved reusable knowledge from:
 ## Script Boundary Rule
 
 PowerShell scripts may:
-
-- Ingest source files.
-- Convert raw files into cleaned Markdown.
-- Preserve metadata.
-- Scaffold structured files.
-- Move files between folders.
-- Check for duplicates.
+- ingest source files
+- convert raw files into cleaned Markdown
+- preserve metadata
+- scaffold structured files
+- move files between folders
+- check duplicates
 
 PowerShell scripts must not:
-
-- Analyze storytelling patterns.
-- Determine final story boundaries.
-- Distill insights.
-- Promote patterns.
-- Modify system behavior.
+- analyze storytelling patterns
+- determine final story boundaries
+- distill insights
+- promote patterns
+- modify system behavior
 
 Claude performs the reasoning layer.
 
@@ -256,21 +255,18 @@ Claude performs the reasoning layer.
 
 ## Logging Rule
 
-All transcript processing must be logged in:
+All transcript processing must be logged concisely in:
 
 ```text
 /memory/transcript_processing_log.md
 ```
 
-Log:
-
-- Source title.
-- Source type.
-- URL or source ID.
-- Stage completed.
-- Output file path.
-- Duplicate checks.
-- Notes or warnings.
+Log only:
+- source identity
+- stage completed
+- output path
+- duplicate status
+- warning or promotion candidate, if useful
 
 ---
 
@@ -292,9 +288,18 @@ Only promoted patterns may modify or influence production behavior.
 ## Quality Standard
 
 A processed transcript is valid only if:
+- source metadata is preserved
+- pipeline stage is clear
+- transcript usage rule is followed
+- no source language is copied into reusable logic
+- Claude can trace the source without using it directly in generation
 
-- Source metadata is preserved.
-- Pipeline stage is clear.
-- Transcript usage rule is followed.
-- No source language is copied into reusable logic.
-- Claude can trace the source without using it directly in generation.
+## Legacy File Handling
+
+The following files are deprecated and must not be used for execution:
+
+- `/systems/transcript_pipeline.md`
+- `/systems/transcript_pipeline_guide.md`
+- `/systems/transcript_pipeline_system.md`
+
+These files exist for reference only and must not be loaded unless explicitly requested by the user.

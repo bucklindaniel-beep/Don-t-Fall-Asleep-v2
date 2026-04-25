@@ -2,18 +2,19 @@
 
 ## Purpose
 
-This template converts a cleaned transcript into structured analysis without copying source phrasing.
+This template converts a cleaned transcript into concise structured analysis without copying source phrasing.
 
 Use this file for every transcript in:
 
-`/transcripts/structured/`
+```text
+/transcripts/structured/
+```
 
 ---
 
 # Transcript — Structured
 
-## Transcript Metadata
-
+## Metadata
 - Source Name:
 - Source Type:
 - Source Category:
@@ -23,6 +24,7 @@ Use this file for every transcript in:
 - Production Level:
 - Intended Use: analysis_only
 - Cleaned File:
+- Stage: structured
 - Date Structured:
 
 ---
@@ -33,19 +35,20 @@ Summarize the premise in abstract functional terms.
 
 ---
 
-## Source-Type Context
+## Source Structure
 
-Describe how the source type affects structure.
-
-Examples:
-- YouTube narration may prioritize hooks and retention pacing.
-- Reddit stories may prioritize conversational believability.
-- Movie scripts may prioritize scene construction and visual action.
-- Book excerpts may prioritize prose density and interiority.
+- Segment / Story Count:
+- POV / Narrator:
+- Setting Type:
+- Core Situation:
+- Threat Type:
+- Ending Type:
 
 ---
 
-## Event / Beat Sequence
+## Beat Sequence
+
+List only major functional beats. Do not preserve exact source sequence beyond what is needed for analysis.
 
 1.
 2.
@@ -55,30 +58,31 @@ Examples:
 
 ---
 
-## Structural Mechanics
+## Mechanics
 
 - Hook:
 - Setup:
 - Escalation Pattern:
 - Reveal Timing:
 - Tension Peak:
-- Ending Type:
+- Payoff:
 
 ---
 
-## Retention Mechanics
+## Reusable Observations
 
-- Opening pull:
-- Midpoint tension device:
-- Curiosity loop:
-- Payoff mechanism:
+- Pattern:
+- Function:
+- Safe Use:
+- Risk:
 
 ---
 
-## Source-Specific Notes
+## Notes for Distillation
 
-- What appears specific to this source type:
-- What may be reusable across source types:
+- Keep:
+- Generalize:
+- Avoid:
 
 ---
 

@@ -1,21 +1,24 @@
-# Transcript Pipeline Guide (Updated)
+# Legacy Transcript Pipeline Reference
 
-## Core Rule
-ALL transcript stages MUST use templates from /templates/
+## Status
 
-## Pipeline
-raw → cleaned → structured → distilled → indexed
+This file is retained for reference only.
 
-## Duplicate Processing Guard
-- log = source of truth
-- files = validation layer
+Do not use this file as an active execution source unless the user explicitly asks to inspect, compare, or migrate legacy transcript logic.
 
-Check:
-1. /memory/transcript_processing_log.md
-2. Existing files
+Active transcript pipeline source-of-truth files are:
 
-If log says completed → SKIP
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_source_metadata_rules.md`
 
-## Completion Marker
-Each transcript MUST end with:
-Status: completed
+Active pipeline flow:
+
+```text
+raw -> cleaned -> structured -> distilled -> indexed
+```
+
+## Rule
+
+If this file conflicts with the active source-of-truth files, Claude must follow the active files.

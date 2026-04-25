@@ -16,21 +16,14 @@ Distilled files extract reusable intelligence. They do not promote patterns into
 
 # Transcript — Distilled
 
-## Transcript Metadata
-
+## Metadata
 - Source Name:
 - Source Type:
 - Source Category:
-- Channel / Creator:
-- Title:
-- Genre:
-- Production Level:
-- Intended Use: analysis_only
 - Structured File:
+- Stage: distilled
+- Intended Use: analysis_only
 - Date Distilled:
-- Pipeline Stage: distilled
-- Previous Stage: structured
-- Next Stage: indexed
 
 ---
 
@@ -40,201 +33,76 @@ This file may:
 - abstract patterns
 - classify techniques
 - identify risks
-- mark provisional promotion readiness
+- mark provisional indexing candidates
 
 This file must not:
-- assign final repository destinations
-- update `/analysis/`
-- update `/frameworks/`
-- update `/memory/`
+- copy source phrasing
+- preserve source plot structure as a template
+- update `/analysis/`, `/frameworks/`, or `/memory/`
 - declare a pattern promoted
-- bypass `/systems/pattern_promotion_system.md`
 
-Promotion decisions happen after indexing.
-
----
-
-## Evidence Scope
-
-- Evidence Count:
-- Appears Across Multiple Stories In This Transcript: yes / no
-- Appears Across Multiple Sources: no
-- Promotion Threshold Met: no
-- Reason: one transcript counts as one source, even when it contains multiple stories or segments
+Promotion decisions happen after indexing through `/systems/pattern_promotion_system.md`.
 
 ---
 
-## Universal Patterns
-
-Patterns that may transfer across source types.
+## Reusable Patterns
 
 ### Pattern 1
 - Name:
-- Evidence Within Source:
-- Generalized Description:
-- Reusable Function:
+- Function:
 - Safe Use:
-- Source-Dependence Risk:
-- Overfitting Risk:
+- Risk:
+- Evidence:
 
 ### Pattern 2
 - Name:
-- Evidence Within Source:
-- Generalized Description:
-- Reusable Function:
-- Safe Use:
-- Source-Dependence Risk:
-- Overfitting Risk:
-
----
-
-## Source-Type-Specific Patterns
-
-Patterns that should stay associated with this source type.
-
-### Pattern 1
-- Name:
-- Source Type:
-- Generalized Description:
-- Safe Use:
-- Risk:
-
----
-
-## Genre-Specific Patterns
-
-Patterns connected to genre expectations.
-
-### Pattern 1
-- Name:
-- Genre:
-- Generalized Description:
-- Safe Use:
-- Risk:
-
----
-
-## Production-Level Observations
-
-How production level affects pacing, polish, structure, or audience expectations:
-
-- Amateur:
-- Semi-professional:
-- Professional:
-
----
-
-## Reusable Techniques
-
-### Technique 1
-- Name:
 - Function:
 - Safe Use:
 - Risk:
-
-### Technique 2
-- Name:
-- Function:
-- Safe Use:
-- Risk:
+- Evidence:
 
 ---
 
-## Retention Mechanics
+## Retention Lessons
 
-- Opening Retention Pattern:
-- Midpoint Retention Pattern:
-- Late-Story Retention Pattern:
-- Coda / Ending Retention Pattern:
+- Opening:
+- Midpoint:
+- Ending:
 
 ---
 
 ## Pacing Lessons
 
-- Setup Ratio:
-- Incident Timing:
-- Escalation Shape:
-- Resolution Shape:
-- Coda Shape:
+- Setup:
+- Escalation:
+- Payoff:
 
 ---
 
-## Narration Lessons
+## Narration / POV Lessons
 
 - POV Pattern:
-- Confession / Retrospective Pattern:
-- Self-Assessment Pattern:
-- Trust / Reliability Pattern:
+- Reliability Pattern:
+- Emotional Distance:
 
 ---
 
-## Escalation Lessons
+## Anti-Copying Check
 
-- Initial Anomaly:
-- Confirmation Beat:
-- Threat Reveal Method:
-- Unresolved Element:
-- Final Emotional Effect:
-
----
-
-## Anti-Copying Safeguards
-
-Do not reuse:
-
-- Source-specific phrasing:
-- Source-specific sequence:
-- Source-specific character details:
-- Source-specific event details:
-- Source-specific locations:
-- Distinctive descriptors:
-- Sentence rhythm or narration cadence:
+- Source phrasing copied: No
+- Source sequence copied: No
+- Source-specific details reused: No
+- Framework promotion attempted: No
+- Memory promotion attempted: No
 
 ---
 
-## Promotion Readiness
+## Indexing Candidates
 
-- Ready for indexing: yes / no
-- Ready for framework promotion: no
-- Ready for memory promotion: no
-- Reason:
-- Required before promotion:
-  - additional transcript evidence
-  - pattern comparison
-  - indexing pass
-  - promotion-system review
-
----
-
-## Indexing Inputs
-
-List only patterns that should be considered for indexed-stage records.
-
-Do not assign final `/analysis/`, `/frameworks/`, or `/memory/` destinations here.
-
-### Indexed Candidate 1
-- Pattern Name:
-- Pattern Category:
+### Candidate 1
+- Pattern:
+- Category:
 - Evidence Count: 1
-- Appears Across Multiple Sources: no
-- Promotion Candidate: provisional
+- Appears Across Multiple Sources: No
+- Promotion Status: provisional
 - Notes:
-
----
-
-## Overfitting Risks
-
-- Risk 1:
-- Risk 2:
-- Risk 3:
-
----
-
-## Distilled Stage Safety Check
-
-- Source phrasing copied into reusable patterns: no
-- Story structure copied as reusable template: no
-- Distinctive details preserved in reusable patterns: no
-- Framework promotion attempted: no
-- Memory promotion attempted: no
-- Ready for indexed stage: yes / no

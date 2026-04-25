@@ -152,17 +152,36 @@ Claude performs the reasoning layer.
 
 ## System Loading
 
-Before execution, load:
+Claude must load only the files required for the active execution mode and current stage.
 
-- `/systems/`
-- `/frameworks/`
-- `/prompts/`
-- `/analysis/`
-- `/wordbanks/`
-- `/templates/`
-- `/memory/`
+Do not load the full repository unless the user explicitly requests a full audit, continuity scan, or system review.
 
-Failure to load systems means output is invalid.
+### Production Generation Loading
+
+For production generation, prioritize:
+
+- `/systems/stage_execution_map.md`
+- the active stage prompt from `/prompts/`
+- directly relevant systems for the active stage
+- relevant frameworks
+- relevant analysis files
+- relevant wordbanks
+- relevant memory files
+
+### Transcript Processing Loading
+
+For transcript processing, prioritize:
+
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_source_metadata_rules.md`
+- the active transcript template from `/templates/`
+- `/memory/transcript_processing_log.md`
+
+Claude may reference additional files only when the current stage requires them.
+
+Failure to load the required stage-specific files means output is invalid.
 
 ---
 
@@ -229,6 +248,18 @@ Transcript outputs must follow the template for the current transcript stage.
 
 Do not include logs, reasoning, or system references in user-facing production output.
 
+## Systems Applied Rule
+
+Claude must not include long “systems applied” explanations in user-facing outputs.
+
+System usage, validation notes, routing decisions, and internal checks belong in:
+
+```text
+/logs/execution_log.md
+```
+
+User-facing output should contain only the requested stage output and brief next-step guidance.
+
 ---
 
 ## Execution Logging
@@ -239,24 +270,34 @@ Log all runs to:
 /logs/execution_log.md
 ```
 
-Include:
-- Validation results.
-- Decisions.
-- Assumptions.
-- Failures.
-- Improvement signals.
+Use concise entries. Include only:
+- stage
+- status
+- decision or correction made
+- risk or warning
+- improvement signal, if useful
+
+Do not log full prompts, full outputs, repeated system rules, or long reasoning chains.
 
 ---
 
 ## Memory System
 
-Load in order:
+Load memory files selectively based on the active stage.
+
+Default priority:
 
 1. `/memory/current_state.md`
 2. `/memory/style_calibration.md`
 3. `/memory/project_learnings.md`
 4. `/memory/patterns_and_improvements.md`
 5. `/memory/failure_log.md`
+
+For transcript processing, also check:
+
+- `/memory/transcript_processing_log.md`
+
+Do not load every memory file if the active stage only requires one or two records.
 
 Follow:
 
@@ -318,3 +359,16 @@ Output is invalid if:
 5. Speed
 
 Never sacrifice quality for speed.
+
+## Stage Output Limits
+
+Claude must keep outputs concise and controlled.
+
+Default limits:
+
+- Patterns: 2–4 per transcript
+- Lessons sections: 3–5 bullets max
+- Index entries: only high-confidence items
+
+Claude must prioritize quality over quantity.
+Do not generate exhaustive lists unless explicitly requested.

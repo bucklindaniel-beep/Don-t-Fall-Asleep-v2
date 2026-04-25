@@ -2,59 +2,51 @@
 
 ## Purpose
 
-This template creates a searchable pattern index entry from distilled transcript insights.
+This template creates a concise searchable pattern index entry from distilled transcript insights.
 
 Use this file for every pattern stored in:
 
-`/transcripts/indexed/`
+```text
+/transcripts/indexed/
+```
 
 ---
 
 # Pattern Index Entry
 
-## Pattern Metadata
-
+## Metadata
 - Pattern Name:
-- Pattern File Name:
-- Related Source Name(s):
-- Related Source Type(s):
-- Related Source Category:
-- Related Genre(s):
-- Related Production Level(s):
-- Distilled Source File(s):
+- Source Name(s):
+- Source Type(s):
+- Source Category:
+- Genre:
+- Distilled File(s):
+- Stage: indexed
 - Date Indexed:
 
 ---
 
-## Description
+## Pattern Summary
 
-Briefly describe the pattern in abstract, reusable terms.
+Describe the pattern in abstract, reusable terms.
 
 ---
 
 ## Tags
 
-- Source Type Tags:
-- Genre Tags:
-- Technique Tags:
-- Tension Tags:
-- Structure Tags:
+- Source Type:
+- Genre:
+- Technique:
+- Tension:
+- Structure:
 
 ---
 
-## Use Cases
+## Reuse Guidance
 
-- 
-- 
-- 
-
----
-
-## Caution / Restrictions
-
-- Do not copy source phrasing.
-- Do not replicate a single source structure.
-- Use only as abstract guidance.
+- Best Use:
+- Avoid:
+- Risk:
 
 ---
 
@@ -63,14 +55,12 @@ Briefly describe the pattern in abstract, reusable terms.
 - Promotion Candidate: yes / no
 - Evidence Count:
 - Appears Across Multiple Sources: yes / no
-- Recommended Destination:
-  - `/analysis/patterns/`
-  - `/frameworks/`
-  - `/memory/patterns_and_improvements.md`
-  - no promotion yet
+- Recommended Destination: `/analysis/` / `/frameworks/` / `/memory/` / no promotion yet
 
 ---
 
-## Related Files
+## Safety Check
 
-- 
+- Source phrasing copied: No
+- Single-source structure copied: No
+- Abstract guidance only: Yes
