@@ -1,172 +1,192 @@
-# pattern_promotion_system.md
+# Pattern Promotion System
+
+## Metadata
+- Type: System
+- Domain: Memory / Prompt Improvement / Repository Evolution
+- Path: `/systems/pattern_promotion_system.md`
+- Status: active
+- Priority: high
+
+---
 
 ## Purpose
-Define how extracted insights (from transcripts, executions, or feedback) are evaluated and promoted into reusable system components without polluting the repository.
+
+This system defines when repeated observations become reusable repository rules.
+
+It prevents useful lessons from staying buried in logs or one-off memory entries.
+
+The goal is to turn repeated evidence into stable system improvements without overfitting to a single run.
 
 ---
 
-## Core Principle
-Not all insights should become system logic.
+## Core Rule
 
-Claude must evaluate patterns before promoting them into:
-- memory
-- frameworks
-- prompts
-- wordbanks
+Claude must NOT promote every observation.
 
----
-
-## Promotion Criteria
-
-A pattern MUST meet ALL conditions:
-
-- Repeatable across multiple examples
-- Improves output quality or consistency
-- Abstract (not tied to specific source content)
-- Safe (no copying or derivative risk)
-- Generalizable across different stories
-
-If ANY condition fails → do NOT promote.
+A pattern is only eligible for promotion when it is:
+- repeated
+- useful across future runs
+- specific enough to act on
+- aligned with repository goals
+- not tied only to one story, narrator, or prompt seed
 
 ---
 
-## Promotion Decision Tree
+## Promotion Sources
 
-When a new insight is identified:
-
-1. Is it repeatable?
-   - No → log only (do not promote)
-   - Yes → continue
-
-2. Does it improve quality or consistency?
-   - No → discard
-   - Yes → continue
-
-3. Is it abstract and non-derivative?
-   - No → discard
-   - Yes → continue
-
-4. Where does it belong?
-
----
-
-## Promotion Targets
-
-### 1. Memory (Short-Term / Adaptive)
-Path:
-`/memory/patterns_and_improvements.md`
-
-Use when:
-- pattern is still being validated
-- recent improvement or correction
-- may evolve with more data
-
----
-
-### 2. Framework (Core Logic)
-Path:
-`/frameworks/`
-
-Use when:
-- pattern affects structure, pacing, or system behavior
-- widely reusable
-- stable and validated
-
----
-
-### 3. Prompt Rule (Execution Layer)
-Path:
-`/prompts/`
-
-Use when:
-- pattern improves prompt construction
-- affects how Claude generates outputs
-- enhances consistency across runs
-
----
-
-### 4. Wordbank (Content Layer)
-Path:
-`/wordbanks/`
-
-Use when:
-- pattern is vocabulary-based
-- reusable descriptive elements
-- tone, atmosphere, or sensory detail
-
----
-
-## Non-Promotion Rule
-
-If a pattern is:
-- one-off
-- too specific
-- stylistically tied to a source
-- not clearly beneficial
-
-→ DO NOT promote
-
-Instead:
-- log in `execution_log.md` for reference
-
----
-
-## Logging Requirement
-
-When a pattern is promoted, Claude MUST log:
-
-- pattern description
-- why it was promoted
-- destination (memory, framework, prompt, wordbank)
-- expected impact
-
----
-
-## Safety Rule
-
-Claude MUST ensure:
-
-- no direct phrases from source material are used
-- no identifiable structures are replicated
-- all patterns are abstracted before promotion
-
----
-
-## Future Automation Note
-
-This system is currently manual/semi-manual.
-
-Future improvements should include:
-
-- automatic pattern detection
-- confidence scoring
-- duplicate pattern detection
-- promotion validation layer
-- integration with transcript pipeline
-- integration with execution logging
-
----
-
-## Relationship to Other Systems
-
-Works with:
-- `/systems/transcript_pipeline.md`
+Claude may identify promotion candidates from:
 - `/logs/execution_log.md`
-- `/systems/autonomy_rules.md`
-
-Supports:
-- long-term system learning
-- output quality improvement
-- controlled system evolution
+- `/memory/failure_log.md`
+- `/memory/patterns_and_improvements.md`
+- `/memory/project_learnings.md`
+- user feedback
+- prompt validation results
+- output quality reviews
+- smoke tests or debug passes
 
 ---
 
-## Summary Rule
+## Promotion Triggers
 
-Only promote patterns that are:
-- repeatable
-- useful
-- safe
-- abstract
+A candidate should be promoted when one of the following is true:
 
-Everything else should be logged, not added to the system.
+1. Repeated Failure
+   - The same failure appears more than twice.
+   - The prevention rule is stable and reusable.
+
+2. Repeated Successful Pattern
+   - The same structure, technique, or workflow improves output quality across multiple runs.
+   - The pattern is not dependent on one specific story.
+
+3. Repeated Prompt Weakness
+   - Prompt validation identifies the same weakness multiple times.
+   - The fix belongs in a prompt template or system rule.
+
+4. Repeated User Preference
+   - The user gives the same style, format, tone, or pacing correction more than once.
+   - The preference should influence future generations.
+
+5. Repeated Workflow Gap
+   - Execution logs show recurring confusion, missing steps, or unclear routing.
+   - The fix belongs in a system or playbook file.
+
+---
+
+## Promotion Destinations
+
+Use the destination that matches the pattern type.
+
+### `/systems/`
+Use for core behavior rules, execution flow, validation, routing, logging, or global enforcement.
+
+### `/prompts/`
+Use for stage-specific prompt template improvements.
+
+### `/frameworks/`
+Use for story, scene, escalation, pacing, continuity, or structure logic.
+
+### `/playbooks/`
+Use for repeatable execution procedures that combine multiple systems.
+
+### `/wordbanks/`
+Use for vocabulary, phrase variation, sensory language, visual description, or style expansion.
+
+### `/memory/`
+Use for provisional lessons, patterns, failures, and calibration before they become stable system rules.
+
+---
+
+## Promotion Process
+
+Claude must follow this process before recommending repository changes:
+
+1. Identify the repeated observation.
+2. Confirm it appears across more than one run, output, prompt, or validation log.
+3. Determine whether it is a failure, pattern, preference, prompt weakness, or workflow gap.
+4. Choose the correct repository destination.
+5. Write the recommendation in concise, actionable form.
+6. Preserve source evidence in memory or logs.
+7. Do not modify system behavior unless the user approves or the current workflow explicitly allows repository updates.
+
+---
+
+## Promotion Recommendation Format
+
+Use this format when recommending a promoted rule:
+
+```markdown
+### Promotion Candidate
+- Pattern / issue:
+- Evidence source:
+- Repeated count:
+- Recommended destination:
+- Change needed:
+- Why it matters:
+- Expected system impact:
+- Priority: required / optional
+```
+
+---
+
+## Anti-Overfitting Rule
+
+Claude must not promote:
+- one-off story details
+- temporary run state
+- a single user correction with no broader value
+- raw transcript wording
+- source-material imitation
+- vague observations
+- stylistic preferences that conflict with existing calibration
+
+If uncertain, keep the item in memory as provisional instead of promoting it.
+
+---
+
+## Relationship to Prompt Validation
+
+Prompt validation logs may reveal recurring template weaknesses.
+
+If the same prompt validation weakness appears repeatedly:
+- first log it in `/logs/execution_log.md`
+- route durable insight to `/memory/failure_log.md` or `/memory/patterns_and_improvements.md`
+- recommend promotion into the relevant `/prompts/` template or `/systems/prompt_validation_logging.md`
+
+---
+
+## Relationship to Memory
+
+Memory files are staging areas.
+
+Promotion should only happen after memory shows that a lesson is stable enough to become repository logic.
+
+Use:
+- `/memory/failure_log.md` for repeated problems
+- `/memory/patterns_and_improvements.md` for reusable successful patterns
+- `/memory/style_calibration.md` for repeated user preferences
+- `/memory/project_learnings.md` for durable system lessons
+
+---
+
+## Relationship to Execution Logs
+
+Execution logs are diagnostic evidence, not permanent memory.
+
+Claude may use logs to detect repeated issues, but promoted rules must be written into the correct repository file after approval.
+
+Do not leave important recurring rules only in `/logs/execution_log.md`.
+
+---
+
+## Summary
+
+This system turns repeated evidence into stable repository intelligence.
+
+It protects the pipeline from:
+- noisy memory
+- duplicated logic
+- overfitting
+- repeated failures
+- buried improvements
+
+Promotion should be deliberate, evidence-based, and routed to the correct file.

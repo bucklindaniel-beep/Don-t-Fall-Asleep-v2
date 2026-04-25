@@ -19,10 +19,13 @@ The execution log is used to:
 - surface roadblocks, gaps, and failure points
 - separate debug information from clean production outputs
 - recommend memory, prompt, framework, or system updates
+- record prompt validation results before execution
 
 This file is **not** a memory file.
 
 Do not store long-term lessons here unless they are also routed to the correct `/memory/` file.
+
+Because this file lives in `/logs/`, it may be excluded from Claude’s project ingestion depending on system configuration. Treat it as a local diagnostic artifact, not a source-of-truth system file.
 
 ---
 
@@ -31,6 +34,7 @@ Do not store long-term lessons here unless they are also routed to the correct `
 Claude must append one structured execution entry after every meaningful pipeline action or production run.
 
 A meaningful action includes:
+- prompt validation
 - narrator identity generation
 - story generation
 - scene breakdown
@@ -45,12 +49,61 @@ A meaningful action includes:
 
 ---
 
+## Prompt Validation Logging Rule
+
+Before executing a stage-specific prompt, Claude must validate the prompt using:
+
+`/systems/prompt_validation_logging.md`
+
+Claude must log validation results here.
+
+Prompt validation logs should record:
+- prompt name
+- stage
+- structure result
+- clarity result
+- system alignment result
+- constraint result
+- output format result
+- detected weaknesses
+- auto-corrections applied
+- critical failures, if any
+- recommended system improvements
+
+Prompt validation should not interrupt execution unless a critical failure occurs.
+
+Minor issues should be corrected automatically and logged.
+
+---
+
+## Memory Routing Logging Rule
+
+Claude must evaluate whether memory should be updated after meaningful pipeline actions.
+
+Memory trigger and routing logic belongs in `/memory/README.md` and `/systems/memory_logging_system.md`.
+
+This log should only record:
+- whether memory routing was considered
+- whether a durable memory update was required
+- which memory file was updated, if any
+- why no memory update was needed, if applicable
+
+If memory is not updated, Claude must write:
+
+```markdown
+No durable memory update required.
+```
+
+---
+
 ## Output Noise Rule
 
 Debug details belong here, not in the main production output.
 
 Claude should keep user-facing outputs clean and route the following into this log:
 - systems applied
+- prompt validation results
+- memory routing decision
 - interpretation decisions
 - internal tradeoffs
 - ambiguity handling
@@ -97,6 +150,32 @@ Avoid:
 - Stage name:
 - Status: completed / partial / blocked / skipped
 - Reason if partial, blocked, or skipped:
+
+### Prompt Validation
+- Prompt name:
+- Validation required: yes / no
+- Validation status: passed / passed_with_auto_corrections / failed_critical / skipped
+- Structure: pass / fail
+- Clarity: pass / fail
+- System alignment: pass / fail
+- Constraints: pass / fail
+- Output format: pass / fail
+- Detected weaknesses:
+  - Weakness:
+    - Effect:
+    - Suggested fix:
+- Auto-corrections applied:
+  - Correction:
+    - Reason:
+- Critical failure triggered: yes / no
+- If yes:
+  - Failure:
+  - Why execution could not continue:
+  - Required fix:
+- System improvement notes:
+  - Recommended file path:
+  - Change needed:
+  - Priority: required / optional
 
 ### Pipeline Progress
 - Narrator Identity: not_started / completed / issue
@@ -156,10 +235,13 @@ Avoid:
   - Priority: required / optional
 
 ### Memory Routing
+- Memory evaluated: yes / no
+- Memory update required: yes / no
+
+If no:
 - No durable memory update required.
 
-OR
-
+If yes:
 - Destination:
   - Entry type: current_state / style_calibration / failure / pattern / project_learning
   - Summary:
@@ -168,6 +250,41 @@ OR
 ### Next Action
 - Immediate next recommended step.
 ```
+
+---
+
+## Prompt Validation Result Definitions
+
+### Passed
+The prompt meets required structure, clarity, alignment, constraints, and output format standards.
+
+### Passed With Auto-Corrections
+The prompt had minor issues that Claude could safely correct without stopping execution.
+
+Examples:
+- minor wording ambiguity
+- missing but inferable formatting detail
+- weak constraint phrasing
+- unclear but recoverable stage label
+
+### Failed Critical
+The prompt cannot be safely executed without risking poor output or system misalignment.
+
+Examples:
+- missing objective
+- contradictory instructions
+- unclear required output
+- request bypasses repository rules
+- required source/context is unavailable
+
+### Skipped
+Validation was not required because the action was not a production-stage prompt execution.
+
+Examples:
+- repository review
+- file cleanup
+- user planning discussion
+- manual documentation update
 
 ---
 
@@ -194,6 +311,7 @@ Use these categories when logging failures:
 - escalation_failure
 - repetition_failure
 - prompt_structure_failure
+- prompt_validation_failure
 - narration_quality_failure
 - visual_variety_failure
 - formatting_failure
@@ -229,6 +347,7 @@ No durable memory update required.
 If the same issue appears three times in execution logs, Claude must recommend promoting it into the relevant system, prompt, framework, or playbook file.
 
 Promotion targets:
+- repeated prompt weakness → `/systems/prompt_validation_logging.md` or relevant `/prompts/` template
 - repeated failure → `/memory/failure_log.md` first, then relevant `/systems/` file if recurring
 - reusable generation pattern → `/memory/patterns_and_improvements.md`, then relevant `/prompts/` or `/playbooks/`
 - structural pipeline issue → relevant `/systems/` file
@@ -251,7 +370,8 @@ When a run stops at a human review point, Claude must log:
 
 A pipeline run is not complete until:
 - the requested stage output is complete
+- prompt validation has been performed when required
+- prompt validation results have been logged
 - memory routing has been considered
 - repository update recommendations have been listed if needed
 - this execution log has a new entry
-
