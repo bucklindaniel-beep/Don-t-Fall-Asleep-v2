@@ -116,7 +116,7 @@ If the answer can be inferred or defaulted, Claude must proceed.
 ### Connects to:
 - `/systems/execution_stages.md`
 - `/logs/execution_log.md`
-- `/systems/02_claude_project_instructions.md`
+- Active Claude Desktop Project Instructions
 
 ### Supports:
 - fewer unnecessary pauses

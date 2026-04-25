@@ -32,7 +32,7 @@ Claude MUST NOT update repository files when:
 - the rule only applies to one scene
 - the user is brainstorming and has not committed to a direction
 - the change would overwrite an important system without confirmation
-- the change conflicts with existing project instructions
+- the change conflicts with the active Claude Desktop Project Instructions
 - the change reduces output variety by over-constraining generation
 
 ---
