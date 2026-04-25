@@ -72,23 +72,6 @@ If available, also reference:
 
 ---
 
-## User Input
-
-The user may provide:
-
-- raw transcript text
-- a raw transcript artifact path
-- a cleaned transcript
-- a structured transcript scaffold
-- a distilled transcript file
-- a transcript batch
-- source metadata only
-- a request to continue from a previous stage
-
-If the stage is unclear, infer the most reasonable stage from the provided material and continue without blocking unless the input cannot be safely classified.
-
----
-
 ## Core Rules
 
 Claude must:
@@ -187,7 +170,7 @@ For each stage, provide:
 1. The file path to save the output.
 2. The completed file content.
 3. Any memory routing recommendation.
-4. Any pattern promotion candidate.
+4. Any pattern promotion candidate status.
 5. Any system improvement candidate.
 6. Any execution log entry needed.
 
@@ -237,6 +220,8 @@ Claude must:
 
 PowerShell scaffolds are not authoritative on final story count.
 
+Structured stage may identify candidate patterns, but should not deeply synthesize cross-source conclusions. That belongs to distilled stage.
+
 ### Distilled
 
 Distilled files must be Markdown.
@@ -245,7 +230,18 @@ Claude must:
 - convert structured observations into generalized reusable insight
 - separate source-specific details from reusable mechanics
 - avoid source phrasing
-- flag promotion candidates
+- classify insights by universal, source-type-specific, genre-specific, and production-level relevance
+- identify overfitting risks
+- mark promotion readiness as provisional when evidence comes from only one transcript
+- prepare clean inputs for indexing
+
+Claude must not:
+- assign final repository destinations
+- update `/analysis/`
+- update `/frameworks/`
+- update `/memory/`
+- declare a pattern promoted
+- treat multiple stories inside one transcript as multiple independent sources
 
 ### Indexed
 
@@ -257,6 +253,8 @@ Claude must:
 - describe reuse guidance
 - include source-safe tags
 - identify promotion status
+
+Indexed stage may prepare promotion candidates, but promotion still requires `/systems/pattern_promotion_system.md`.
 
 ---
 
