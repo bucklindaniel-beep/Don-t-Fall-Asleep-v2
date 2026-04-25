@@ -11,52 +11,39 @@
 
 ## Purpose
 
-The Transcript Storage Router defines where Claude must place each output created during transcript processing.
+The Transcript Storage Router defines where transcript-related files belong inside the repository.
 
-It prevents transcript-derived insights from being stored randomly, duplicated across folders, or mixed into generation logic before they have been properly distilled.
-
----
-
-## Core Rule
-
-Transcript content must move through the pipeline in this order:
-
-`raw → cleaned → structured → distilled → indexed`
-
-Claude must not skip storage stages.
-
-Claude must not store raw transcript wording inside generation-facing files.
-
-Only distilled, generalized, reusable insights may be promoted into system logic.
+It prevents transcript artifacts, analysis outputs, and reusable insights from being stored in inconsistent or unsafe locations.
 
 ---
 
-## Classification Storage Rule
+## Core Routing Rule
 
-Each transcript must include metadata in every stage file.
+Transcript pipeline storage must follow:
 
-Required metadata:
+```text
+/transcripts/raw/
+/transcripts/cleaned/
+/transcripts/structured/
+/transcripts/distilled/
+/transcripts/indexed/
+```
 
-- Source Name
-- Source Type
-- Source Category
-- Channel / Creator
-- Title
-- Genre
-- Production Level
-- Intended Use
-
-Source Type controls the raw folder.
-
-Channel / Creator must remain metadata unless a future volume threshold justifies channel-level folders.
+Do not create source-type subfolders unless the user explicitly instructs a future storage redesign.
 
 ---
 
 ## File Format Rule
 
-All transcript pipeline outputs must use `.md`.
+Raw may contain source-acquisition artifacts:
 
-No transcript stage should output `.txt`.
+- `.srt`
+- `.vtt`
+- `.txt`
+- `.info.json`
+- manual `.md` source notes
+
+Cleaned, structured, distilled, and indexed outputs must use Markdown `.md`.
 
 ---
 
@@ -66,10 +53,14 @@ Before writing transcript pipeline outputs, Claude must check:
 
 1. `/memory/transcript_processing_log.md`
 2. Existing transcript stage files
+3. Source metadata where available
 
-The log is the source of truth.
+The strongest duplicate identifiers are:
 
-Existing files are the validation layer.
+1. YouTube Video ID
+2. URL
+3. Metadata file name
+4. Source title as fallback only
 
 Claude must not overwrite or duplicate files unless the user explicitly requests reprocessing.
 
@@ -86,31 +77,32 @@ Skipped transcripts must be recorded in:
 
 **Folder:**
 
-`/transcripts/raw/{source_type}/`
+```text
+/transcripts/raw/
+```
 
-Examples:
+**Allowed file types:**
 
-- `/transcripts/raw/youtube_video/`
-- `/transcripts/raw/reddit_story/`
-- `/transcripts/raw/movie_script/`
-- `/transcripts/raw/book_excerpt/`
-- `/transcripts/raw/podcast_transcript/`
-- `/transcripts/raw/original_test_seed/`
-- `/transcripts/raw/other/`
-
-**File name:**
-
-`{source_name}.md`
+- `.srt`
+- `.vtt`
+- `.txt`
+- `.info.json`
+- `.md`
 
 **Template:**
 
-`/templates/raw_transcript_template.md`
+Manual raw Markdown intake may use:
+
+```text
+/templates/raw_transcript_template.md
+```
 
 **Stores:**
 
 - original transcript text
-- pasted source material
-- unedited exports
+- unedited source artifacts
+- yt-dlp subtitle files
+- yt-dlp metadata JSON
 - rough source notes
 - classification metadata
 
@@ -120,23 +112,28 @@ Examples:
 
 **Folder:**
 
-`/transcripts/cleaned/`
+```text
+/transcripts/cleaned/
+```
 
 **File name:**
 
-`{source_name}.md`
+```text
+{source_name}.cleaned.md
+```
 
 **Template:**
 
-`/templates/cleaned_transcript_template.md`
+```text
+/templates/cleaned_transcript_template.md
+```
 
 **Stores:**
 
-- cleaned grammar
+- cleaned transcript text
 - removed timestamps
-- removed repeated filler
-- normalized speaker labels
-- readable source text
+- removed repeated subtitle artifacts
+- normalized readability
 - preserved metadata
 
 ---
@@ -145,25 +142,32 @@ Examples:
 
 **Folder:**
 
-`/transcripts/structured/`
+```text
+/transcripts/structured/
+```
 
 **File name:**
 
-`{source_name}.md`
+```text
+{source_name}.structured.md
+```
 
 **Template:**
 
-`/templates/structured_transcript_template.md`
+```text
+/templates/structured_transcript_template.md
+```
 
 **Stores:**
 
-- source-type context
-- scene/section breakdowns
-- pacing blocks
-- hook/setup/payoff structure
+- source metadata
+- story or segment breakdowns
+- narrator / POV analysis
+- setting analysis
+- tension patterns
 - escalation sequence
-- narrative function labels
-- emotional beat mapping
+- payoff analysis
+- reusable pattern candidates
 
 ---
 
@@ -171,25 +175,32 @@ Examples:
 
 **Folder:**
 
-`/transcripts/distilled/`
+```text
+/transcripts/distilled/
+```
 
 **File name:**
 
-`{source_name}.md`
+```text
+{source_name}.distilled.md
+```
 
 **Template:**
 
-`/templates/distilled_transcript_template.md`
+```text
+/templates/distilled_transcript_template.md
+```
 
 **Stores:**
 
 - universal patterns
 - source-type-specific patterns
-- genre-specific patterns
+- genre-specific observations
 - production-level observations
-- reusable observations
+- reusable insights
 - engagement patterns
 - pacing lessons
+- source-dependence risks
 
 ---
 
@@ -197,15 +208,21 @@ Examples:
 
 **Folder:**
 
-`/transcripts/indexed/`
+```text
+/transcripts/indexed/
+```
 
 **File name:**
 
-`{pattern_name}.md`
+```text
+{pattern_name}.indexed.md
+```
 
 **Template:**
 
-`/templates/indexed_transcript_template.md`
+```text
+/templates/indexed_transcript_template.md
+```
 
 **Stores:**
 
@@ -229,3 +246,27 @@ Transcript-derived insights may route to:
 - `/memory/patterns_and_improvements.md`
 
 Only after pattern promotion rules are satisfied.
+
+Promotion must follow:
+
+```text
+/systems/pattern_promotion_system.md
+/systems/system_improvement_router.md
+```
+
+---
+
+## Script Boundary
+
+PowerShell scripts may write to:
+
+- `/transcripts/raw/`
+- `/transcripts/cleaned/`
+- `/transcripts/structured/`
+
+Claude handles:
+
+- structured analysis completion
+- distillation
+- indexing
+- pattern promotion decisions

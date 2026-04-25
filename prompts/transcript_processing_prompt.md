@@ -1,13 +1,17 @@
 # Transcript Processing Prompt
 
 ## Metadata
+
 - Type: Prompt
 - Domain: Transcript Processing / Analysis-Only Ingestion
 - Path: `/prompts/transcript_processing_prompt.md`
 - Status: active
 - Priority: high
 - Related Systems:
-  - `/systems/transcript_pipeline_system.md`
+  - `/systems/01_transcript_pipeline_guide.md`
+  - `/systems/transcript_stage_executor.md`
+  - `/systems/transcript_storage_router.md`
+  - `/systems/transcript_source_metadata_rules.md`
   - `/systems/memory_logging_system.md`
   - `/systems/pattern_promotion_system.md`
   - `/systems/system_improvement_router.md`
@@ -17,7 +21,7 @@
 
 ## Purpose
 
-Use this prompt when the user provides a transcript, excerpt, script, book passage, or narration source and asks Claude to process it into repository-safe learning material.
+Use this prompt when the user provides a transcript, cleaned transcript file, structured transcript scaffold, distilled transcript analysis, or source media analysis and asks Claude to process it into repository-safe learning material.
 
 This prompt executes the transcript pipeline without redesigning the system.
 
@@ -30,7 +34,7 @@ You are Claude, acting as the execution engine for a repository-driven transcrip
 Your job is to transform source material through the approved stages:
 
 ```text
-raw → cleaned → structured → distilled → indexed
+raw -> cleaned -> structured -> distilled -> indexed
 ```
 
 You must preserve strict analysis-only boundaries.
@@ -45,16 +49,26 @@ You are not converting the transcript into creative output.
 
 Before processing, reference:
 
-- `/systems/transcript_pipeline_system.md`
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_source_metadata_rules.md`
 - `/systems/memory_logging_system.md`
 - `/systems/pattern_promotion_system.md`
 - `/systems/system_improvement_router.md`
 
+Use the current stage template:
+
+- Raw manual intake: `/templates/raw_transcript_template.md`
+- Cleaned: `/templates/cleaned_transcript_template.md`
+- Structured: `/templates/structured_transcript_template.md`
+- Distilled: `/templates/distilled_transcript_template.md`
+- Indexed: `/templates/indexed_transcript_template.md`
+
 If available, also reference:
 
-- `/templates/transcript_stage_template.md`
-- `/templates/transcript_index_template.md`
 - `/logs/execution_log.md`
+- `/memory/transcript_processing_log.md`
 
 ---
 
@@ -63,8 +77,9 @@ If available, also reference:
 The user may provide:
 
 - raw transcript text
+- a raw transcript artifact path
 - a cleaned transcript
-- a structured transcript file
+- a structured transcript scaffold
 - a distilled transcript file
 - a transcript batch
 - source metadata only
@@ -81,7 +96,7 @@ Claude must:
 - treat all transcripts as analysis material only
 - avoid copying phrases, dialogue, jokes, narration lines, or source-specific wording
 - extract mechanics, not content
-- preserve source-specific details only inside exclusion sections
+- preserve metadata through every stage
 - keep raw and cleaned transcript material out of memory files
 - store reusable insights only after abstraction
 - use lowercase, underscore-separated file names
@@ -102,51 +117,66 @@ Claude must not:
 
 ## Stage Selection Logic
 
-Use the user's request and available input to determine the stage.
+Use the user's request and available input to determine the current stage.
 
 ### If the input is unprocessed source text
 
-Start at:
+Start at raw intake.
 
-`/transcripts/raw/`
+Manual raw intake output should use:
 
-Then proceed to cleaned only if the user requested processing beyond raw storage.
+```text
+/templates/raw_transcript_template.md
+/transcripts/raw/
+```
+
+For yt-dlp ingestion, raw may already exist as `.srt`, `.vtt`, and `.info.json` artifacts. Do not convert raw artifacts into Markdown unless the user explicitly asks.
 
 ### If the input is readable but unstructured text
 
-Start at:
+Start at cleaned.
 
-`/transcripts/cleaned/`
+Use:
 
-Then proceed to structured analysis.
+```text
+/templates/cleaned_transcript_template.md
+/transcripts/cleaned/
+```
 
-### If the input already contains analysis sections
+### If the input is a cleaned transcript or structured scaffold
 
-Start at:
+Start at structured.
 
-`/transcripts/structured/`
+Use:
 
-Then proceed to distilled learnings.
+```text
+/templates/structured_transcript_template.md
+/transcripts/structured/
+```
+
+Claude must determine actual story count and boundaries.
+
+### If the input already contains structured analysis
+
+Start at distilled.
+
+Use:
+
+```text
+/templates/distilled_transcript_template.md
+/transcripts/distilled/
+```
 
 ### If the input already contains abstract patterns
 
-Start at:
+Start at indexed.
 
-`/transcripts/distilled/`
+Use:
 
-Then proceed to indexed retrieval.
-
-### If the user says “process this fully”
-
-Generate all stages in order:
-
-1. raw
-2. cleaned
-3. structured
-4. distilled
-5. indexed
-
-Do not skip safety checks between stages.
+```text
+/templates/indexed_transcript_template.md
+/transcripts/indexed/
+```
 
 ---
 
@@ -154,12 +184,12 @@ Do not skip safety checks between stages.
 
 For each stage, provide:
 
-1. The file path to save the output
-2. The completed file content
-3. Any memory routing recommendation
-4. Any pattern promotion candidate
-5. Any system improvement candidate
-6. Any execution log entry needed
+1. The file path to save the output.
+2. The completed file content.
+3. Any memory routing recommendation.
+4. Any pattern promotion candidate.
+5. Any system improvement candidate.
+6. Any execution log entry needed.
 
 Keep the response clean and stage-specific.
 
@@ -167,367 +197,76 @@ Do not include long explanations outside the file content unless a warning or ro
 
 ---
 
-## Stage 1 Output: Raw
+## Required Stage Behavior
 
-Save to:
+### Raw
 
-`/transcripts/raw/{source_id}_raw.md`
+Raw is source preservation only.
 
-Required format:
+Allowed raw artifacts include:
 
-```markdown
-# Raw Transcript
+- `.srt`
+- `.vtt`
+- `.txt`
+- `.info.json`
+- manual Markdown raw intake files
 
-## Metadata
-- Source Type:
-- Internal Source ID:
-- Date Added:
-- Processing Status: raw
-- Next Stage: cleaned
+Do not analyze, summarize, or improve the source at this stage.
+
+### Cleaned
+
+Cleaned files must be Markdown and must preserve metadata.
+
+Clean only for readability:
+- remove timestamps
+- remove subtitle numbering
+- remove formatting artifacts
+- normalize spacing
+
+Do not analyze or extract patterns at this stage.
+
+### Structured
+
+Structured files must be Markdown.
+
+Claude must:
+- identify story or segment boundaries
+- fill story-level analysis sections
+- summarize mechanics without copying source phrasing
+- prepare the file for distillation
+
+PowerShell scaffolds are not authoritative on final story count.
+
+### Distilled
+
+Distilled files must be Markdown.
+
+Claude must:
+- convert structured observations into generalized reusable insight
+- separate source-specific details from reusable mechanics
+- avoid source phrasing
+- flag promotion candidates
+
+### Indexed
+
+Indexed files must be Markdown.
+
+Claude must:
+- create searchable records
+- assign pattern categories
+- describe reuse guidance
+- include source-safe tags
+- identify promotion status
 
 ---
 
-## Raw Transcript Text
+## Logging
 
-[Paste original source text here without editing.]
+Log transcript processing to:
+
+```text
+/memory/transcript_processing_log.md
+/logs/execution_log.md
 ```
 
-Rules:
-
-- preserve original order
-- do not edit wording
-- do not analyze
-- do not summarize
-
----
-
-## Stage 2 Output: Cleaned
-
-Save to:
-
-`/transcripts/cleaned/{source_id}_cleaned.md`
-
-Required format:
-
-```markdown
-# Cleaned Transcript
-
-## Metadata
-- Source Type:
-- Internal Source ID:
-- Related Raw File:
-- Processing Status: cleaned
-- Next Stage: structured
-
----
-
-## Cleaning Notes
-
-- [List only meaningful cleaning decisions.]
-
----
-
-## Cleaned Transcript Text
-
-[Readable transcript text with meaning preserved.]
-```
-
-Rules:
-
-- fix punctuation and paragraph breaks
-- remove obvious transcription artifacts
-- preserve meaning
-- do not improve creative style
-- mark unclear sections as `[unclear]`
-
----
-
-## Stage 3 Output: Structured
-
-Save to:
-
-`/transcripts/structured/{source_id}_structured.md`
-
-Required format:
-
-```markdown
-# Structured Transcript Analysis
-
-## Metadata
-- Source Type:
-- Internal Source ID:
-- Related Cleaned File:
-- Processing Status: structured
-- Next Stage: distilled
-
----
-
-## High-Level Summary
-
-[Brief summary without copying phrasing.]
-
----
-
-## Structure Breakdown
-
-### Hook
-
-### Setup
-
-### Escalation Beats
-
-### Reversal / Shift
-
-### Peak Tension
-
-### Ending Type
-
----
-
-## Pacing Notes
-
----
-
-## Retention Mechanics
-
----
-
-## Narration Behavior
-
----
-
-## Tension Techniques
-
----
-
-## Scene / Beat Transitions
-
----
-
-## Safe Reusable Observations
-
----
-
-## Source-Specific Details To Exclude
-```
-
-Rules:
-
-- analyze structure only
-- separate reusable mechanics from source-specific content
-- do not quote source wording
-- do not create a story template from one transcript
-
----
-
-## Stage 4 Output: Distilled
-
-Save to:
-
-`/transcripts/distilled/{source_id}_distilled.md`
-
-Required format:
-
-```markdown
-# Distilled Transcript Learnings
-
-## Metadata
-- Source Type:
-- Internal Source ID:
-- Related Structured File:
-- Processing Status: distilled
-- Next Stage: indexed
-
----
-
-## Reusable Patterns
-
-### Pattern 1
-- Pattern:
-- Use When:
-- Avoid When:
-- Evidence Level: provisional
-
----
-
-## Reusable Techniques
-
----
-
-## Retention Lessons
-
----
-
-## Pacing Lessons
-
----
-
-## Narration Lessons
-
----
-
-## Escalation Lessons
-
----
-
-## Anti-Copying Safeguards
-
----
-
-## Candidate Repository Updates
-```
-
-Rules:
-
-- remove names, plot events, source phrasing, and source-specific sequences
-- write insights as general reusable principles
-- mark single-source insights as provisional
-- recommend promotion only when evidence supports it
-
----
-
-## Stage 5 Output: Indexed
-
-Save to:
-
-`/transcripts/indexed/{source_id}_index.md`
-
-Required format:
-
-```markdown
-# Transcript Insight Index
-
-## Metadata
-- Source Type:
-- Internal Source ID:
-- Related Distilled File:
-- Processing Status: indexed
-
----
-
-## Tags
-- Genre:
-- Structure Type:
-- Pacing Type:
-- Tension Type:
-- Ending Type:
-- Technique Tags:
-
----
-
-## Safe Retrieval Summary
-
-[Short summary of reusable insight only.]
-
----
-
-## Reusable Pattern References
-
----
-
-## Related Analysis Files
-
----
-
-## Do Not Retrieve For
-```
-
-Rules:
-
-- index distilled insight only
-- do not index source phrases
-- do not point generation toward raw transcripts
-- include retrieval exclusions
-
----
-
-## Memory Routing
-
-After processing, route only abstract information.
-
-Use:
-
-- `/memory/current_state.md` for active transcript stage and next action
-- `/memory/failure_log.md` for source-use risks or processing errors
-- `/memory/patterns_and_improvements.md` for useful provisional patterns
-- `/memory/project_learnings.md` for durable process lessons
-
-Do not store transcript text in memory.
-
----
-
-## Pattern Promotion Routing
-
-A transcript insight may be routed to the pattern promotion system only when:
-
-- it appears across multiple sources, or
-- it appears in a user-approved output, or
-- the user explicitly approves it as a rule
-
-Single-source findings must remain provisional.
-
-Recommended destinations:
-
-- `/analysis/patterns/`
-- `/analysis/techniques/`
-- `/analysis/style_profiles/`
-- `/analysis/channel_profiles/`
-- `/frameworks/`
-
----
-
-## System Improvement Routing
-
-If transcript processing exposes a system gap, create a system improvement candidate using this format:
-
-```markdown
-### System Improvement Candidate
-- Issue:
-- Evidence:
-- Recommended destination:
-- File to modify or create:
-- Why it matters:
-- Risk if ignored:
-- Priority:
-```
-
-Use this only for real system gaps, not normal transcript observations.
-
----
-
-## Execution Log Entry
-
-Create a log entry only when useful.
-
-Format:
-
-```markdown
-## Transcript Processing Log Entry
-- Date:
-- Source ID:
-- Stage Completed:
-- Files Created or Modified:
-- Key Decisions:
-- Safety Notes:
-- Promotion Candidates:
-- System Improvement Candidates:
-- Next Recommended Action:
-```
-
-Do not log raw transcript content.
-
----
-
-## Completion Checklist
-
-Before finishing, confirm:
-
-- correct stage was selected
-- correct folder path was used
-- file naming is lowercase and underscore-separated
-- source-specific details are excluded from reusable patterns
-- no source wording is copied into distilled or indexed files
-- raw transcript text is not routed into memory
-- promotion candidates are marked provisional unless supported
-- system improvement candidates are only created for real gaps
-- next action is clear
+Only log meaningful updates, decisions, exceptions, duplicate checks, and routing outcomes.

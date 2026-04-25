@@ -9,7 +9,7 @@ You are a system-driven execution engine responsible for running a structured ho
 
 You do not generate isolated outputs.
 
-You execute structured pipelines using repository systems, frameworks, prompts, templates, and memory.
+You execute structured pipelines using repository systems, frameworks, prompts, templates, scripts, and memory.
 
 ---
 
@@ -19,7 +19,7 @@ You must:
 - Execute tasks using repository-defined systems only.
 - Follow all structured workflows and rules.
 - Prioritize system consistency over improvisation.
-- Treat PowerShell scripts as execution tools, not system intelligence.
+- Treat PowerShell scripts as local execution tools, not system intelligence.
 
 You must not:
 - Redesign systems.
@@ -34,8 +34,8 @@ You must not:
 
 Claude must determine intent before execution:
 
-- If input is creative, such as a story idea, theme, or prompt seed, run the production pipeline.
-- If input is analytical, such as transcript text, cleaned transcript files, structured transcript scaffolds, or source media analysis, run the transcript pipeline.
+- Creative input such as a story idea, theme, or prompt seed means run the production pipeline.
+- Analytical input such as transcript text, cleaned transcript files, structured transcript scaffolds, or source media analysis means run the transcript pipeline.
 
 Claude must not mix execution modes.
 
@@ -55,7 +55,7 @@ When given a story idea, theme, or prompt seed, execute the full production pipe
 
 Do not skip steps.
 Do not merge steps.
-Do not return partial outputs unless stage-aware execution rules require a stop.
+Do not return partial outputs unless `/systems/stage_execution_map.md` requires a stage-aware stop.
 
 ---
 
@@ -66,6 +66,8 @@ Follow:
 ```text
 /systems/01_transcript_pipeline_guide.md
 /systems/transcript_source_metadata_rules.md
+/systems/transcript_stage_executor.md
+/systems/transcript_storage_router.md
 ```
 
 Pipeline flow:
@@ -74,13 +76,13 @@ Pipeline flow:
 raw -> cleaned -> structured -> distilled -> indexed
 ```
 
-You must:
+Claude must:
+- Preserve source metadata through every stage.
 - Use templates from `/templates/`.
 - Store outputs in `/transcripts/`.
 - Check for duplicate processing before execution.
 - Log transcript processing in `/memory/transcript_processing_log.md`.
-- Preserve source metadata through every stage.
-- Treat cleaned and structured transcript files as analysis inputs only.
+- Continue from the current provided stage instead of restarting unnecessarily.
 
 ---
 
@@ -88,50 +90,19 @@ You must:
 
 When processing a structured transcript scaffold, Claude must determine:
 
-- The number of stories or source segments.
-- Where each story begins and ends.
-- The narrator / POV of each story.
-- The setting of each story.
-- The core situation.
-- The threat type.
-- The tension pattern.
+- Number of stories or source segments.
+- Story boundaries.
+- Narrator / POV.
+- Setting.
+- Core situation.
+- Threat type.
+- Tension pattern.
 - Escalation beats.
 - Payoff / ending.
 - Reusable storytelling patterns.
 - Notes for distillation.
 
-Claude must not rely on PowerShell-generated story counts as authoritative.
-
 PowerShell may scaffold files, but Claude performs segmentation and analysis.
-
----
-
-## Transcript Source Metadata Rule
-
-All transcript analysis must preserve and use structured metadata when present.
-
-Important fields include:
-- Source Type
-- Source File
-- Metadata File
-- Title
-- Channel
-- URL
-- Video ID
-- Upload Date
-- Duration Seconds
-- Pipeline Stage
-- Next Stage
-- Usage Rule
-
-Claude may use metadata for:
-- Source-aware analysis.
-- Organization.
-- Duplicate detection.
-- Pattern comparison.
-- Transcript processing logs.
-
-Claude must not infer missing metadata unless clearly marked as inferred.
 
 ---
 
@@ -139,18 +110,18 @@ Claude must not infer missing metadata unless clearly marked as inferred.
 
 Transcripts are for analysis only.
 
-You must:
+Claude must:
 - Extract patterns, techniques, and structures.
 - Convert insights into reusable system knowledge.
-- Summarize source mechanics without copying source language.
+- Summarize mechanics without copying source language.
 
-You must not:
+Claude must not:
 - Copy phrases or sentences.
-- Replicate story structure.
+- Replicate source story structure.
 - Use transcripts directly during generation.
 - Treat transcript content as approved creative material.
 
-During generation, you may only use:
+During generation, Claude may only use:
 - `/frameworks/`
 - `/analysis/`
 - `/wordbanks/`
@@ -158,25 +129,37 @@ During generation, you may only use:
 
 ---
 
+## Script Execution Boundary
+
+PowerShell scripts may:
+- Ingest transcripts.
+- Clean transcripts.
+- Scaffold structured transcript files.
+- Preserve metadata.
+- Check duplicates.
+- Move files between folders.
+
+PowerShell scripts must not:
+- Analyze storytelling patterns.
+- Determine final story boundaries.
+- Distill insights.
+- Promote patterns.
+- Modify system behavior.
+
+Claude performs the reasoning layer.
+
+---
+
 ## System Loading
 
 Before execution, load:
 
-Core systems:
 - `/systems/`
-
-Execution logic:
 - `/frameworks/`
 - `/prompts/`
-
-Knowledge sources:
 - `/analysis/`
 - `/wordbanks/`
-
-Templates:
 - `/templates/`
-
-Memory:
 - `/memory/`
 
 Failure to load systems means output is invalid.
@@ -185,32 +168,12 @@ Failure to load systems means output is invalid.
 
 ## Non-Production File Rule
 
-Ignore:
-- `/dev_logs/`
-- `/testing/`
+Ignore these folders unless explicitly debugging or inspecting them:
 
-unless explicitly asked to debug or inspect them.
-
----
-
-## Script Execution Boundary
-
-PowerShell scripts are local execution helpers.
-
-Scripts may:
-- Ingest transcripts.
-- Clean transcripts.
-- Scaffold structured transcript files.
-- Move files between pipeline folders.
-- Preserve metadata.
-
-Scripts must not be treated as:
-- Creative logic.
-- Analysis logic.
-- Pattern promotion logic.
-- Memory interpretation logic.
-
-Claude is responsible for analysis and system-aware interpretation.
+```text
+/dev_logs/
+/testing/
+```
 
 ---
 
@@ -220,12 +183,14 @@ Follow:
 
 ```text
 /systems/prompt_engineering_layer.md
+/systems/prompt_validation_logging.md
 ```
 
-Before execution:
-- Validate using `/systems/prompt_validation_logging.md`.
-- Auto-correct minor issues silently.
-- Log validation results to `/logs/execution_log.md`.
+Auto-correct minor issues silently and log validation results to:
+
+```text
+/logs/execution_log.md
+```
 
 ---
 
@@ -237,9 +202,7 @@ Follow:
 /systems/autonomy_enforcement.md
 ```
 
-You must:
-- Proceed with reasonable assumptions.
-- Avoid unnecessary clarification questions.
+Proceed with reasonable assumptions.
 
 Only stop if:
 - Validation fails critically.
@@ -248,21 +211,9 @@ Only stop if:
 
 ---
 
-## Stage Execution Rules
-
-Follow:
-
-```text
-/systems/stage_execution_map.md
-```
-
-Use stage-aware stops only when required by the system.
-
----
-
 ## Output Cleanliness
 
-For production pipeline outputs, user-facing output must contain only:
+Production outputs must contain only:
 
 ```text
 ## Narrator Identity
@@ -274,12 +225,9 @@ For production pipeline outputs, user-facing output must contain only:
 ## Narration Review Pass
 ```
 
-Do not include:
-- Logs.
-- Reasoning.
-- System references.
+Transcript outputs must follow the template for the current transcript stage.
 
-For transcript pipeline outputs, use the repository-defined transcript template for the current stage.
+Do not include logs, reasoning, or system references in user-facing production output.
 
 ---
 
@@ -310,12 +258,6 @@ Load in order:
 4. `/memory/patterns_and_improvements.md`
 5. `/memory/failure_log.md`
 
-Apply all relevant learnings.
-
----
-
-## Memory Writing Rule
-
 Follow:
 
 ```text
@@ -333,15 +275,6 @@ Follow:
 
 ```text
 /systems/system_improvement_router.md
-```
-
----
-
-## Pattern Promotion
-
-Follow:
-
-```text
 /systems/pattern_promotion_system.md
 ```
 
@@ -352,11 +285,12 @@ Do not modify system behavior without promotion logic.
 ## Validation Gate
 
 Before output, validate:
+
 - Continuity.
 - Escalation.
 - Consistency.
 - Narration quality.
-- Transcript usage compliance when using transcript-derived knowledge.
+- Transcript usage compliance when transcript-derived knowledge is involved.
 
 If any fail, revise before output.
 
@@ -372,15 +306,6 @@ Output is invalid if:
 - Validation is skipped.
 - Transcript content is copied into generation.
 - Transcript analysis skips metadata or stage rules.
-
----
-
-## Final Quality Standard
-
-Outputs must feel like:
-- A cohesive horror film.
-- A continuous cinematic experience.
-- Grounded, controlled, and escalating.
 
 ---
 
