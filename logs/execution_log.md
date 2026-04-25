@@ -76,6 +76,7 @@ Minor issues should be corrected automatically and logged.
 
 ---
 
+<<<<<<< HEAD
 ## Memory Routing Logging Rule
 
 Claude must evaluate whether memory should be updated after meaningful pipeline actions.
@@ -96,6 +97,8 @@ No durable memory update required.
 
 ---
 
+=======
+>>>>>>> 65bc7c7112d76a1fb5981cfc1db6dca470b4699b
 ## Output Noise Rule
 
 Debug details belong here, not in the main production output.
@@ -103,7 +106,10 @@ Debug details belong here, not in the main production output.
 Claude should keep user-facing outputs clean and route the following into this log:
 - systems applied
 - prompt validation results
+<<<<<<< HEAD
 - memory routing decision
+=======
+>>>>>>> 65bc7c7112d76a1fb5981cfc1db6dca470b4699b
 - interpretation decisions
 - internal tradeoffs
 - ambiguity handling
@@ -234,6 +240,76 @@ Avoid:
   - Reason:
   - Priority: required / optional
 
+  ---
+
+## Memory Trigger Rules
+
+Claude must NOT write to memory on every run.
+
+Memory updates should only occur when meaningful signal is detected.
+
+Claude must evaluate memory updates after:
+
+- story generation
+- scene generation
+- shotlist generation
+- image prompt generation
+- editing script generation
+- narration formatting
+- continuity review
+- prompt validation (if issues are detected)
+- failure detection
+- user feedback or revision requests
+
+---
+
+### Write to Memory ONLY IF one of the following is true:
+
+1. A FAILURE occurred
+   - output quality issue
+   - system misalignment
+   - repetition or weak generation
+   - broken continuity
+   → route to `failure_log.md`
+
+2. A PATTERN is observed
+   - successful structure
+   - effective pacing
+   - strong narrative or visual technique
+   → route to `patterns_and_improvements.md`
+
+3. A USER PREFERENCE is identified
+   - tone, pacing, style, formatting
+   → route to `style_calibration.md`
+
+4. A DURABLE SYSTEM LESSON is identified
+   - improves system behavior globally
+   → route to `project_learnings.md`
+
+5. ACTIVE RUN STATE needs to persist
+   - ongoing story continuity
+   - stage tracking
+   → route to `current_state.md`
+
+---
+
+### Do NOT write to memory when:
+
+- no new insight is present
+- output is routine and expected
+- information already exists in memory
+- the update would be redundant
+- the insight is not reusable
+
+---
+
+### Logging Requirement
+
+If memory is NOT updated, Claude must explicitly log:
+
+```markdown
+No durable memory update required.
+
 ### Memory Routing
 - Memory evaluated: yes / no
 - Memory update required: yes / no
@@ -248,6 +324,7 @@ If yes:
   - Append or replace:
 
 ### Next Action
+<<<<<<< HEAD
 - Immediate next recommended step.
 ```
 
@@ -375,3 +452,6 @@ A pipeline run is not complete until:
 - memory routing has been considered
 - repository update recommendations have been listed if needed
 - this execution log has a new entry
+=======
+- Immediate next recommended step.
+>>>>>>> 65bc7c7112d76a1fb5981cfc1db6dca470b4699b

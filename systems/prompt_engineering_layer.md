@@ -36,6 +36,7 @@ This is the STANDARD that all prompts must follow.
 4. Prompts are VALIDATED before execution
    - No incomplete or ambiguous prompts allowed
    - Must pass defined validation checks
+   - Validation uses `/systems/prompt_validation_logging.md`
 
 ---
 
@@ -133,13 +134,17 @@ A prompt is considered VALID only if:
 - Constraints are enforceable
 - Output format is explicitly defined
 
-If ANY of the above is missing → prompt is INVALID
+If ANY of the above is missing → prompt requires validation handling before execution.
 
 ---
 
 ## Prompt Validation Layer
 
-Before execution, Claude MUST verify:
+Before executing any stage-specific prompt, Claude MUST validate the prompt using:
+
+`/systems/prompt_validation_logging.md`
+
+Claude MUST verify:
 
 1. STRUCTURE CHECK
    - All required sections exist
@@ -149,6 +154,7 @@ Before execution, Claude MUST verify:
 
 3. SYSTEM ALIGNMENT CHECK
    - Required systems are referenced where applicable
+   - Prompt does not bypass repository logic
 
 4. CONSTRAINT CHECK
    - Rules are enforceable and relevant
@@ -156,9 +162,42 @@ Before execution, Claude MUST verify:
 5. OUTPUT CHECK
    - Output format is clearly defined and structured
 
-If validation fails:
-- Claude must internally correct the prompt
-- Do NOT ask the user unless ambiguity is critical
+6. LOGGING CHECK
+   - Validation result can be logged to `/logs/execution_log.md`
+
+If validation identifies a minor issue:
+- Claude must auto-correct internally
+- Claude must continue execution
+- Claude must log the correction in `/logs/execution_log.md`
+
+If validation identifies a critical issue:
+- Claude may stop execution only if the prompt cannot be safely interpreted
+- Claude must explain the blocker clearly
+- Claude must log the failure and recommended fix in `/logs/execution_log.md`
+
+Claude MUST NOT ask unnecessary clarification questions.
+
+---
+
+## Prompt Validation Logging Rule
+
+Prompt validation results are diagnostic data.
+
+Claude MUST route validation details to:
+
+`/logs/execution_log.md`
+
+Because `/logs/` is excluded from Claude’s long-term project ingestion, validation logs must be concise and actionable.
+
+Claude should log:
+- prompt name
+- stage
+- pass/fail status by validation category
+- detected weaknesses
+- auto-corrections applied
+- system improvement notes
+
+Claude should NOT expose full validation details in the main user-facing output unless a critical failure blocks execution.
 
 ---
 
@@ -177,6 +216,8 @@ Each stage:
 - has its own prompt template
 - follows the standard structure
 - pulls from relevant systems only
+- is validated before execution
+- logs validation results to `/logs/execution_log.md`
 
 ---
 
@@ -188,11 +229,13 @@ Prompts MUST pull from:
 - wordbanks → vocabulary diversity
 - pattern systems → proven engagement patterns
 - memory → avoid repetition and improve variation
+- prompt validation logging → debug prompt quality before execution
 
 Prompts MUST NOT:
 - directly reference raw transcripts
 - bypass system logic
 - introduce unverified patterns
+- skip validation when validation is required
 
 ---
 
@@ -201,18 +244,24 @@ Prompts MUST NOT:
 Prompts improve over time via:
 
 1. Output evaluation
-2. Pattern extraction
-3. Pattern validation
-4. Promotion into system files
+2. Prompt validation logging
+3. Pattern extraction
+4. Pattern validation
+5. Promotion into system files
 
 Once promoted:
 - prompts should reference updated systems
 - NOT hardcode new behavior
 
+Prompt validation logs may reveal repeated weaknesses.
+
+If the same prompt weakness appears repeatedly, Claude should recommend promotion into the appropriate system file, prompt template, framework, playbook, wordbank, or memory file.
+
 This ensures:
 - scalability
 - consistency
 - centralized intelligence
+- cleaner system improvement loops
 
 ---
 
@@ -225,6 +274,8 @@ This ensures:
 - Repeating system logic inside prompts
 - Ignoring output format rules
 - Direct imitation of source material
+- Running prompts without validation
+- Asking clarification questions for minor fixable issues
 
 ---
 
@@ -234,6 +285,8 @@ Claude MUST treat this file as a REQUIRED standard.
 
 If a prompt does not comply:
 - it must be corrected BEFORE execution
+- minor issues must be corrected automatically
+- critical issues must be logged and surfaced clearly
 
 No exceptions.
 
@@ -246,6 +299,7 @@ This layer ensures:
 - outputs are high quality
 - system intelligence is centralized
 - prompt logic scales without chaos
+- prompt weaknesses are visible through logging
 
 Prompts are not creative writing tools.
 
