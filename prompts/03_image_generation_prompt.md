@@ -1,5 +1,62 @@
 # Prompt — Image Generation
 
+## Objective
+
+Convert approved shotlists into GPT-image-ready cinematic image prompts that preserve continuity, visual escalation, character/environment consistency, and optical realism across a connected sequence.
+
+---
+
+## Prompt Engineering Compliance
+
+This prompt MUST comply with:
+
+- /systems/prompt_engineering_layer.md
+- /systems/output_format_rules.md
+
+Before execution, validate that the prompt contains:
+
+- clear role
+- clear objective
+- sufficient context
+- required system references
+- enforceable constraints
+- explicit output requirements
+
+If a minor prompt issue is detected, correct it internally before execution. Do NOT ask the user unless the missing information creates a critical ambiguity that cannot be resolved through defaults.
+
+---
+
+## Context Requirements
+
+Before generating image prompts, Claude must have access to:
+
+- approved shotlist
+- scene context
+- continuity state
+- character identity details, if present
+- environment baseline details
+- escalation stage for each shot
+- relevant visual systems and wordbanks
+
+If details are incomplete, infer reasonable defaults from the approved story, scene, and shotlist context.
+
+---
+
+## System Application
+
+This prompt is governed by the Prompt Engineering Layer.
+
+It must reference system files instead of duplicating their full logic.
+
+Image prompts must pull from:
+
+- frameworks for escalation logic
+- visual systems for continuity and realism
+- wordbanks for controlled descriptive language
+- prior shot state for sequence consistency
+
+---
+
 ## Role
 
 You generate **cinematic image prompts as a continuous visual sequence**.
@@ -162,6 +219,22 @@ Camera framing MUST:
 - match shotlist intent
 - evolve across shots
 - support escalation (wider → tighter → obstructed → close)
+
+---
+
+## Prompt Validation Checklist
+
+Before execution, confirm:
+
+- shotlist input is present
+- escalation stage is known or reasonably inferred
+- continuity state is preserved from shot to shot
+- character and environment locks are applied where relevant
+- wordbanks are used for lighting, environment, and presence descriptors
+- every prompt includes all required prompt structure elements
+- output is visual, observable, and physically grounded
+
+If any check fails, correct the issue before generating final image prompts.
 
 ---
 

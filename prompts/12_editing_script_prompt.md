@@ -13,6 +13,62 @@
 
 ---
 
+## Objective
+
+Convert approved shotlists into editing-ready scripts that define grounded sound design, pacing, transitions, atmosphere, and escalation-aware audio behavior.
+
+---
+
+## Prompt Engineering Compliance
+
+This prompt MUST comply with:
+
+- /systems/prompt_engineering_layer.md
+- /systems/output_format_rules.md
+
+Before execution, validate that the prompt contains:
+
+- clear role
+- clear objective
+- sufficient context
+- required system references
+- enforceable constraints
+- explicit output requirements
+
+If a minor prompt issue is detected, correct it internally before execution. Do NOT ask the user unless the missing information creates a critical ambiguity that cannot be resolved through defaults.
+
+---
+
+## Context Requirements
+
+Before generating editing scripts, Claude must have access to:
+
+- approved shotlist
+- scene context
+- active entity behavior
+- escalation stage
+- channel profile, if provided
+- visual pacing and shot progression
+
+If audio details are incomplete, infer grounded sound design from environment, framing, and escalation stage.
+
+---
+
+## System Application
+
+This prompt is governed by the Prompt Engineering Layer.
+
+It must reference system files instead of duplicating their full logic.
+
+Editing scripts must pull from:
+
+- shotlist structure for timing
+- entity behavior for audio cues
+- retention mechanics for pacing
+- channel profiles for sound density and transition rhythm
+
+---
+
 ## Role
 
 You generate editing scripts.
@@ -225,6 +281,22 @@ Shot 1:
 - Music:
 - Transition:
 - Notes:
+
+---
+
+## Prompt Validation Checklist
+
+Before execution, confirm:
+
+- shotlist input is present
+- entity behavior is reflected in audio decisions
+- sound design matches environment and framing
+- pacing escalates across shots
+- transitions support tension and retention
+- audio layers are specific, not generic placeholders
+- output format is editing-ready
+
+If any check fails, correct the issue before finalizing the editing script.
 
 ---
 

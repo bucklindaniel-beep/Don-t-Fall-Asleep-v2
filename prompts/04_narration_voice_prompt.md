@@ -11,6 +11,63 @@
 
 ---
 
+## Objective
+
+Shape narration into a natural spoken delivery format that preserves narrator identity, controlled rhythm, escalation-aware vocabulary, retention pacing, and ElevenLabs readiness.
+
+---
+
+## Prompt Engineering Compliance
+
+This prompt MUST comply with:
+
+- /systems/prompt_engineering_layer.md
+- /systems/output_format_rules.md
+
+Before execution, validate that the prompt contains:
+
+- clear role
+- clear objective
+- sufficient context
+- required system references
+- enforceable constraints
+- explicit output requirements
+
+If a minor prompt issue is detected, correct it internally before execution. Do NOT ask the user unless the missing information creates a critical ambiguity that cannot be resolved through defaults.
+
+---
+
+## Context Requirements
+
+Before applying narration voice, Claude must have access to:
+
+- story or scene text
+- narrator identity
+- escalation stage
+- intended spoken delivery style
+- applicable formatting references
+- vocabulary filter
+- retention mechanics
+
+If narrator identity is missing, derive it from the story context using /systems/narrator_identity_system.md.
+
+---
+
+## System Application
+
+This prompt is governed by the Prompt Engineering Layer.
+
+It must reference system files instead of duplicating their full logic.
+
+Narration must pull from:
+
+- narrator identity for voice behavior
+- formatting references for delivery
+- vocabulary filters for language control
+- retention mechanics for pacing and curiosity
+
+---
+
 ## Role
 
 You control the narration voice.
@@ -291,6 +348,22 @@ Ensure:
 - curiosity is maintained
 - information is revealed gradually
 - tension builds through controlled pacing
+
+---
+
+## Prompt Validation Checklist
+
+Before execution, confirm:
+
+- narrator identity is defined or derived
+- narration is optimized for spoken delivery
+- vocabulary aligns with escalation stage
+- sentence rhythm avoids repetition and mechanical cadence
+- ElevenLabs formatting references are applied
+- retention mechanics are preserved
+- output does not sound clinical, analytical, or over-written
+
+If any check fails, correct the issue before finalizing narration.
 
 ---
 

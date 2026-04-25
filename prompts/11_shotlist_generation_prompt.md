@@ -13,6 +13,62 @@
 
 ---
 
+## Objective
+
+Convert approved scenes into structured cinematic shotlists that support narration pacing, entity behavior, visual escalation, channel pacing tendencies, and downstream image prompt generation.
+
+---
+
+## Prompt Engineering Compliance
+
+This prompt MUST comply with:
+
+- /systems/prompt_engineering_layer.md
+- /systems/output_format_rules.md
+
+Before execution, validate that the prompt contains:
+
+- clear role
+- clear objective
+- sufficient context
+- required system references
+- enforceable constraints
+- explicit output requirements
+
+If a minor prompt issue is detected, correct it internally before execution. Do NOT ask the user unless the missing information creates a critical ambiguity that cannot be resolved through defaults.
+
+---
+
+## Context Requirements
+
+Before generating shotlists, Claude must have access to:
+
+- approved story or scene text
+- active entity behavior
+- escalation stage
+- scene purpose
+- channel profile, if provided
+- relevant camera and visual systems
+
+If visual details are incomplete, infer grounded cinematic defaults from scene context without breaking continuity.
+
+---
+
+## System Application
+
+This prompt is governed by the Prompt Engineering Layer.
+
+It must reference system files instead of duplicating their full logic.
+
+Shotlists must pull from:
+
+- entity integration for behavior mapping
+- camera language systems for framing
+- channel profiles for pacing tendencies
+- retention mechanics for reveal timing
+
+---
+
 ## Role
 
 You generate cinematic shotlists from scenes.
@@ -257,6 +313,22 @@ Shot 1:
 
 Shot 2:
 [description]
+
+---
+
+## Prompt Validation Checklist
+
+Before execution, confirm:
+
+- scene input is present
+- entity behavior is identified or reasonably inferred
+- shot progression escalates visually
+- camera language is applied to every shot
+- channel pacing is applied when available
+- no duplicate or filler shots are included
+- output format is structured and usable for downstream image prompts
+
+If any check fails, correct the issue before finalizing the shotlist.
 
 ---
 
