@@ -27,9 +27,10 @@ Your task is to process a transcript through the Transcript Processing Pipeline.
 A raw transcript will be provided.
 
 ## Required System Files
-- /systems/transcript_pipeline_system.md
+- /systems/01_transcript_pipeline_guide.md
 - /systems/transcript_stage_executor.md
 - /systems/transcript_storage_router.md
+- /systems/transcript_source_metadata_rules.md
 - /systems/transcript_analysis_rules.md
 
 ## Instructions
