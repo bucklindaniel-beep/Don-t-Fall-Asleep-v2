@@ -26,6 +26,36 @@ This reference exists to preserve architecture clarity and prevent confusion bet
 
 ---
 
+## Active Repository Logic Reference
+
+Claude Desktop Project Instructions should direct Claude to load and apply:
+
+```text
+/systems/system_bootstrap.md
+/systems/stage_aware_execution.md
+/systems/stage_execution_map.md
+/systems/output_cleanliness_rules.md
+/systems/autonomy_rules.md
+/systems/memory_logging_system.md
+/systems/repository_update_system.md
+```
+
+Stage-aware behavior is coordinated by:
+
+```text
+/systems/stage_aware_execution.md
+```
+
+Detailed stage order, stop points, validation rules, and model recommendations remain in:
+
+```text
+/systems/stage_execution_map.md
+```
+
+Do not copy those rules into this file.
+
+---
+
 ## Maintenance Rule
 
 When Claude Desktop Project Instructions are updated, this file should only be updated if the architecture or ownership model changes.
