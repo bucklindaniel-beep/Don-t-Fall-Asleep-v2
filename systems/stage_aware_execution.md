@@ -179,3 +179,16 @@ This system makes execution stage-aware while preserving a single source of trut
 
 Use this file for behavior.
 Use `/systems/stage_execution_map.md` for stage details.
+
+---
+
+## Checkpoint Control Addendum
+
+Use `/systems/stage_checkpoints.md` when a controlled user decision would materially improve quality, cost control, source selection, duplicate handling, model routing, or output approval.
+
+Do not use checkpoints for low-value preference questions.
+Do not stop at every stage.
+If the user already provided enough direction, proceed using the relevant default.
+
+This addendum depends on:
+- `/systems/stage_checkpoints.md`

@@ -42,7 +42,7 @@ If this log and repository files disagree, Claude must record the inconsistency 
 - Genre:
 - Production Level:
 - Intended Use: analysis_only
-- Raw file: `/transcripts/raw/{source_type}/{source_name}.md`
+- Raw file: `/transcripts/raw/{source_name}.md`
 - Cleaned: `/transcripts/cleaned/{source_name}.md`
 - Structured: `/transcripts/structured/{source_name}.md`
 - Distilled: `/transcripts/distilled/{source_name}.md`

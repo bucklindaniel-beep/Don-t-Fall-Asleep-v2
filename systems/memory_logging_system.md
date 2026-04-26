@@ -2,191 +2,74 @@
 
 ## Metadata
 - Type: System
-- Domain: Memory / Logging / Repository Persistence
-- Primary Use Cases:
-  - logging reusable lessons after production runs
-  - preserving user feedback
-  - routing failures, patterns, preferences, and current state into the correct files
-  - preventing useful improvements from remaining only in chat
+- Domain: Memory / Logging / Pattern Promotion
 - Status: active
-- Priority: critical
+- Priority: high
 
 ---
 
 ## Purpose
+Route durable learnings to the correct memory file without creating memory bloat.
 
-This system defines how Claude records useful project memory after analysis, generation, debugging, revision, or production execution.
-
-The goal is to preserve only information that improves future output quality, reliability, continuity, cost efficiency, or workflow clarity.
-
-Claude must not treat memory logging as a transcript summary. Memory entries must become reusable operating knowledge.
+Memory should improve future runs, not archive every detail.
 
 ---
 
-## Core Rule
+## Memory Destinations
 
-After every meaningful task, Claude must decide whether the interaction produced memory worth saving.
+### `/memory/current_state.md`
+Use for active run status, next action, unresolved blockers, and current focus.
+Replace when state changes.
 
-A task is meaningful if it includes any of the following:
+### `/memory/style_calibration.md`
+Use for stable user preferences affecting future output style.
+Append only concise reusable rules.
 
-- a completed story, scene, shotlist, prompt batch, narration script, or editing script
-- user feedback that changes future output expectations
-- a repeated failure or correction
-- a successful pattern worth reusing
-- a workflow improvement
-- an API, PowerShell, image generation, voice generation, or editing lesson
-- a continuity anchor for an active production run
-- a style preference that should remain stable across future work
+### `/memory/failure_log.md`
+Use for failures, corrections, repeated mistakes, or validation breakdowns.
 
-If no reusable memory was produced, Claude should state: `No durable memory update required.`
+### `/memory/patterns_and_improvements.md`
+Use for reusable production patterns after scoring.
+Each entry must include why it works, when to use, and when not to use.
 
----
-
-## Memory Classification
-
-Claude must classify memory before writing it.
-
-### 1. Current State
-Use `/memory/current_state.md` for:
-
-- active story premise
-- current stage
-- last completed stage
-- next required action
-- active constraints
-- continuity anchors
-- current narrator identity
-- active visual state
-- unresolved issues
-
-Current state may be temporary. It is the correct place for useful but not-yet-durable context.
+### `/memory/project_learnings.md`
+Use for durable architecture or workflow lessons.
 
 ---
 
-### 2. Style Calibration
-Use `/memory/style_calibration.md` for:
+## Routing Decision Tree
 
-- stable user preferences
-- narration tone preferences
-- formatting preferences
-- image prompt density preferences
-- vocabulary dislikes
-- pacing preferences
-- preferred output structure
-- repeated revision requests that reveal taste
-
-Style calibration should not store one-off scene details.
+1. Current run only → `/memory/current_state.md`
+2. Stable user preference → `/memory/style_calibration.md`
+3. Failure or correction → `/memory/failure_log.md`
+4. Reusable pattern with value → score first, then `/memory/patterns_and_improvements.md`
+5. Durable architecture lesson → `/memory/project_learnings.md`
+6. Hard execution rule → recommend repository update instead of memory-only logging
 
 ---
 
-### 3. Failure Log
-Use `/memory/failure_log.md` for:
+## Pattern Scoring Requirement
+Before routing a pattern to durable memory, apply `/frameworks/13_pattern_scoring_framework.md`.
 
-- repeated mistakes
-- broken continuity
-- weak escalation
-- redundant shots
-- poor narration rhythm
-- API/script failures
-- formatting failures
-- anything the user corrected that should not recur
-
-Each failure entry must include a prevention rule.
+Do not promote every successful moment. Promote only reusable, explainable, low-copying-risk mechanics.
 
 ---
 
-### 4. Patterns and Improvements
-Use `/memory/patterns_and_improvements.md` for:
+## End-of-Run Memory Pass
+At terminal stages or when durable learning occurs, classify:
+- what changed
+- what user corrected
+- what pattern proved useful
+- what failed
+- what should be tested again
+- what should become repository logic
 
-- proven prompt structures
-- successful scene formulas
-- visual variation strategies
-- useful shotlist patterns
-- editing workflow improvements
-- batch generation improvements
-- reusable production techniques
-
-Patterns must explain when to use and when not to use the approach.
+Do not perform verbose memory routing after every intermediate stage.
 
 ---
 
-### 5. Project Learnings
-Use `/memory/project_learnings.md` for:
-
-- durable system-level lessons
-- architectural decisions
-- long-term workflow rules
-- high-level principles that apply across multiple outputs
-- lessons that should eventually influence systems, prompts, or frameworks
-
-Project learnings should be concise and broadly reusable.
-
----
-
-## Logging Decision Tree
-
-Claude must use this routing logic:
-
-1. Is this only relevant to the current story or active run?
-   - Yes → `/memory/current_state.md`
-
-2. Is this a stable user preference?
-   - Yes → `/memory/style_calibration.md`
-
-3. Did something fail or require correction?
-   - Yes → `/memory/failure_log.md`
-
-4. Did a reusable structure, pattern, or workflow improvement emerge?
-   - Yes → `/memory/patterns_and_improvements.md`
-
-5. Is this a durable system lesson that affects future repository behavior?
-   - Yes → `/memory/project_learnings.md`
-
-6. Is the lesson now a hard rule needed during execution?
-   - Yes → update the relevant `/systems/`, `/prompts/`, `/frameworks/`, or `/playbooks/` file.
-
----
-
-## Logging Format Requirements
-
-Every memory update must be:
-
-- dated when useful
-- concise
-- structured
-- reusable
-- written as an operating rule, not a chat recap
-- placed in the correct file
-- appended unless a direct replacement is explicitly needed
-
-Claude must avoid:
-
-- dumping raw conversation summaries
-- storing temporary brainstorming as durable rules
-- duplicating existing memory
-- over-constraining creative output
-- replacing existing memory unless instructed
-
----
-
-## Required End-of-Task Memory Pass
-
-At the end of every meaningful task, Claude must run this internal pass:
-
-1. What changed?
-2. Did the user correct anything?
-3. Did a reusable rule emerge?
-4. Did a failure occur?
-5. Did a style preference become clearer?
-6. Does the active project state need updating?
-7. Which memory file owns each item?
-8. Should this remain memory, or should it become a system/prompt/framework update?
-
----
-
-## Required Output Block
-
-When memory changes are needed, Claude must output:
+## Output Block
+When memory changes are needed, output:
 
 ```markdown
 ## Memory Logging
@@ -205,25 +88,9 @@ When memory changes are needed, Claude must output:
 - Required user action:
 ```
 
-If Claude has direct file access, it should write the change directly and summarize what changed.
-
-If Claude does not have direct file access, it must provide exact append-ready content and file paths.
+If direct file access is unavailable, provide exact append-ready content and file paths.
 
 ---
 
 ## Promotion Rule
-
-If the same memory lesson appears three times, Claude must recommend promotion:
-
-- from `/memory/failure_log.md` to a hard prevention rule
-- from `/memory/patterns_and_improvements.md` to a prompt, playbook, or framework
-- from `/memory/project_learnings.md` to a system file
-- from `/memory/style_calibration.md` to a default output requirement
-
-Promotion should refine existing files before creating new ones.
-
----
-
-## Failure Condition
-
-Claude's output is incomplete if a reusable lesson, failure correction, or stable preference is discovered but not routed to memory or repository updates.
+Recommend promotion when a lesson repeats, a failure recurs, user preference is stable, or a pattern proves reusable across outputs.

@@ -313,3 +313,9 @@ If any check fails, correct the issue before finalizing the editing script.
 ## Compression Summary
 
 Shotlist → Entity Behavior → Audio + Pacing → Editing Script
+
+---
+
+## Emotional Continuity Reference
+
+Editing choices should support emotional progression. Use `/frameworks/14_emotional_targeting_system.md` to check for flat zones, over-safe pacing, or unsupported intensity spikes. Narration timing remains the primary driver.

@@ -344,3 +344,9 @@ If any check fails, correct the issue before finalizing the shotlist.
 ## Compression Summary
 
 Scene → Entity Behavior → Visual Beats → Shotlist
+
+---
+
+## Emotional Targeting Reference
+
+When useful, apply `/frameworks/14_emotional_targeting_system.md` to define concise shot-level emotional intent. Do not over-explain viewer emotion. Visual continuity and renderability remain higher priority.

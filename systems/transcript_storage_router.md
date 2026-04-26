@@ -71,6 +71,16 @@ Skipped transcripts must be recorded in:
 
 ---
 
+## Related Duplicate Logic
+
+Detailed duplicate detection and duplicate analysis cleanup rules are defined in:
+
+- `/systems/transcript_duplicate_detection.md`
+
+The storage router defines where files belong. The duplicate detection system defines whether a file or analysis should be created.
+
+---
+
 ## Storage Structure
 
 ### 1. Raw Transcript Storage

@@ -189,3 +189,11 @@ The system fails if:
 ## Compression Summary
 
 Control information → reinforce patterns → escalate tension → delay answers → maintain engagement
+
+---
+
+## Organic Horror Retention Rule
+
+Do not apply generic clickbait retention tactics. Horror retention should come from organic curiosity, delayed understanding, pattern disturbance, emotional tension, and payoff/reframe mechanics.
+
+Use `/frameworks/10_organic_hook_system.md` and `/frameworks/11_organic_story_beat_system.md` when selecting retention mechanics for story generation.

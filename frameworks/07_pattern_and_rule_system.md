@@ -396,3 +396,17 @@ A generation FAILS if:
 Select → Validate → Combine → Execute
 
 No stage may be skipped.
+
+---
+
+## Pattern Intelligence Hierarchy
+
+Use this order when working with reusable patterns:
+
+1. Extract mechanics from transcripts or production runs.
+2. Score candidate patterns using `/frameworks/13_pattern_scoring_framework.md`.
+3. Compose compatible pattern stacks using `/frameworks/12_pattern_composition_engine.md`.
+4. Apply selected patterns during generation.
+5. Promote only proven, reusable patterns to memory.
+
+This framework remains the general pattern rule layer. Scoring and composition belong in their dedicated files.

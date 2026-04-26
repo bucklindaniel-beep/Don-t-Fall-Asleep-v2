@@ -3,46 +3,30 @@
 ## Metadata
 - Type: System
 - Domain: Pipeline Execution / Stage Control / Model Guidance
-- Path: `/systems/stage_execution_map.md`
 - Status: active
 - Priority: critical
 
 ---
 
 ## Purpose
+Define production stage order, required outputs, stop points, and model recommendations.
 
-This file defines the standard execution order for the production pipeline.
-
-It tells Claude:
-- which stage comes next
-- what each stage requires before execution
-- what each stage produces
-- when to stop for user review
-- when to recommend a model switch
-- how to keep execution structured without asking unnecessary questions
-
-This file does NOT define creative standards.
+This file controls execution flow only.
 Creative standards belong in prompts, frameworks, playbooks, wordbanks, and memory.
 
 ---
 
-## Core Rule
+## Core Rules
 
-Claude must follow the pipeline in order unless the user explicitly requests a specific stage.
-
-Claude must not skip required upstream context unless the missing context can be safely inferred.
-
-Claude should continue automatically when the next step is obvious.
-
-Claude should stop only when:
-- user approval is required
-- a model switch is recommended
-- a critical validation failure occurs
-- required context is missing and cannot be safely inferred
+- Follow stages in order unless the user requests a specific stage.
+- Do not skip upstream context unless it can be safely inferred.
+- Use reasonable defaults instead of asking low-value clarification questions.
+- Stop only for user approval, recommended model boundaries, critical validation failures, or missing required context.
+- Keep stage completion output short.
 
 ---
 
-## Standard Pipeline Order
+## Standard Pipeline
 
 1. User Seed Intake
 2. Narrator Identity Generation
@@ -59,447 +43,250 @@ Claude should stop only when:
 
 ---
 
-## Stage Map
+## Stage 1 — User Seed Intake
 
-### 1. User Seed Intake
+**Purpose:** Convert idea into usable production seed.
 
-#### Purpose
-Convert the user idea into a usable production seed.
+**Outputs:** interpreted premise, genre direction, default constraints, seed status.
 
-#### Required Inputs
-- user idea, theme, premise, or prompt seed
+**Validation:** seed must be executable without major ambiguity.
 
-#### Outputs
-- interpreted premise
-- assumed genre direction
-- default constraints if user did not specify them
+**Stop:** continue unless clarification is truly required.
 
-#### Validation
-- confirm the seed is usable
-- do not ask clarification questions unless the idea is impossible to interpret
-
-#### Stop Rule
-Do not stop if reasonable defaults can be used.
-
-#### Recommended Model
-- Sonnet for basic interpretation
-- Opus if the seed is complex, abstract, or highly creative
+**Model:** Sonnet normally; Opus for abstract or complex seeds.
 
 ---
 
-### 2. Narrator Identity Generation
+## Stage 2 — Narrator Identity Generation
 
-#### Purpose
-Create a grounded narrator identity that supports the story premise.
+**Purpose:** Create a narrator who supports the premise and spoken delivery.
 
-#### Required Inputs
-- user seed
-- genre direction
-- relevant memory and style calibration
+**Outputs:** identity, perspective, personal context, credibility anchors, emotional baseline, voice behavior.
 
-#### Outputs
-- narrator identity
-- perspective
-- personal context
-- credibility anchors
-- emotional baseline
+**Validation:** narrator must be relatable, behavior-grounded, and useful downstream.
 
-#### Validation
-- narrator must support the premise
-- narrator must not over-explain the horror
-- narrator must be useful for voice and narration formatting later
+**Stop:** stop if identity conflicts with seed/user intent.
 
-#### Stop Rule
-Continue unless narrator identity conflicts with user intent.
-
-#### Recommended Model
-- Opus preferred
+**Model:** Opus preferred.
 
 ---
 
-### 3. Story Generation
+## Stage 3 — Story Generation
 
-#### Purpose
-Generate the main horror story output.
+**Purpose:** Generate the main horror narration.
 
-#### Required Inputs
-- user seed
-- narrator identity
-- applicable frameworks
-- memory and style calibration
+**Required Systems:**
+- `/frameworks/writing_quality_rules.md`
+- `/frameworks/10_organic_hook_system.md`
+- `/frameworks/11_organic_story_beat_system.md`
+- `/frameworks/12_pattern_composition_engine.md`
+- `/frameworks/13_pattern_scoring_framework.md`
+- `/frameworks/14_emotional_targeting_system.md`
 
-#### Outputs
-- complete story draft
-- clear beginning, escalation, and ending
-- grounded psychological tension
+**Outputs:** complete story, organic hook, controlled beat flow, grounded escalation, suitable spoken narration.
 
-#### Validation
-- no major repetition
-- no broken continuity
-- no unsupported escalation jumps
-- no direct source imitation
-- narration must be suitable for spoken delivery
+**Validation:** no source imitation, no unsupported escalation jumps, no repetitive narrator patterns, no rigid beat template.
 
-#### Stop Rule
-Stop for user review after story generation unless the user explicitly requested the full pipeline in one pass.
+**Stop:** stop for story review unless user requests full pass.
 
-#### Recommended Model
-- Opus strongly preferred
+**Model:** Opus strongly preferred.
 
 ---
 
-### 4. Scene Breakdown
+## Stage 4 — Scene Breakdown
 
-#### Purpose
-Convert the story into structured production scenes.
+**Purpose:** Convert story into production scenes.
 
-#### Required Inputs
-- approved or current story draft
+**Outputs:** scene purpose, location, character state, escalation level, continuity anchors, optional emotional residue.
 
-#### Outputs
-- numbered scenes
-- scene purpose
-- location
-- character state
-- escalation level
-- continuity anchors
+**Validation:** each scene must advance clarity, tension, proximity, consequence, or setup/payoff.
 
-#### Validation
-- scenes must preserve story order
-- no redundant scenes unless intentionally used for tension
-- each scene must be visually and narratively useful
+**Stop:** usually continue; stop if scene logic fails.
 
-#### Stop Rule
-Continue if story was approved or user requested pipeline continuation.
-
-#### Recommended Model
-- Sonnet acceptable
-- Opus if scene structure requires creative repair
+**Model:** Sonnet preferred.
 
 ---
 
-### 5. Shotlist Generation
+## Stage 5 — Shotlist Generation
 
-#### Purpose
-Convert scenes into visual shot planning.
+**Purpose:** Convert scenes into renderable visual shots.
 
-#### Required Inputs
+**Outputs:** shot references, framing, subject, action, lighting, continuity notes, escalation notes.
+
+**Validation:** every shot must be visual, renderable, and non-duplicative.
+
+**Stop:** continue unless visual continuity is unclear.
+
+**Model:** Sonnet preferred.
+
+---
+
+## Stage 6 — Image Prompt Generation
+
+**Purpose:** Convert shotlist into image-generation prompts.
+
+**Outputs:** one prompt per shot, locked continuity, concise emotional target where useful, negative constraints only where needed.
+
+**Validation:** prompts must be concrete, photorealistic, continuity-safe, and API-ready.
+
+**Stop:** stop before paid image generation if user approval is needed.
+
+**Model:** Sonnet preferred.
+
+---
+
+## Stage 7 — Editing Script Generation
+
+**Purpose:** Convert shots and narration into edit timing, pacing, transitions, and sound design.
+
+**Outputs:** sequence edit notes, narration alignment, pacing, sound, transitions.
+
+**Validation:** narration drives timing; sound choices support story resolution; no cliché horror cues unless intended.
+
+**Stop:** continue unless timing conflicts with shotlist/narration.
+
+**Model:** Sonnet preferred.
+
+---
+
+## Stage 8 — Narration Formatting
+
+**Purpose:** Prepare narration for voice generation.
+
+**Outputs:** clean narration text, delivery notes, pause markers, voice progression review.
+
+**Validation:** spoken delivery, rhythm variation, no procedural over-reporting, no excessive em dashes or repeated rhetorical frames.
+
+**Stop:** stop if narration requires user approval before audio generation.
+
+**Model:** Sonnet preferred; Opus for final creative polish.
+
+---
+
+## Stage 9 — Continuity Review
+
+**Purpose:** Validate the full production package.
+
+**Outputs:** continuity audit, performance-risk notes, blocking issues, optional improvements.
+
+**Validation Layers:** character, environment, object, lighting, escalation, camera, narration-to-visual alignment, hook/retention risk, pattern predictability.
+
+**Stop:** stop after review.
+
+**Model:** Opus preferred.
+
+---
+
+## Stage 10 — Memory Routing
+
+**Purpose:** Route only durable learnings to memory.
+
+**Outputs:** classified memory items and append-ready updates if direct file write is unavailable.
+
+**Validation:** patterns must be scored before durable promotion; do not treat all patterns equally.
+
+**Stop:** continue unless user wants to apply memory manually.
+
+**Model:** Sonnet preferred.
+
+---
+
+## Stage 11 — Execution Logging
+
+**Purpose:** Record run decisions, corrections, and high-impact learning opportunities.
+
+**Outputs:** run summary, decisions, corrections, performance reflection, repository update signals.
+
+**Validation:** log what happened and what should improve; do not default to “no updates required” if durable gaps exist.
+
+**Stop:** continue to repository recommendations if gaps were found.
+
+**Model:** Sonnet preferred.
+
+---
+
+## Stage 12 — Repository Update Recommendations
+
+**Purpose:** Identify repository updates needed after the run.
+
+**Outputs:** exact file path, change type, reason, expected impact, risk/tradeoff.
+
+**Validation:** recommend minimal changes only; avoid broad redesign.
+
+**Stop:** always stop after recommendations.
+
+**Model:** Sonnet for simple cleanup; Opus for architecture conflicts.
+
+---
+
+## Model Strategy
+
+Use Opus for:
+- story generation
+- narrator nuance
+- final polish
+- continuity/performance judgment
+- architecture conflict resolution
+
+Use Sonnet for:
 - scene breakdown
-- visual continuity anchors
-- camera and realism systems
-
-#### Outputs
-- shot number
-- scene reference
-- camera framing
-- subject
-- action
-- lighting
-- continuity notes
-- escalation notes
-
-#### Validation
-- visual variety must increase across shots
-- continuity must remain locked
-- each shot must be renderable
-- no abstract or non-visual instructions
-
-#### Stop Rule
-Stop for review if shot count, visual direction, or continuity is uncertain.
-
-#### Recommended Model
-- Sonnet acceptable
-- Opus if complex visual continuity is required
-
----
-
-### 6. Image Prompt Generation
-
-#### Purpose
-Convert shotlist entries into GPT-image-ready prompts.
-
-#### Required Inputs
-- approved shotlist
-- character identity lock
-- environment lock
-- visual escalation rules
-- image prompt standards
-
-#### Outputs
-- one image prompt per shot
-- consistent character/environment details
-- camera, lighting, mood, and realism details
-- negative constraints where useful
-
-#### Validation
-- prompts must be visually concrete
-- prompts must preserve continuity
-- prompts must avoid conflicting details
-- prompts must be suitable for batch generation
-
-#### Stop Rule
-Stop for approval before API generation.
-
-#### Recommended Model
-- Sonnet acceptable for formatting
-- Opus if prompt quality or continuity is weak
-
----
-
-### 7. Editing Script Generation
-
-#### Purpose
-Create production guidance for assembling the video.
-
-#### Required Inputs
-- story
-- scene breakdown
-- shotlist
-- image prompts or final visual plan
-
-#### Outputs
-- edit sequence
-- pacing notes
-- sound design notes
-- transition notes
-- music/ambience direction
-
-#### Validation
-- editing notes must support story tension
-- pacing must match escalation
-- sound design must not overpower narration
-
-#### Stop Rule
-Continue unless required visual or narration context is missing.
-
-#### Recommended Model
-- Sonnet acceptable
-
----
-
-### 8. Narration Formatting
-
-#### Purpose
-Prepare the story for voice generation and spoken delivery.
-
-#### Required Inputs
-- final or current story
-- narration style calibration
-- voice delivery rules
-
-#### Outputs
-- narration-ready text
-- pacing breaks
-- delivery notes if needed
-
-#### Validation
-- must preserve story meaning
-- must improve spoken flow
-- must remove awkward phrasing
-- must not over-edit the story voice
-
-#### Stop Rule
-Stop for approval before voice generation.
-
-#### Recommended Model
-- Sonnet acceptable
-- Opus if narration quality needs creative refinement
-
----
-
-### 9. Continuity Review
-
-#### Purpose
-Review all production outputs for consistency.
-
-#### Required Inputs
-- story
-- scenes
 - shotlist
 - image prompts
 - editing script
-- narration format
-
-#### Outputs
-- continuity issues
-- correction recommendations
-- approval status
-
-#### Validation
-- character continuity
-- environment continuity
-- escalation continuity
-- object continuity
-- narration-to-visual alignment
-
-#### Stop Rule
-Stop if continuity issues affect production quality.
-
-#### Recommended Model
-- Opus preferred for deep review
-- Sonnet acceptable for checklist review
-
----
-
-### 10. Memory Routing
-
-#### Purpose
-Decide whether any output, issue, preference, or improvement should be stored in memory.
-
-#### Required Inputs
-- stage output
-- user feedback
-- execution log notes
-- validation results
-
-#### Outputs
-- memory update recommendation
-- memory destination
-- no-update decision if nothing durable was learned
-
-#### Validation
-- memory must not become noisy
-- do not store routine outputs
-- route only reusable project intelligence
-
-#### Stop Rule
-Do not stop unless memory update requires user approval.
-
-#### Recommended Model
-- Sonnet acceptable
-
----
-
-### 11. Execution Logging
-
-#### Purpose
-Record diagnostic notes for debugging and system improvement.
-
-#### Required Inputs
-- completed stage
-- validation result
-- major decisions
-- roadblocks or corrections
-
-#### Outputs
-- structured log entry in `/logs/execution_log.md`
-
-#### Validation
-- log must be concise
-- log must not duplicate full creative output
-- log must record memory routing result
-
-#### Stop Rule
-Do not stop unless logging reveals a critical system issue.
-
-#### Recommended Model
-- Sonnet acceptable
-
----
-
-### 12. Repository Update Recommendations
-
-#### Purpose
-Identify whether any system file should be updated.
-
-#### Required Inputs
-- execution log
-- memory updates
-- repeated issues
-- user feedback
-- pattern promotion rules
-
-#### Outputs
-- recommended file path
-- change needed
-- reason
-- priority
-
-#### Validation
-- do not recommend new files if an existing file can be refined
-- do not promote one-off issues into hard rules
-- use `/systems/system_improvement_router.md`
-
-#### Stop Rule
-Stop and ask for approval before modifying repository files.
-
-#### Recommended Model
-- Sonnet acceptable
-- Opus if change affects core architecture
-
----
-
-## Model Boundary Rules
-
-Claude should recommend a model switch only at meaningful boundaries.
-
-Recommended Opus stages:
-- narrator identity generation
-- story generation
-- creative repair
-- continuity review
-- major architecture changes
-
-Recommended Sonnet stages:
-- scene breakdown
-- shotlist generation
-- image prompt formatting
-- editing script generation
 - narration formatting
-- logging
-- memory routing
+- memory/logging
 - repository cleanup
 
-Do not stop after every minor step just to recommend a model switch.
-
-Stop at model boundaries when quality would benefit from switching.
+Do not stop after every minor step only to recommend a model switch. Stop at meaningful model boundaries.
 
 ---
 
-## Autonomy Rules
+## Completion Block
 
-Claude should use reasonable defaults when:
-- the user seed is clear enough
-- missing details are low-risk
-- the next pipeline stage is obvious
-- the repository contains enough guidance
+At stop points, output only:
 
-Claude should ask a clarification question only when:
-- required context is missing
-- multiple valid interpretations would produce very different outputs
-- execution could violate system rules
-- a critical validation failure occurs
+```text
+Stage X complete.
+Next stage: [stage]
+Recommended model: [model]
+Your next action: [instruction]
+```
 
 ---
 
-## Integration Points
+## Logging Discipline
 
-This file connects to:
-
-- `/systems/prompt_engineering_layer.md`
-- `/systems/prompt_validation_logging.md`
-- `/systems/system_improvement_router.md`
-- `/logs/execution_log.md`
-- `/memory/README.md`
-- stage-specific prompt templates
-- relevant frameworks, playbooks, and wordbanks
+Memory routing and execution logging are required at terminal stages or when durable learning occurs.
+They should not create verbose bloat after every intermediate stage.
 
 ---
 
-## Completion Rule
+## Transcript Processing Validation Mode
 
-A stage is not complete until:
-- the requested output is produced
-- prompt validation has been considered
-- continuity has been preserved
-- memory routing has been considered
-- execution logging has been completed or recommended
-- next action is clear
+Use this mode when the user explicitly asks to process transcripts, validate batch intake, test duplicate detection, or run transcript intelligence only.
 
----
+This mode is separate from the standard production pipeline.
+Do not continue into story generation unless the user explicitly approves a production smoke test.
 
-## Summary
+**Order:**
 
-This map keeps Claude's execution structured, stage-aware, and quality-focused.
+1. Transcript intake setup
+2. Duplicate check
+3. Raw to cleaned
+4. Cleaned to structured
+5. Structured to distilled
+6. Distilled to indexed
+7. Output approval
+8. Execution logging
 
-It prevents unnecessary stopping while still preserving review points, model-switch boundaries, logging discipline, and repository improvement flow.
+**Required Systems:**
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_duplicate_detection.md`
+- `/systems/stage_checkpoints.md`
+- `/memory/transcript_processing_log.md`
+
+**Stop:** stop after indexed outputs and logging.
+
+**Model:** Sonnet normally; Opus only for nuanced narration-pattern extraction or architecture conflicts.

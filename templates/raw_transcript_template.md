@@ -6,7 +6,7 @@ This template stores untouched source transcript material before cleaning.
 
 Use this file for every transcript in:
 
-`/transcripts/raw/{source_type}/`
+`/transcripts/raw/`
 
 ---
 

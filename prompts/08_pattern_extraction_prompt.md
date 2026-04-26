@@ -171,3 +171,11 @@ It improves:
 - story consistency
 - pacing control
 - structural quality
+
+---
+
+## Scored Pattern Extraction Addendum
+
+Use `/systems/transcript_pattern_extraction_rules.md` and `/frameworks/13_pattern_scoring_framework.md`.
+
+Do not promote every observed pattern. Score candidates first and retain only mechanics with clear reuse value, tone fit, and low copying risk.

@@ -255,3 +255,9 @@ Invalid if:
 ## Compression Summary
 
 Inherit → Translate → Maintain → Escalate → Render
+
+---
+
+## Emotional Target Reference
+
+Image prompts may include one concise emotional target when it improves directorial clarity. Follow `/frameworks/14_emotional_targeting_system.md`. Keep the visual prompt concrete and avoid repeating emotional phrasing across prompts.

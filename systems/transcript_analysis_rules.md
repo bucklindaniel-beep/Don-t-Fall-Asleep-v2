@@ -146,3 +146,16 @@ Claude must prioritize originality and system learning over convenience.
 If unsure:
 → do NOT promote
 → keep insight at distilled stage
+
+---
+
+## Pattern Extraction Boundary
+
+Transcript analysis may identify candidate mechanics, but scoring and promotion are governed by:
+
+```text
+/systems/transcript_pattern_extraction_rules.md
+/frameworks/13_pattern_scoring_framework.md
+```
+
+Transcript analysis must not copy source content or promote weak, source-specific patterns.

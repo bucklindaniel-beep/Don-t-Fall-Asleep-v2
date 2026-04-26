@@ -1,63 +1,106 @@
 # Claude Project Instruction Reference
 
-This file exists only as a repository reference for the active Claude Desktop Project Instructions.
-
-The authoritative project instructions are stored in:
-
-```text
-Claude Desktop → Project → Instructions
-```
-
-Do not execute this file directly.
-Do not treat this file as the active control layer.
-Do not duplicate these instructions into other repository files.
-
-Repository files contain execution logic.
-Claude Desktop Project Instructions control how Claude loads and executes repository logic.
-
----
-
 ## Purpose
 
-This reference exists to preserve architecture clarity and prevent confusion between:
+This file documents the relationship between Claude Desktop Project Instructions and repository logic.
 
-- Claude Desktop Project Instructions = top-level behavior controller
-- Repository `/systems/` files = execution logic and reusable system rules
+Claude Desktop Project Instructions are the active top-level controller.
+Repository files define execution logic.
+
+Do not paste full desktop instructions here.
+Do not execute this file as a pipeline prompt.
 
 ---
 
-## Active Repository Logic Reference
+## Authority Model
 
-Claude Desktop Project Instructions should direct Claude to load and apply:
+1. Claude Desktop Project Instructions
+2. Active repository systems and frameworks
+3. Stage-specific prompts
+4. Memory and analysis files
 
-```text
-/systems/system_bootstrap.md
-/systems/stage_aware_execution.md
-/systems/stage_execution_map.md
-/systems/output_cleanliness_rules.md
-/systems/autonomy_rules.md
-/systems/memory_logging_system.md
-/systems/repository_update_system.md
-```
+When conflict exists, follow the desktop instructions and report the repository conflict.
 
-Stage-aware behavior is coordinated by:
+---
 
-```text
-/systems/stage_aware_execution.md
-```
+## Required Desktop Instruction Behavior
 
-Detailed stage order, stop points, validation rules, and model recommendations remain in:
+Claude Desktop Project Instructions should tell Claude to:
 
-```text
-/systems/stage_execution_map.md
-```
+- load only files required for the active mode and stage
+- follow `/systems/stage_execution_map.md`
+- apply `/systems/stage_aware_execution.md` during production runs
+- use `/systems/stage_checkpoints.md` when validation, source selection, model switching, duplicate handling, or output approval needs a controlled user decision
+- apply repository-defined pattern, scoring, composition, writing-quality, and emotional-targeting systems when relevant
+- treat those systems as execution rules, not optional suggestions
+- avoid redesigning repository logic during production runs
+- avoid direct repository edits unless explicitly instructed
+- keep outputs clean and stage-specific
 
-Do not copy those rules into this file.
+---
+
+## Core Repository References
+
+Load as needed, not globally:
+
+- `/systems/stage_execution_map.md`
+- `/systems/stage_aware_execution.md`
+- `/systems/stage_checkpoints.md`
+- `/systems/output_cleanliness_rules.md`
+- `/systems/memory_logging_system.md`
+- `/systems/repository_update_system.md`
+- `/frameworks/writing_quality_rules.md`
+- `/frameworks/10_organic_hook_system.md`
+- `/frameworks/11_organic_story_beat_system.md`
+- `/frameworks/12_pattern_composition_engine.md`
+- `/frameworks/13_pattern_scoring_framework.md`
+- `/frameworks/14_emotional_targeting_system.md`
+
+Transcript analysis may also load:
+
+- `/systems/01_transcript_pipeline_guide.md`
+- `/systems/transcript_stage_executor.md`
+- `/systems/transcript_storage_router.md`
+- `/systems/transcript_duplicate_detection.md`
+- `/systems/transcript_source_metadata_rules.md`
+- `/systems/transcript_pattern_extraction_rules.md`
+- `/memory/transcript_processing_log.md`
+
+Narration formatting and delivery analysis may also load:
+
+- `/frameworks/15_narration_pacing_system.md`
+- `/playbooks/05_narration_delivery_playbook.md`
+- `/analysis/narration_patterns/`
+
+---
+
+## Layer Separation Rule
+
+Claude must keep system layers separate:
+
+- structure mechanics inform story and scene architecture
+- realism mechanics inform believability and grounded escalation
+- narration mechanics inform sentence rhythm, pause placement, and delivery timing
+- retention mechanics inform pacing and watch-time support
+
+Narration references must not override structure logic or cause creator imitation.
+
+---
+
+## Duplicate Detection Rule
+
+Before transcript batch processing or writing distilled/indexed analysis, Claude must apply:
+
+- `/systems/transcript_duplicate_detection.md`
+- `/systems/transcript_storage_router.md`
+- `/memory/transcript_processing_log.md`
+
+Exact duplicates should be skipped.
+Near-duplicates should be merged only when they add useful new mechanics.
+Conflicts should be flagged instead of overwritten.
 
 ---
 
 ## Maintenance Rule
 
-When Claude Desktop Project Instructions are updated, this file should only be updated if the architecture or ownership model changes.
-
-Do not paste the full Claude Desktop Project Instructions into this repository file.
+Update this file only when the authority model, required references, or repository ownership model changes.

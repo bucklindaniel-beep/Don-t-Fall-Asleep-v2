@@ -194,3 +194,27 @@ Transcript → structured analysis → reusable system knowledge
 This prompt is critical for scaling your system.
 
 All knowledge refinement flows through this process.
+
+---
+
+## Pattern Intelligence Addendum
+
+After transcript cleanup and structure analysis, extract reusable mechanics using:
+
+```text
+/systems/transcript_pattern_extraction_rules.md
+/frameworks/13_pattern_scoring_framework.md
+```
+
+Extract mechanics only. Do not copy source premise, phrasing, characters, sequence, or story events.
+
+Prioritize:
+- organic opening patterns
+- curiosity loops
+- escalation functions
+- setup/payoff mechanics
+- pattern breaks
+- ending mechanics
+- sentence rhythm tendencies
+
+Each candidate pattern must include use case, non-use case, copying risk, and scoring recommendation.

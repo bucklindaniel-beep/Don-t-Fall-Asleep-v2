@@ -349,3 +349,11 @@ A sequence FAILS if:
 - escalation jumps stages  
 - stages are skipped  
 - progression resets without narrative cause  
+
+---
+
+## Scene Hook and Emotional Residue
+
+Each scene should clarify what changes for the viewer: a question raised, a tension increased, a contradiction introduced, or a realization delayed.
+
+Use `/frameworks/14_emotional_targeting_system.md` for emotional residue, but do not turn scene summaries into verbose analysis.

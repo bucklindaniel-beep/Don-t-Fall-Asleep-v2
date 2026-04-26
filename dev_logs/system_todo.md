@@ -1,83 +1,97 @@
 # System To-Do List
 
----
+## High Priority
 
-## Prompt Engineering Lab
+### Narration Pattern Layer
+- Why: MrBallen-style references add high-value pacing, delivery, and personality mechanics without becoming story-structure sources.
+- Impact: improves script quality, sentence rhythm, pause logic, and ElevenLabs readiness.
+- Claude impact: extracts narration mechanics only and applies them during narration formatting, not story generation.
 
-**Issue / Why**  
-- Prompt refinement currently happens ad hoc in GPT chats  
-- No standardized workflow for turning ideas into clean kickoff prompts  
+### Transcript Duplicate Detection Hardening
+- Why: batch intake can accidentally reprocess the same source or create duplicate analysis patterns.
+- Impact: prevents memory bloat, repeated distilled outputs, and duplicate pattern files.
+- Claude impact: checks source IDs, URLs, metadata, stage files, and existing pattern mechanics before writing.
 
-**Impact / Gain**  
-- Faster iteration on ideas  
-- Higher quality inputs into Claude  
-- Reduced ambiguity at pipeline start  
+### Transcript Intelligence Pass
+- Why: more high-quality reference material is needed before overbuilding analytics.
+- Impact: stronger organic hooks, beats, pacing, vocabulary, and endings.
+- Claude impact: extracts mechanics from proven niche content without copying.
 
-**How it SHOULD / WILL impact Claude**  
-- Claude receives clearer, more structured, higher-quality inputs  
-- Reduces need for interpretation → increases output consistency  
+### Pattern Scoring + Composition Validation
+- Why: new intelligence layer must be tested before adding more systems.
+- Impact: prevents memory bloat and pattern homogenization.
+- Claude impact: selects fewer, stronger, compatible mechanics.
 
----
+### Writing Quality Framework Validation
+- Why: new centralized rules must be smoke tested against story and narration outputs.
+- Impact: reduces procedural narration, repeated phrasing, and weak internal monologue.
+- Claude impact: improves story voice without rigid templates.
 
-## Pattern Promotion System
+### Organic Hook + Story Beat Validation
+- Why: hooks and beats must feel organic to horror, not clickbait.
+- Impact: improves retention while preserving older-viewer trust.
+- Claude impact: opens stronger and varies structure across runs.
 
-**Issue / Why**  
-- No structured method to capture and reuse successful patterns  
-- Risk of rediscovering the same improvements repeatedly  
+### Performance Review Layer
+- Why: continuity review currently catches correctness better than retention risk.
+- Impact: moves validation toward YouTube performance.
+- Claude impact: flags weak openings, flat zones, predictable escalation, and missed payoff.
 
-**Impact / Gain**  
-- System improves over time  
-- Prevents loss of high-performing prompt structures and narrative techniques  
+### Batch Transcript Intake
+- Why: multiple high-performing videos need to be collected without manual copy/paste.
+- Impact: faster reference expansion before transcript intelligence testing.
+- Claude impact: receives cleaner raw inputs while analysis remains stage-controlled.
 
-**How it SHOULD / WILL impact Claude**  
-- Claude behavior evolves through repository updates  
-- Outputs become more refined, varied, and consistent  
+### Playlist Transcript Download Support
+- Why: curated playlists can speed reference intake.
+- Impact: higher-volume transcript collection at low cost.
+- Claude impact: no direct effect; feeds `/transcripts/raw/` only.
 
----
+### Image Prompt Export System
+- Why: Stage 6 prompts need to become executable files later.
+- Impact: smoother OpenAI image generation bridge with fewer naming and continuity errors.
+- Claude impact: packages prompts with stable shot IDs and continuity locks.
 
-## Prompt Engineering Layer Integration
+### Image Prompt Reference Intelligence
+- Why: high-quality prompt examples can improve visual prompt mechanics.
+- Impact: stronger renderability and style consistency without copying source prompts.
+- Claude impact: extracts reusable image prompt mechanics only.
 
-**Issue / Why**  
-- Prompt construction and validation logic is not centralized  
-- Leads to inconsistency in how prompts are built and executed  
+## Medium Priority
 
-**Impact / Gain**  
-- Standardized prompt creation and validation  
-- More predictable and stable outputs  
+### API Bridge Architecture
+- Why: future OpenAI, ElevenLabs, and YouTube bridges need consistent manifests.
+- Impact: smoother automation with lower cost and fewer failures.
+- Claude impact: packages outputs into script-ready files without handling secrets.
 
-**How it SHOULD / WILL impact Claude**  
-- Claude operates under strict prompt construction + validation rules  
-- Reduces errors, drift, and low-quality generations  
+### Packaging System
+- Why: title, thumbnail, description, and tags drive reach.
+- Impact: improves YouTube click-through and search alignment.
+- Claude impact: generates upload packages after content stabilizes.
 
----
+### Pattern Performance Tracking
+- Why: scoring should eventually use real CTR, retention, comments, and completion data.
+- Impact: promotes patterns based on evidence.
+- Claude impact: learns from performance, not assumptions.
 
-## Execution Logging (In Progress)
+### Anti-Repetition Cooldown
+- Why: repeated structures will cause channel fatigue.
+- Impact: keeps long-term output fresh.
+- Claude impact: avoids recent hook, narrator, escalation, and ending combinations.
 
-**Issue / Why**  
-- Limited visibility into Claude’s decision-making during execution  
-- Hard to debug poor outputs or understand behavior  
+## Low Priority
 
-**Impact / Gain**  
-- Full transparency into execution  
-- Faster debugging and iteration cycles  
+### Post-Upload Feedback Loop
+- Why: requires real channel data.
+- Impact: long-term content optimization.
+- Claude impact: routes performance insights into future pattern scoring.
 
-**How it SHOULD / WILL impact Claude**  
-- Claude logs decision points, uncertainties, and rule conflicts  
-- Enables more precise system refinement  
+### Upload Automation
+- Why: useful after packaging and API bridge standards stabilize.
+- Impact: reduces manual upload work.
+- Claude impact: generates metadata/manifests, not platform strategy.
 
----
-
-## Idea Generation System
-
-**Issue / Why**  
-- System currently depends on user-provided ideas  
-- No structured way to generate, evaluate, and select ideas autonomously  
-
-**Impact / Gain**  
-- Enables scalable, semi-autonomous content generation  
-- Increases originality and variation  
-- Reduces reliance on user input  
-
-**How it SHOULD / WILL impact Claude**  
-- Claude can generate multiple ideas, evaluate them, and select the strongest  
-- Improves creativity while maintaining system control  
+### Thumbnail Debug Loop
+- Why: thumbnails need visual testing and feedback after content style stabilizes.
+- Impact: improves CTR.
+- Claude impact: generates thumbnail directions and learns from user review.

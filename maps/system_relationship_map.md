@@ -213,3 +213,10 @@ You MUST NOT:
 - override map-defined progression with improvisation
 
 Maps control how the system behaves, not just how it is organized.
+
+## Recent System Additions
+
+- `/systems/transcript_duplicate_detection.md` prevents duplicate transcript intake, duplicate script analysis, and repeated pattern indexing.
+- `/frameworks/15_narration_pacing_system.md` defines source-safe narration pacing mechanics.
+- `/playbooks/05_narration_delivery_playbook.md` prepares approved scripts for voice generation without copying creator style.
+- `/analysis/narration_patterns/` stores generalized narration mechanics only.

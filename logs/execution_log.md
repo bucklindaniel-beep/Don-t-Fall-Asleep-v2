@@ -371,3 +371,18 @@ A pipeline run is not complete until:
 - memory routing has been considered
 - repository update recommendations have been listed if needed
 - this execution log has a new entry
+
+---
+
+## Performance Reflection Rule
+
+Execution logs should record more than whether the run completed.
+
+For full pipeline runs, include concise notes on:
+- highest-impact creative decisions
+- likely weak points for retention or engagement
+- pattern reuse risks
+- system update recommendations
+- whether durable repository updates are needed
+
+Do not default to `No durable repository update required` when user feedback or repeated issues indicate system improvements.
