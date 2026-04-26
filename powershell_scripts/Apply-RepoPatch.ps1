@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $PatchRoot = Split-Path -Parent $ScriptDir
-$BackupRoot = Join-Path $RepoRoot "patch_backups\instruction_guardrail_patch_v1_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+$BackupRoot = Join-Path $RepoRoot "patch_backups\structural_distinctness_patch_v1_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
 
 $Files = @(
     "systems\02_claude_project_instructions.md",

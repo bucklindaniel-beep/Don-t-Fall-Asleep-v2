@@ -10,13 +10,11 @@ into Claude Desktop Project Instructions.
 
 This update adds:
 
-- CHAT CONTEXT CONTROL
-- PRE-EXECUTION RESTRICTION
-- PATTERN ID STABILITY
+- STRUCTURAL DISTINCTNESS RULE
 
 Purpose:
 
-- prevent same-chat transcript memory contamination
-- force filesystem re-read for every transcript batch
-- prevent pre-analysis outside the defined pipeline
-- prevent canonical ID drift and duplicate pattern creation
+- prevent subtype fragmentation
+- prevent duplicate NEW_CANONICAL creation
+- force escalation, sensory, timing, reveal-order, and medium variations into SUBTYPE_OF_EXISTING unless structurally irreducible
+- use HOLD_FOR_COMPARISON when uncertain
