@@ -87,6 +87,23 @@ Include:
 
 ---
 
+## LAYER ISOLATION (CRITICAL)
+
+Each stage operates independently.
+
+During a stage, Claude MUST NOT:
+
+- simulate file storage
+- execute logging systems
+- trigger downstream processes
+- evaluate output quality
+
+Pipeline flow:
+
+Stage Output → STOP → User Approval → External Execution → Next Stage
+
+---
+
 ## Output Routing
 
 Outputs MUST be written to:
