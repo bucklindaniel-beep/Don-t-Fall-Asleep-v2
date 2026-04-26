@@ -6,7 +6,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 if (-not (Test-Path ".\yt-dlp.exe")) {
-    throw "yt-dlp.exe not found in repo root. Place yt-dlp.exe in the repo root or update the script path."
+    throw "yt-dlp.exe not found in repo root. Place yt-dlp.exe in the repo root."
 }
 
 if (-not (Test-Path $InputFile)) {
@@ -28,10 +28,8 @@ foreach ($url in $urls) {
 
     .\yt-dlp.exe `
         --skip-download `
-        --write-auto-subs `
-        --write-subs `
-        --sub-langs "en.*,en" `
-        --convert-subs srt `
+        --write-sub `
+        --sub-langs "en" `
         --write-info-json `
         --write-thumbnail `
         --ignore-errors `
@@ -40,35 +38,44 @@ foreach ($url in $urls) {
         $url
 }
 
-Write-Host "Download complete. Converting SRT transcripts to MD..."
+Write-Host "Download complete. Converting subtitle transcripts to MD..."
 
-$srtFiles = Get-ChildItem $OutputRoot -Filter "*.srt"
-
-if ($srtFiles.Count -eq 0) {
-    throw "No .srt transcript files found in $OutputRoot. The video may not have English captions."
+$subtitleFiles = Get-ChildItem $OutputRoot -File | Where-Object {
+    $_.Extension -in ".vtt", ".srt"
 }
 
-foreach ($file in $srtFiles) {
+if ($subtitleFiles.Count -eq 0) {
+    throw "No .vtt or .srt transcript files found in $OutputRoot. Run: .\yt-dlp.exe --list-subs <URL> and confirm English captions exist."
+}
+
+foreach ($file in $subtitleFiles) {
     $baseName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
     $outputPath = Join-Path $OutputRoot "$baseName.md"
 
-    if (Test-Path $outputPath) {
-        Write-Host "Skipping existing MD: $outputPath"
-        continue
-    }
-
     Write-Host "Cleaning: $($file.Name)"
 
-    Get-Content $file.FullName |
+    $cleanLines = Get-Content $file.FullName |
         Where-Object {
             $_ -notmatch '^\d+$' -and
             $_ -notmatch '-->' -and
+            $_ -notmatch '^WEBVTT' -and
+            $_ -notmatch '^Kind:' -and
+            $_ -notmatch '^Language:' -and
             $_.Trim() -ne ''
         } |
         ForEach-Object {
-            $_.Trim()
+            $_ -replace '<[^>]+>', '' `
+               -replace '&amp;', '&' `
+               -replace '&quot;', '"' `
+               -replace '&#39;', "'" `
+               -replace '&lt;', '<' `
+               -replace '&gt;', '>'
         } |
-        Set-Content $outputPath -Encoding UTF8
+        ForEach-Object {
+            $_.Trim()
+        }
+
+    [System.IO.File]::WriteAllLines($outputPath, $cleanLines, [System.Text.UTF8Encoding]::new($false))
 
     Write-Host "Created: $outputPath"
 }
