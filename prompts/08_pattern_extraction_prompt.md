@@ -4,178 +4,234 @@
 - Type: Prompt
 - Domain: Analysis / Structural Pattern Identification
 - Primary Use Cases:
-  - extracting narrative patterns from transcripts
-  - refining pattern library
-  - improving structural consistency in stories
+  - extracting reusable mechanics from transcripts
+  - scoring candidate patterns
+  - comparing candidates against the canonical pattern library
+  - improving narration structure without copying source material
 - Retrieval Tags:
   - pattern extraction
   - structural analysis
   - repetition patterns
   - pacing patterns
+  - canonical pattern library
 - System Role:
   - identifies repeatable structural behaviors
-  - converts raw transcripts into reusable pattern definitions
+  - converts transcript observations into reusable candidate mechanics
+  - checks candidates against canonical pattern memory before promotion
 - Related Files:
-  - /analysis/patterns/*
-  - /analysis/techniques/*
-  - /prompts/05_transcript_analysis_prompt.md
+  - `/analysis/pattern_library.md`
+  - `/systems/transcript_pattern_extraction_rules.md`
+  - `/systems/pattern_promotion_bridge.md`
+  - `/frameworks/13_pattern_scoring_framework.md`
+  - `/prompts/05_transcript_analysis_prompt.md`
 - Status: active
 - Confidence: high
 
 ---
 
 ## Purpose
-This prompt extracts **structural patterns** from transcripts.
 
-Use this file to:
-- identify recurring narrative structures
-- build reusable story patterns
-- improve consistency across generated content
+This prompt extracts reusable storytelling mechanics from transcripts.
+
+It does not summarize transcripts.
+It does not collect content.
+It does not create final canonical patterns by itself.
+
+All extracted patterns are candidate mechanics until scored, deduplicated, and reviewed against `/analysis/pattern_library.md`.
 
 ---
 
-## Instructions (System Role)
+## Instructions
 
 You are a structural pattern extraction engine.
 
 You must:
-- identify repeatable structures
-- ignore one-off events
-- convert findings into reusable patterns
 
-You are NOT summarizing.
+- identify repeatable mechanics
+- ignore one-off content events
+- extract structure, function, and reusable behavior
+- compare each candidate against `/analysis/pattern_library.md`
+- merge variants under existing canonical patterns when appropriate
+- score candidates before recommending promotion
 
-You are extracting structure.
+You are not writing story content.
+You are not copying transcript language.
+You are not creating parallel pattern systems.
 
 ---
 
 ## Input Fields
 
 ### Transcript
-(full cleaned transcript)
+
+Cleaned or structured transcript text.
+
+### Existing Patterns
+
+Use `/analysis/pattern_library.md` as the canonical pattern reference.
+
+### Scoring Reference
+
+Use `/frameworks/13_pattern_scoring_framework.md`.
+
+### Extraction Rules
+
+Use `/systems/transcript_pattern_extraction_rules.md`.
 
 ---
 
-### Existing Patterns (Optional)
-(list of known patterns for comparison)
+## Extraction Process
+
+### 1. Check Canonical Library First
+
+Before naming or promoting a candidate:
+
+- search `/analysis/pattern_library.md`
+- identify possible matches
+- determine whether the candidate is:
+  - existing canonical match
+  - variant of existing canonical
+  - possible new candidate
+  - low-value observation
 
 ---
 
-## Extraction Instructions
+### 2. Identify Candidate Mechanics
 
-### 1. Identify Pattern Candidates
 Look for:
-- repeated sequences of events
-- consistent escalation structures
-- recurring narrative flows
+
+- repeated sequence logic
+- escalation mechanics
+- tension pacing structures
+- realism anchors
+- psychological pressure patterns
+- uniqueness or repetition-control mechanics
+- reusable audience-retention mechanics
+
+Ignore:
+
+- plot events
+- character identities
+- source-specific twists
+- exact phrasing
+- scenes that only work in one transcript
 
 ---
 
-### 2. Validate Pattern
-A valid pattern must:
-- occur multiple times OR be structurally clear
-- influence pacing, tension, or structure
-- be reusable across stories
+### 3. Validate Candidate
+
+A valid candidate must:
+
+- affect pacing, tension, structure, realism, or narration quality
+- be reusable across multiple original stories
+- be described as mechanics only
+- avoid source phrasing or source structure copying
+- not duplicate an existing canonical pattern
 
 ---
 
-### 3. Name the Pattern
-- concise and descriptive
-- based on function, not content
+### 4. Name Candidate
+
+Use names that are:
+
+- concise
+- function-based
+- content-neutral
+- lowercase/standard title case as appropriate
+- compatible with existing canonical naming style
+
+Do not name patterns after transcript-specific content.
 
 ---
 
-### 4. Define the Pattern
+### 5. Define Candidate
+
 Include:
-- clear definition
-- how it works
+
+- functional definition
+- how the mechanic works
 - what it affects
+- when it should be used
+- when it should be avoided
 
 ---
 
-### 5. Extract Structure
-Break pattern into steps.
+### 6. Extract Structure
 
-Example:
-1. event occurs  
-2. event repeats  
-3. variation introduced  
+Break the mechanic into reusable steps.
 
----
+Use paraphrased mechanics only.
+Do not include transcript excerpts.
 
-### 6. Extract Evidence
-Provide:
-- brief excerpts or paraphrased examples
+Example format:
 
----
-
-### 7. Describe Usage
-Explain:
-- when it appears
-- why it works
+1. ordinary baseline is established
+2. small disruption repeats
+3. variation breaks the expected pattern
+4. threat implication escalates
 
 ---
 
-### 8. Categorize
-Assign:
-- pacing / escalation / structural / psychological
+### 7. Evidence Handling
+
+Evidence must be paraphrased.
+
+Allowed:
+
+- mechanical observations
+- generalized examples
+- transcript section references when available
+
+Not allowed:
+
+- direct quotes
+- copied phrasing
+- source-specific scene reconstruction
+- detailed content retelling
+
+---
+
+### 8. Score Candidate
+
+Score using `/frameworks/13_pattern_scoring_framework.md`.
+
+Do not recommend promotion unless the candidate has clear reuse value and low copying risk.
 
 ---
 
 ## Output Format
 
-For each pattern:
+For each candidate:
 
-#### Pattern Name  
-#### Definition  
-#### Structure  
-#### Evidence  
-#### Usage Context  
-#### Category  
+#### Candidate Pattern Name
+#### Canonical Library Match
+- Existing Match / Variant / New Candidate / Reject
+
+#### Definition
+#### Reusable Structure
+#### Paraphrased Evidence
+#### Usage Context
+#### Avoid When
+#### Category
+#### Score Summary
+#### Promotion Recommendation
+- Promote / Hold / Merge / Reject
 
 ---
 
 ## Rules
 
-- no vague patterns  
-- no single-instance patterns  
-- no invented structures  
-- must be reusable  
-- must be clearly supported  
-
----
-
-## Output Format
-
-Markdown  
-Clean sections  
-Multiple patterns allowed  
-
----
-
-## Example Invocation
-
-Transcript: [TEXT]
+- mechanics only
+- no direct excerpts
+- no copied phrasing
+- no story-specific content storage
+- no duplicate canonical patterns
+- no prompt-level override of system files
+- do not promote every observed pattern
+- canonical destination is `/analysis/pattern_library.md`
 
 ---
 
 ## Compression Summary
-Transcript → identify structure → formalize into patterns
 
----
-
-## Notes
-This prompt builds your pattern library over time.
-
-It improves:
-- story consistency
-- pacing control
-- structural quality
-
----
-
-## Scored Pattern Extraction Addendum
-
-Use `/systems/transcript_pattern_extraction_rules.md` and `/frameworks/13_pattern_scoring_framework.md`.
-
-Do not promote every observed pattern. Score candidates first and retain only mechanics with clear reuse value, tone fit, and low copying risk.
+Transcript → mechanics extraction → canonical comparison → scoring → promote, hold, merge, or reject.
