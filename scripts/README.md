@@ -1,8 +1,19 @@
-# PowerShell Scripts
+# Scripts
 
 This folder contains local execution scripts for the production pipeline.
 
 These scripts are execution infrastructure, not Claude system logic.
+
+---
+
+## Folder Structure
+
+```text
+/scripts
+  /transcripts
+  /image_generation
+  /audio_generation
+```
 
 ---
 
@@ -12,7 +23,7 @@ These scripts are execution infrastructure, not Claude system logic.
 - FFmpeg
 - PowerShell 7 recommended
 
-Current local tool paths used by the scripts:
+Current local tool paths used by the transcript scripts:
 
 ```text
 C:\AI Production\Tools\yt-dlp\yt-dlp.exe
@@ -23,29 +34,25 @@ The scripts use absolute tool paths, so they can be run from any PowerShell loca
 
 ---
 
-## Script Overview
+## Transcript Scripts
 
-### ingest_youtube_transcript.ps1
+### /scripts/transcripts/ingest_youtube_transcript.ps1
 
 Purpose:
 - Pulls a YouTube transcript/subtitle file into `/transcripts/raw`.
 - Downloads available `.info.json` metadata.
 - Uses FFmpeg for subtitle conversion when needed.
 
-Run:
+Run from repository root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\ingest_youtube_transcript.ps1 -Url "YOUTUBE_URL"
+.\scripts\transcripts\ingest_youtube_transcript.ps1 -Url "YOUTUBE_URL"
 ```
-
-Use when:
-- You only want raw transcript artifacts.
-- You are testing yt-dlp ingestion by itself.
 
 ---
 
-### post_process_transcript.ps1
+### /scripts/transcripts/post_process_transcript.ps1
 
 Purpose:
 - Cleans raw `.srt`, `.vtt`, or `.txt` transcript files.
@@ -54,20 +61,16 @@ Purpose:
 - Outputs metadata-rich cleaned `.md` files into `/transcripts/cleaned`.
 - Uses bracket-safe YouTube ID matching.
 
-Run:
+Run from repository root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\post_process_transcript.ps1
+.\scripts\transcripts\post_process_transcript.ps1
 ```
-
-Use when:
-- Raw transcripts already exist in `/transcripts/raw`.
-- You want to clean and metadata-tag them before Claude analysis.
 
 ---
 
-### structure_cleaned_transcript.ps1
+### /scripts/transcripts/structure_cleaned_transcript.ps1
 
 Purpose:
 - Creates structured transcript scaffolds from cleaned transcript files.
@@ -76,20 +79,16 @@ Purpose:
 - Prevents duplicate/conflicting `Pipeline Stage`, `Previous Stage`, and `Next Stage` values.
 - Does not analyze story structure.
 
-Run:
+Run from repository root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\structure_cleaned_transcript.ps1
+.\scripts\transcripts\structure_cleaned_transcript.ps1
 ```
-
-Use when:
-- Cleaned transcripts already exist.
-- You want Claude-ready structured scaffold files.
 
 ---
 
-### run_youtube_transcript_pipeline.ps1
+### /scripts/transcripts/run_youtube_transcript_pipeline.ps1
 
 Purpose:
 - Runs the full local YouTube transcript preparation flow:
@@ -99,22 +98,29 @@ Purpose:
 - Checks for duplicate structured files.
 - Supports targeted cleanup and reprocessing.
 
-Run normal:
+Run normal from repository root:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\run_youtube_transcript_pipeline.ps1 -Url "YOUTUBE_URL"
+.\scripts\transcripts\run_youtube_transcript_pipeline.ps1 -Url "YOUTUBE_URL"
 ```
 
 Force cleanup and reprocess:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\run_youtube_transcript_pipeline.ps1 -Url "YOUTUBE_URL" -ForceReprocess
+.\scripts\transcripts\run_youtube_transcript_pipeline.ps1 -Url "YOUTUBE_URL" -ForceReprocess
 ```
 
-Use when:
-- You want the normal end-to-end YouTube transcript preparation flow.
+---
+
+## Image Generation Scripts
+
+### /scripts/image_generation/generate_images_from_prompts.ps1
+
+Purpose:
+- Generates images from prepared image prompt files.
+- Belongs in image generation execution, not transcript processing.
 
 ---
 
@@ -137,7 +143,9 @@ YouTube URL
 
 ## Rules
 
-- Keep `.ps1` files in `/powershell_scripts`.
+- Keep transcript `.ps1` files in `/scripts/transcripts`.
+- Keep image-generation `.ps1` files in `/scripts/image_generation`.
+- Keep future audio-generation `.ps1` files in `/scripts/audio_generation`.
 - Do not place scripts inside `/systems`, `/prompts`, or `/frameworks`.
 - Do not store API keys in scripts.
 - Use `.env`, environment variables, or secure local config for secrets later.
