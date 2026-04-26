@@ -145,6 +145,19 @@ Indexed output is not canonical until approved and written to:
 
 ---
 
+## Multi-Story Compilation Handling
+
+Compilation files are allowed when clearly segmented.
+
+If a raw file contains multiple `## Story` sections:
+
+- treat each story as an independent transcript unit
+- preserve source name + story ID at every stage
+- do not allow mechanics from one story to support another unless the same mechanic recurs independently
+- aggregate only after story-level distilled/indexed analysis
+
+Creator metadata is optional for core transcript intelligence. Unknown creator/title/URL values do not block cleanup, segmentation, pattern extraction, narrator logic, or indexing.
+
 ## Transcript Mode Output Scope
 
 In TRANSCRIPT MODE v4:
@@ -200,7 +213,7 @@ The transcript pipeline is invalid if:
 
 ## Write-Back Status
 
-Persistent write-back is deferred until post-training validation.
+Persistent write-back is controlled by /systems/write_back_protocol.md and requires explicit user approval.
 
 Until explicitly activated:
 

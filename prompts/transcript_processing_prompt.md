@@ -41,6 +41,7 @@ Read before acting:
 - /systems/01_transcript_pipeline_guide.md
 - /systems/transcript_stage_executor.md
 - /systems/transcript_storage_router.md
+- /systems/write_back_protocol.md
 - /systems/transcript_source_metadata_rules.md
 - /systems/transcript_pattern_extraction_rules.md
 - /frameworks/13_pattern_scoring_framework.md
@@ -101,6 +102,10 @@ Return only:
 Do not return raw, cleaned, or structured unless the user explicitly requests debugging output.
 
 ---
+
+## Multi-Story Rule
+
+If a raw file contains multiple `## Story` sections, treat each story section as an independent transcript unit. Preserve story IDs and prevent cross-story contamination.
 
 ## Pattern Candidate Control
 

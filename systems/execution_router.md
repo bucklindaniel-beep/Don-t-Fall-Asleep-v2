@@ -8,7 +8,7 @@ Define authoritative execution flow for the Don't Fall Asleep production system.
 
 ## Authority
 
-This file controls stage order and stop behavior.
+This file controls execution mode, stage order, and stop behavior.
 
 Output format is controlled by:
 
@@ -16,10 +16,11 @@ Output format is controlled by:
 /systems/output_contract.md
 ```
 
-Transcript storage is controlled by:
+Transcript storage and write targets are controlled by:
 
 ```text
 /systems/transcript_storage_router.md
+/systems/write_back_protocol.md
 ```
 
 ---
@@ -30,6 +31,7 @@ Claude operates in one mode at a time:
 
 1. TRANSCRIPT MODE
 2. PRODUCTION MODE
+3. WRITE-BACK MODE
 
 Do not mix modes.
 
@@ -50,7 +52,16 @@ During active transcript training runs:
 - execute full pipeline in one run
 - do not stop between transcript stages
 - return only DISTILLED and INDEXED
-- do not write files unless explicit write-back is requested
+- do not write files unless WRITE-BACK MODE is explicitly activated
+
+### Multi-Story Raw Files
+
+If a raw file contains multiple `## Story` sections:
+
+- treat each story section as an independent transcript unit
+- preserve story IDs through all internal stages
+- prevent cross-story pattern contamination
+- aggregate only after story-level analysis is complete
 
 ---
 
@@ -70,12 +81,41 @@ After each production stage:
 
 ---
 
+## WRITE-BACK MODE Route
+
+WRITE-BACK MODE is disabled by default.
+
+It activates only when the user explicitly says:
+
+```text
+write back approved
+```
+
+When active, follow:
+
+```text
+/systems/write_back_protocol.md
+```
+
+Allowed write sequence:
+
+1. verify approved output
+2. check duplicates
+3. write stage artifacts to approved folders
+4. log concise execution note
+5. stop for audit
+
+Pattern library updates require separate promotion approval.
+Raw cleanup requires separate artifact cleanup approval.
+
+---
+
 ## Global Rules
 
 Claude must not:
 
 - skip stages
-- merge stages incorrectly
+- merge modes
 - invent missing stages
 - simulate file writes
 - claim storage occurred without actual write execution
@@ -96,7 +136,7 @@ Do not interrupt execution solely to recommend a model unless the stage boundary
 
 ## Logging Boundary
 
-Logging is deferred unless explicitly requested or write-back mode is active.
+Logging is deferred unless explicitly requested or WRITE-BACK MODE is active.
 
 When active, logging routes to:
 

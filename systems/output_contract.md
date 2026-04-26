@@ -57,6 +57,7 @@ Required top-level sections:
 Include:
 
 - source list
+- story list when source files contain multiple stories
 - canonical library read confirmation
 - pattern extraction table
 - promotion summary
@@ -80,9 +81,27 @@ For each promoted, merged, held, or rejected pattern include:
 - score
 - mechanic description
 - evidence summarized as mechanics
+- source/story reference
 - action
 
 Do not assign permanent pattern IDs to new candidates.
+
+---
+
+## WRITE-BACK MODE Contract
+
+When WRITE-BACK MODE is active, user-facing output must be concise.
+
+Required top-level sections:
+
+```text
+# WRITE-BACK SUMMARY
+# FILES WRITTEN
+# SKIPPED OR FLAGGED
+```
+
+Do not include internal reasoning.
+Do not claim pattern promotion unless /analysis/pattern_library.md was actually updated.
 
 ---
 

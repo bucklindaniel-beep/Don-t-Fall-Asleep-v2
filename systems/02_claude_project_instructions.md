@@ -97,6 +97,9 @@ raw -> cleaned -> structured -> distilled -> indexed
 ### PRODUCTION MODE
 narrator -> story -> scenes -> shotlist -> image_prompts -> narration -> packaging
 
+### WRITE-BACK MODE
+explicit approval -> duplicate check -> approved file writes -> concise log
+
 Do NOT mix modes.
 
 ---
@@ -129,6 +132,17 @@ Do NOT:
 - assume file presence
 - rely on prior context
 - process unseen or unverified files
+
+---
+
+## MULTI-STORY TRANSCRIPT HANDLING
+
+If a raw file contains multiple `## Story` sections:
+
+- treat each story as an independent transcript unit
+- preserve story IDs through cleaned, structured, distilled, and indexed stages
+- prevent cross-story contamination
+- aggregate patterns only after story-level analysis is complete
 
 ---
 
@@ -277,6 +291,27 @@ Do NOT:
 
 ---
 
+## WRITE-BACK CONTROL
+
+Write-back is disabled by default.
+
+Claude may write repository files only when the user explicitly says:
+
+```text
+write back approved
+```
+
+Pattern library updates require separate pattern promotion approval.
+Raw cleanup requires separate artifact cleanup approval.
+
+Follow:
+
+```text
+/systems/write_back_protocol.md
+```
+
+---
+
 ## DUPLICATE DETECTION
 
 Before saving ANY output:
@@ -292,7 +327,7 @@ After pipeline completion (TRANSCRIPT MODE) OR after each stage (PRODUCTION MODE
 
 Log to:
 
-/memory/execution_log.md
+/logs/execution_log.md
 
 Include:
 

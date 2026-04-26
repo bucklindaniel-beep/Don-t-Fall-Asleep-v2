@@ -2,60 +2,49 @@
 
 ## Purpose
 
-This template creates a concise searchable pattern index entry from distilled transcript insights.
+Create a concise searchable index entry from distilled transcript insights.
 
-Use this file for every pattern stored in:
+Indexed transcript files are audit artifacts. They are not canonical pattern memory until approved and written to:
 
 ```text
-/transcripts/indexed/
+/analysis/pattern_library.md
 ```
 
 ---
 
-# Pattern Index Entry
+# Transcript — Indexed
 
 ## Metadata
-- Pattern Name:
-- Source Name(s):
-- Source Type(s):
-- Source Category:
-- Genre:
-- Distilled File(s):
+
+- Source Name:
+- Source File:
+- Source Type:
+- Story IDs:
+- Distilled File:
 - Stage: indexed
 - Date Indexed:
 
 ---
 
-## Pattern Summary
+## Pattern Index
 
-Describe the pattern in abstract, reusable terms.
-
----
-
-## Tags
-
-- Source Type:
-- Genre:
-- Technique:
-- Tension:
-- Structure:
+| Pattern | Consolidation Status | Class | Score | Story Reference | Action |
+|---|---|---:|---:|---|---|
+|  |  |  |  |  |  |
 
 ---
 
-## Reuse Guidance
+## Pattern Records
 
-- Best Use:
-- Avoid:
-- Risk:
+### [Canonical or Candidate Name]
 
----
-
-## Promotion Status
-
-- Promotion Candidate: yes / no
-- Evidence Count:
-- Appears Across Multiple Sources: yes / no
-- Recommended Destination: `/analysis/` / `/frameworks/` / `/memory/` / no promotion yet
+- Consolidation Status:
+- Class:
+- Score:
+- Mechanic Description:
+- Evidence Summary: mechanics only; no source phrasing
+- Story Reference:
+- Action:
 
 ---
 
@@ -64,3 +53,4 @@ Describe the pattern in abstract, reusable terms.
 - Source phrasing copied: No
 - Single-source structure copied: No
 - Abstract guidance only: Yes
+- Permanent pattern ID assigned to unapproved candidate: No

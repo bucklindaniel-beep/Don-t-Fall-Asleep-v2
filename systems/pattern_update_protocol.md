@@ -4,9 +4,13 @@
 
 This protocol defines how new transcript outputs are converted into repository memory.
 
-Use this only after transcript outputs have been audited.
+Use this only after transcript outputs have been audited and pattern promotion has been explicitly approved.
 
 ---
+
+## Approval Boundary
+
+Do not update /analysis/pattern_library.md during normal transcript validation. Pattern library writes require explicit pattern promotion approval and must follow /systems/write_back_protocol.md.
 
 ## Update Sequence
 
@@ -16,7 +20,7 @@ Use this only after transcript outputs have been audited.
 4. Merge duplicates
 5. Add only approved canonicals
 6. Update pattern_index_map.md
-7. Log major changes in execution_log.md if applicable
+7. Log major changes in /logs/execution_log.md if applicable
 
 ---
 

@@ -2,52 +2,50 @@
 
 ## Purpose
 
-This template stores untouched source transcript material before cleaning.
+This template stores raw transcript material before pipeline processing.
 
-Use this file for every transcript in:
+Use this file for every manually prepared transcript in:
 
-`/transcripts/raw/`
+```text
+/transcripts/raw/
+```
 
 ---
 
-## Instructions
+## Rules
 
-- Preserve the transcript exactly as provided.
-- Do not clean or rewrite.
-- Do not summarize.
-- Do not analyze.
-- Do not extract patterns.
-- Use `.md` format.
-- Complete metadata before processing.
+- Preserve original wording.
+- Fix only obvious transcription errors.
+- Use functional, non-creative story titles.
+- Do not summarize or interpret.
+- Do not add narrative language to metadata.
+- Keep metadata separate from transcript text.
+- Segment individual stories inside compilation files.
+- Creator, URL, and original title may remain unknown when unavailable.
 
 ---
 
 # Transcript — Raw
 
-## Transcript Metadata
+## Metadata
 
 - Source Name:
-- Source Type: youtube_video | reddit_story | movie_script | book_excerpt | podcast_transcript | original_test_seed | other
-- Source Category: horror_narration | psychological_horror | paranormal_horror | true_story_style | analog_horror | thriller | screenwriting | general_storytelling | other
-- Channel / Creator:
-- Title:
-- Genre:
-- Production Level: amateur | semi_professional | professional | unknown
-- Intended Use: analysis_only
-- Date Added:
-- Raw File Path:
-- Notes:
+- Source Type:
+- Original Title:
+- Creator:
+- URL:
+- Date Ingested:
+- Story Count:
+- Pipeline Stage: raw
 
 ---
 
-## Classification Notes
+## Story 01 — [Functional Title]
 
-- Why this Source Type was selected:
-- Why this Source Category was selected:
-- Production Level rationale:
+[Lightly cleaned transcript text only]
 
 ---
 
-## Raw Transcript
+## Story 02 — [Functional Title]
 
-(Paste the untouched transcript below.)
+[Text]

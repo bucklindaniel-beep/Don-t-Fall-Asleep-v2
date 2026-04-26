@@ -29,7 +29,49 @@ Transcript pipeline storage follows:
 /transcripts/indexed/
 ```
 
+Place ingestion-ready raw `.md` files directly in `/transcripts/raw/` unless the execution router is later updated for recursive folder scans.
+
 Do not create source-type subfolders unless the user explicitly requests a future storage redesign.
+
+---
+
+## Raw Metadata Rule
+
+Raw transcript metadata is structural scaffolding, not story content.
+
+Creator, original title, and URL may be unknown during local ingest.
+
+Use truthful placeholders when source metadata is unavailable:
+
+```text
+Creator: unknown
+URL: local_ingest
+```
+
+Do not guess creator, channel, URL, or original title.
+
+Core transcript intelligence is content-driven. Metadata-enhanced systems may patch source metadata later.
+
+---
+
+## Multi-Story File Rule
+
+A raw file may contain multiple story sections:
+
+```text
+## Story 01 — Functional Title
+```
+
+Each story section is an independent analysis unit.
+
+Required preservation through all stages:
+
+- source name
+- story ID
+- functional title
+- source file path
+
+Batch-level outputs may aggregate patterns only after story-level analysis is complete.
 
 ---
 
@@ -43,7 +85,7 @@ Raw may contain source-acquisition artifacts:
 - .info.json
 - .md
 
-Cleaned, structured, distilled, and indexed outputs use Markdown .md.
+Cleaned, structured, distilled, and indexed outputs use Markdown `.md`.
 
 ---
 
@@ -80,15 +122,17 @@ Frameworks may reference canonical patterns, but they are not the canonical patt
 Before writing transcript pipeline outputs, check:
 
 1. /memory/transcript_processing_log.md
-2. existing transcript stage files
-3. source metadata where available
+2. /logs/execution_log.md when relevant
+3. existing transcript stage files
+4. source metadata where available
 
 Strongest duplicate identifiers:
 
 1. YouTube Video ID
 2. URL
-3. metadata file name
-4. source title as fallback only
+3. source file name
+4. exact title + creator when known
+5. story ID inside source file
 
 Do not overwrite or duplicate files unless the user explicitly requests reprocessing.
 
@@ -96,16 +140,20 @@ Do not overwrite or duplicate files unless the user explicitly requests reproces
 
 ## Write-Back Status
 
-Persistent write-back is deferred until approved.
+Persistent write-back is controlled by:
 
-Until write-back mode is explicitly activated:
+```text
+/systems/write_back_protocol.md
+```
+
+Until WRITE-BACK MODE is explicitly activated:
 
 - return outputs for audit
 - do not update pattern_library.md
 - do not delete raw files
 - do not archive raw files
 
-After write-back mode is activated, raw cleanup may move processed files to an archive or delete them according to the approved cleanup rule.
+After WRITE-BACK MODE is activated, raw cleanup still requires separate artifact cleanup approval.
 
 ---
 
@@ -114,4 +162,5 @@ After write-back mode is activated, raw cleanup may move processed files to an a
 - /systems/01_transcript_pipeline_guide.md
 - /systems/transcript_duplicate_detection.md
 - /systems/pattern_promotion_bridge.md
+- /systems/write_back_protocol.md
 - /analysis/pattern_library.md

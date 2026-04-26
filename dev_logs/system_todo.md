@@ -95,3 +95,25 @@
 - Why: thumbnails need visual testing and feedback after content style stabilizes.
 - Impact: improves CTR.
 - Claude impact: generates thumbnail directions and learns from user review.
+
+## Added — Write-Back + Compilation Support
+
+### Write-Back Protocol Activation
+- Why: Claude needs explicit permission boundaries before writing indexed outputs, pattern updates, logs, or cleanup actions.
+- Impact: enables durable learning without accidental overwrites or premature promotion.
+- Claude impact: writes only after `write back approved`, with duplicate checks and concise logs.
+
+### Story-Level Compilation Processing
+- Why: YouTube compilations and mixed transcript files contain multiple independent stories.
+- Impact: prevents cross-story contamination and improves scoring reliability.
+- Claude impact: treats each `## Story` section as an independent transcript unit, then aggregates after analysis.
+
+### Metadata Placeholder Safety
+- Why: creator/title/URL may be unknown during local transcript prep.
+- Impact: preserves traceability without fabricated source data.
+- Claude impact: uses `Creator: unknown` and `URL: local_ingest` safely; future metadata systems can patch values later.
+
+### Claude Desktop Instruction Sync Check
+- Why: repo logic and Claude Desktop Project Instructions can drift.
+- Impact: prevents runtime mismatch after repository updates.
+- Claude impact: validate Desktop instructions alongside updated repository files before major execution runs.

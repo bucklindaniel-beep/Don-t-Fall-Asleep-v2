@@ -31,6 +31,10 @@ When operating in TRANSCRIPT MODE v4:
 
 ---
 
+## Multi-Story Execution Rule
+
+If a raw file contains multiple `## Story` sections, execute each story as an independent unit and preserve story IDs through all internal stages. Aggregate only after story-level analysis is complete.
+
 ## Stage Rules
 
 Claude must:
@@ -45,7 +49,7 @@ Claude must not:
 - copy content into patterns
 - create duplicate canonicals
 - rely on in-session memory
-- claim write-back unless an explicit filesystem write is completed
+- claim write-back unless WRITE-BACK MODE is active and an explicit filesystem write is completed
 
 ---
 
