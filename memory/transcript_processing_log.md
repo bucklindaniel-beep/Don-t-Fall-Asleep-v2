@@ -60,3 +60,23 @@ If this log and repository files disagree, Claude must record the inconsistency 
 ## Log Entries
 
 <!-- Add new transcript processing entries below this line. Do not delete old entries. -->
+
+### pipeline_validation_seed_01
+
+- Source Type: manual_text_input
+- Source Category: validation
+- Channel / Creator: user_provided
+- Title: Pipeline Validation Seed 01
+- Genre: horror / paranormal
+- Production Level: fragment
+- Intended Use: analysis_only
+- Raw file: none — manual paste intake
+- Cleaned: `/transcripts/cleaned/pipeline_validation_seed_01.cleaned.md`
+- Structured: pending
+- Distilled: pending
+- Indexed pattern(s): pending
+- Status: incomplete
+- Date processed: 2026-04-26
+- Reprocessing reason: none
+- Duplicate check result: new — no prior entries found
+- Notes: Single-sentence fragment submitted by user for pipeline validation testing. Intake began at cleaned stage per pipeline rules for readable unstructured text.

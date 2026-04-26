@@ -25,7 +25,7 @@ This file is **not** a memory file.
 
 Do not store long-term lessons here unless they are also routed to the correct `/memory/` file.
 
-Because this file lives in `/logs/`, it may be excluded from Claude’s project ingestion depending on system configuration. Treat it as a local diagnostic artifact, not a source-of-truth system file.
+Because this file lives in `/logs/`, it may be excluded from Claude's project ingestion depending on system configuration. Treat it as a local diagnostic artifact, not a source-of-truth system file.
 
 ---
 
@@ -386,3 +386,61 @@ For full pipeline runs, include concise notes on:
 - whether durable repository updates are needed
 
 Do not default to `No durable repository update required` when user feedback or repeated issues indicate system improvements.
+
+---
+
+## Execution Entry: 2026-04-26
+
+### Run Type
+- stage_run
+
+### User Input Summary
+- User submitted a single-sentence manual text fragment for transcript pipeline validation. Content: a person noticing an object displaced in their home upon waking.
+
+### Stage Executed
+- Stage name: cleaned
+- Status: completed
+
+### Prompt Validation
+- Validation required: no — manual intake, not a production-stage prompt
+- Validation status: skipped
+
+### Pipeline Progress
+- Cleaned: completed
+- Structured: not_started
+- Distilled: not_started
+- Indexed: not_started
+
+### Systems Applied
+- /systems/execution_router.md
+- /systems/transcript_stage_executor.md
+- /systems/transcript_storage_router.md
+- /systems/transcript_duplicate_detection.md
+- /templates/cleaned_transcript_template.md
+
+### Key Decisions
+- Decision: Source phrasing abstracted during cleaning
+  - Reason: NEVER copy source phrasing rule; single sentence required restatement
+  - Impact: Cleaned file is analysis-safe
+- Decision: No raw file artifact created
+  - Reason: Input was manual paste; pipeline rules direct readable unstructured text to start at cleaned stage
+  - Impact: Pipeline begins at cleaned stage as intended
+
+### Defaults Used
+- Genre inferred as horror/paranormal
+  - Why it was safe: Displacement-on-waking is a recognized horror/paranormal setup
+- Production Level set to fragment
+  - Why it was safe: Single sentence cannot be assessed at higher production levels
+
+### Duplicate Check
+- /memory/transcript_processing_log.md: no entries — clear
+- /transcripts/cleaned/: no matching file — clear
+- Status: new source
+
+### Memory Routing
+- Memory evaluated: yes
+- Memory update required: no
+- No durable memory update required.
+
+### Next Action
+- Awaiting user confirmation to proceed to Stage 2 → STRUCTURED
