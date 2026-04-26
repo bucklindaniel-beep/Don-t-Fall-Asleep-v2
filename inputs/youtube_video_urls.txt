@@ -2,5 +2,3 @@
 # Start with ONE MrBallen video for validation.
 # Example:
 # https://www.youtube.com/watch?v=VIDEO_ID
-
-https://www.youtube.com/watch?v=G5Zr0gqa1yk&pp=ygUJbXIgYmFsbGVu
