@@ -1,6 +1,7 @@
 # Transcript Pattern Extraction Rules
 
 ## Metadata
+
 - Type: System
 - Domain: Transcript Analysis / Pattern Extraction
 - Status: active
@@ -9,16 +10,17 @@
 ---
 
 ## Purpose
-Define what mechanics to extract after a transcript reaches the correct pipeline stage.
 
-This file does not replace the transcript pipeline.
-It controls pattern extraction only.
+Define what mechanics to extract after transcripts reach distilled and indexed analysis.
+
+This file controls extraction criteria only. It does not replace the transcript pipeline or canonical pattern library.
 
 ---
 
 ## Extract Mechanics, Not Content
 
 Extract:
+
 - opening mechanics
 - curiosity loops
 - pacing shifts
@@ -31,6 +33,7 @@ Extract:
 - packaging-relevant signals when available
 
 Do not copy:
+
 - premises
 - phrasing
 - scenes
@@ -41,27 +44,73 @@ Do not copy:
 ---
 
 ## Required Pattern Record
+
 Each extracted pattern must include:
+
 - pattern name
-- source stage/context
+- canonical library match
 - mechanic description
-- why it may work
-- when to use
-- when not to use
+- reusable structure
+- usage context
 - copying risk
-- scoring recommendation
+- score recommendation
+- promotion recommendation
+
+---
+
+## Canonical Check
+
+Before classifying any pattern, compare against:
+
+```text
+/analysis/pattern_library.md
+```
+
+Use one status:
+
+- MERGE_WITH_EXISTING
+- SUBTYPE_OF_EXISTING
+- NEW_CANONICAL
+- HOLD_FOR_COMPARISON
+- REJECT_REDUNDANT
+
+Prefer merge or subtype unless the mechanic is structurally distinct.
+
+---
+
+## Candidate Control
+
+During training batches:
+
+- max 12 total extracted patterns
+- target 1-3 NEW_CANONICAL candidates
+- reject generic genre observations
+- hold narrow or single-instance mechanics
+- avoid subtype sprawl
 
 ---
 
 ## Routing
-Raw extracted mechanics feed into:
-- `/frameworks/13_pattern_scoring_framework.md`
-- `/frameworks/12_pattern_composition_engine.md`
-- `/analysis/patterns/`
 
-Transcript extraction identifies candidate mechanics.
-Scoring decides value.
-Composition decides use.
-Memory decides durability.
+Transcript mechanics are scored through:
 
-Only high-confidence, reusable mechanics should be promoted.
+```text
+/frameworks/13_pattern_scoring_framework.md
+```
+
+Canonical memory is stored only in:
+
+```text
+/analysis/pattern_library.md
+```
+
+Do not route transcript-derived canonicals into standalone pattern or technique folders.
+
+---
+
+## Summary
+
+Extraction identifies candidate mechanics.
+Scoring evaluates usefulness.
+Canonical comparison decides merge, subtype, hold, reject, or new candidate.
+Pattern library update requires curator approval until write-back mode is active.

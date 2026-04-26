@@ -1,90 +1,126 @@
-<<<<<<< HEAD
-## OUTPUT TYPE ENFORCEMENT
-=======
-git add .\\systems\\output\_contract.md
+# Output Contract
 
-git commit -m "add output contract system"
+## Purpose
 
-git push
+Define strict output boundaries for stage artifacts.
 
+This file controls format only. It does not override execution flow or system logic.
 
-## OUTPUT TYPE ENFORCEMENT
+---
 
-Claude MUST output ONLY the stage artifact.
+## Global Output Rule
 
-Claude MUST NOT output:
+Claude must output only the requested artifact.
 
-- assessments
-- evaluations
+Do not include:
+
+- self-assessments
 - compliance tables
-- verdicts
-- summaries about correctness
+- correctness verdicts
+- systems-applied lists
+- reasoning summaries
+- storage claims
+- unrelated next-step commentary
+
+Exception: repository audits, debugging passes, and user-requested validation may include concise findings.
 
 ---
 
-## STORAGE RULES
+## Storage Claim Rule
 
-Claude MUST NOT:
+Unless an actual filesystem write command was executed successfully, Claude must not claim that files were saved, written, updated, deleted, or archived.
 
-- include "File:" fields
-- include file paths
-- simulate storage
-- claim files are written
+When write-back is not explicitly requested, return output only.
 
 ---
 
-## CLEANED STAGE CONTRACT
+## TRANSCRIPT MODE v4 Contract
 
-### Filename
+When operating in TRANSCRIPT MODE v4:
 
-{source_name}_cleaned.md
+- execute full pipeline internally
+- return only DISTILLED and INDEXED sections
+- do not return raw, cleaned, or structured sections
+- do not include commentary outside those sections
 
-- lowercase
-- underscore-separated
-- no dot notation
+Required top-level sections:
 
----
-
-### Metadata (STRICT LIMIT)
-
-Allowed:
-
-- Source Name
-- Source Type
-- Source Category
-- Date Cleaned
-
-No other fields allowed.
+```text
+# DISTILLED
+# INDEXED
+```
 
 ---
 
-### Text Rules
+## DISTILLED Section Requirements
 
-Claude MUST:
+Include:
 
-- preserve original wording exactly
+- source list
+- canonical library read confirmation
+- pattern extraction table
+- promotion summary
+- library impact summary
 
-Claude MUST NOT:
+Do not include:
 
-- paraphrase
-- rewrite
-- summarize
-- generalize
-- change perspective
+- source phrasing
+- long story retellings
+- copied transcript passages
 
 ---
 
-### Output Content
+## INDEXED Section Requirements
 
-Must include:
+For each promoted, merged, held, or rejected pattern include:
 
-1. Metadata
-2. Cleaned Transcript
-3. Cleaning Notes
+- canonical name or candidate name
+- consolidation status
+- class
+- score
+- mechanic description
+- evidence summarized as mechanics
+- action
 
-Must NOT include:
+Do not assign permanent pattern IDs to new candidates.
 
-- file paths
-- storage references
-- correction notes
-- meta commentary
+---
+
+## Stage Artifact Rule
+
+For standard stage-aware production mode:
+
+- output only the current stage artifact
+- stop after the stage
+- wait for user confirmation
+
+---
+
+## File Path Rule
+
+Include file paths only when:
+
+- the user asks for filesystem validation
+- the task requires read/write verification
+- the output is a repository audit
+- the output is an explicit file generation or patch package
+
+Otherwise, avoid path noise.
+
+---
+
+## Formatting Rule
+
+System outputs must be clean, parseable, and machine-readable.
+
+Do not use emojis or decorative symbols in:
+
+- system files
+- prompt files
+- project instructions
+- execution outputs
+
+Allowed exception:
+
+- YouTube packaging outputs
+- creative content layers where explicitly requested

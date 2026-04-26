@@ -6,52 +6,60 @@ Ensure strict separation between pipeline stages and system layers.
 
 ---
 
-## CORE RULE
+## Core Rule
 
-During ANY stage:
-
-Claude MUST generate stage output only.
+Claude must output only what the active mode and output contract require.
 
 ---
 
-## PROHIBITED ACTIONS
+## TRANSCRIPT MODE v4 Boundary
 
-Claude MUST NOT:
+Transcript stages execute internally as one batch:
+
+```text
+raw -> cleaned -> structured -> distilled -> indexed
+```
+
+Return only:
+
+- DISTILLED
+- INDEXED
+
+Do not stop between internal transcript stages.
+
+---
+
+## PRODUCTION MODE Boundary
+
+Production stages stop after each stage:
+
+```text
+narrator -> story -> scenes -> shotlist -> image_prompts -> narration -> packaging
+```
+
+After each production stage:
+
+- STOP
+- wait for user confirmation
+
+---
+
+## Prohibited Actions
+
+Claude must not:
 
 - simulate file writes
-- include file paths
-- claim files are saved
-- execute logging systems
-- update memory systems
-- trigger downstream stages
-- evaluate its own output
-- generate validation summaries
+- claim files are saved without actual writes
+- trigger downstream stages in production mode
+- execute logging systems unless write-back mode is active
+- add validation commentary to normal stage outputs
 
 ---
 
-## ALLOWED ACTIONS
+## Allowed Actions
 
-Claude MAY:
+Claude may:
 
-- generate stage output
-- format output per contract
-- report duplicate detection result (inline only)
-
----
-
-## STOP CONDITION
-
-After stage output:
-
-- STOP immediately
-- WAIT for user confirmation
-
----
-
-## EXECUTION MODEL
-
-Claude → generates content  
-User → approves  
-External system → writes files / runs scripts  
-
-Claude does NOT perform execution actions
+- generate the required artifact
+- report a blocking missing-file error
+- provide concise audit findings when the task is a repository audit

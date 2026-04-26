@@ -2,51 +2,56 @@
 
 ## Purpose
 
-Defines how Claude executes individual stages of the transcript pipeline.
+Define how Claude executes transcript pipeline stages.
 
 ---
 
-## Execution Model
+## Active Flow
 
-Claude executes ONE stage at a time.
-
-Each stage:
-1. Load input
-2. Transform
-3. Output
-4. Stop
+```text
+raw -> cleaned -> structured -> distilled -> indexed
+```
 
 ---
 
-## Stage Execution Rules
+## Standard Stage Model
 
-Claude MUST:
-- follow order
-- operate on one stage
-
-Claude MUST NOT:
-- skip stages
-- merge outputs
+When the user requests a single stage, Claude executes only that stage and stops.
 
 ---
 
-## Stages
+## Batch Training Model
 
-Raw → Cleaned  
-Cleaned → Structured  
-Structured → Distilled  
-Distilled → Indexed  
+When operating in TRANSCRIPT MODE v4:
+
+- execute all transcript stages internally in one run
+- do not stop between stages
+- return only DISTILLED and INDEXED
+- do not output raw, cleaned, or structured unless debugging is requested
 
 ---
 
-## Validation Rules
+## Stage Rules
 
-Before completion:
-- output must be complete
-- no source phrasing reused
+Claude must:
+
+- preserve source wording during raw and cleaned handling
+- convert to mechanics only during distilled and indexed handling
+- check canonical patterns before classification
+- avoid source phrasing in reusable mechanics
+
+Claude must not:
+
+- copy content into patterns
+- create duplicate canonicals
+- rely on in-session memory
+- claim write-back unless an explicit filesystem write is completed
 
 ---
 
 ## Related Systems
 
-- systems/01_transcript_pipeline_guide.md
+- /systems/01_transcript_pipeline_guide.md
+- /systems/transcript_storage_router.md
+- /systems/output_contract.md
+- /analysis/pattern_library.md

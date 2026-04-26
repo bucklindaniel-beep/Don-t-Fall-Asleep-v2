@@ -1,220 +1,110 @@
 # Prompt — Transcript Analysis Prompt
 
 ## Metadata
+
 - Type: Prompt
 - Domain: Analysis / Knowledge Extraction
 - Primary Use Cases:
-  - analyzing horror video transcripts
-  - extracting storytelling patterns
-  - refining system knowledge base
+  - analyzing horror transcripts
+  - extracting storytelling mechanics
+  - comparing mechanics against the canonical pattern library
 - Retrieval Tags:
   - transcript analysis
   - pattern extraction
-  - style detection
-  - horror analysis
-- System Role:
-  - converts raw transcripts into structured knowledge
-  - feeds channel profiles, techniques, and patterns
-- Related Files:
-  - /analysis/channel_profiles/*
-  - /analysis/techniques/*
-  - /analysis/patterns/*
-  - /analysis/style_profiles/*
+  - canonical pattern library
 - Status: active
-- Confidence: high
 
 ---
 
 ## Purpose
-This prompt analyzes a transcript and converts it into structured, reusable insights.
 
-Use this file to:
-- extract storytelling techniques
-- identify patterns and pacing
-- refine channel profiles
-- build your knowledge repository
+Analyze transcripts and convert observations into reusable, mechanics-only intelligence.
+
+This prompt does not create permanent memory. Canonical updates require approval and must route through /analysis/pattern_library.md.
 
 ---
 
-## Instructions (System Role)
+## Required References
 
-You are a structured analysis engine.
+Read before acting:
 
-You must:
+- /systems/01_transcript_pipeline_guide.md
+- /systems/transcript_pattern_extraction_rules.md
+- /frameworks/13_pattern_scoring_framework.md
+- /analysis/pattern_library.md
+
+---
+
+## Analysis Rules
+
+Claude must:
+
 - extract only what is present
 - avoid assumptions or hallucination
-- convert observations into reusable system components
+- convert observations into reusable mechanics
+- avoid source phrasing, source structure, creator voice, and story content
+- compare pattern candidates against /analysis/pattern_library.md
 
-You are NOT summarizing casually.
+Claude must not:
 
-You are building a system.
-
----
-
-## Input Fields
-
-### Transcript
-(full raw transcript)
+- summarize casually
+- create duplicate canonical patterns
+- store story-specific details as reusable rules
+- promote every observed pattern
 
 ---
 
-### Source Type
-(YouTube narration / analog horror / story reading / etc.)
+## Analysis Targets
 
----
+Identify mechanics related to:
 
-### Channel Name
-(optional but recommended)
-
----
-
-## Analysis Instructions
-
-### 1. Clean Transcript
-- fix grammar and punctuation
-- remove filler or repetition
-- preserve original meaning
-
----
-
-### 2. Narrative Structure
-Identify:
 - hook type
 - setup behavior
-- escalation pattern
-- climax structure
-- ending type
+- escalation function
+- pattern break
+- reveal timing
+- ending mechanic
+- sentence rhythm tendency
+- emotional beat placement
+- packaging-relevant signal when available
 
 ---
 
-### 3. Technique Extraction
-Identify techniques used:
-- delayed reveal
-- repetition pressure
-- false safety
-- environmental escalation
-- realism grounding
+## Candidate Output Requirements
 
-Only include if clearly present.
+For each candidate include:
 
----
-
-### 4. Pattern Extraction
-Identify:
-- repetition patterns
-- rule systems
-- pacing patterns
-- anomaly progression
+- pattern name
+- canonical library match
+- mechanic definition
+- reusable structure
+- usage context
+- avoid-when guidance
+- copying risk
+- score recommendation
+- promotion recommendation
 
 ---
 
-### 5. Style Analysis
-Define:
-- tone
-- sentence structure
-- vocabulary level
-- emotional handling
+## Candidate Control
 
----
-
-### 6. Pacing Analysis
-Describe:
-- early pacing
-- mid pacing
-- climax pacing
-
----
-
-### 7. Unique Observations
-Capture:
-- anything distinctive about this transcript
-- deviations from typical patterns
-
----
-
-### 8. Structured Output
-
-Return in this format:
-
-#### Clean Summary
-(concise, accurate)
-
-#### Key Techniques
-(bulleted)
-
-#### Key Patterns
-(bulleted)
-
-#### Style Notes
-(bulleted)
-
-#### Pacing Notes
-(bulleted)
-
-#### Structural Breakdown
-(step-by-step)
-
-#### System Insights
-(actionable, reusable)
-
----
-
-## Rules
-
-- no fluff  
-- no assumptions  
-- no invented details  
-- preserve accuracy  
-- prioritize structure  
+- Max 12 total patterns
+- Target 1-3 NEW_CANONICAL candidates
+- Prefer MERGE_WITH_EXISTING or SUBTYPE_OF_EXISTING
+- HOLD narrow or single-instance mechanics
+- REJECT generic observations
 
 ---
 
 ## Output Format
 
-Markdown only  
-Clean sections  
-No narrative filler  
+Markdown only.
 
----
-
-## Example Invocation
-
-Transcript: [PASTE TEXT]  
-Source Type: YouTube narration  
-Channel: Mr. Nightmare  
-
----
-
-## Compression Summary
-Transcript → structured analysis → reusable system knowledge
-
----
-
-## Notes
-This prompt is critical for scaling your system.
-
-All knowledge refinement flows through this process.
-
----
-
-## Pattern Intelligence Addendum
-
-After transcript cleanup and structure analysis, extract reusable mechanics using:
+Use clean sections:
 
 ```text
-/systems/transcript_pattern_extraction_rules.md
-/frameworks/13_pattern_scoring_framework.md
+# DISTILLED
+# INDEXED
 ```
 
-Extract mechanics only. Do not copy source premise, phrasing, characters, sequence, or story events.
-
-Prioritize:
-- organic opening patterns
-- curiosity loops
-- escalation functions
-- setup/payoff mechanics
-- pattern breaks
-- ending mechanics
-- sentence rhythm tendencies
-
-Each candidate pattern must include use case, non-use case, copying risk, and scoring recommendation.
+Do not include commentary outside the required output.

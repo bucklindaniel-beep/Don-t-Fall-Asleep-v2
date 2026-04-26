@@ -14,6 +14,7 @@ You MUST follow repository logic strictly.
 - Do NOT copy source phrasing, structure, or creator voice
 - Extract mechanics only
 - Follow repository-defined workflows at all times
+- Keep system outputs free of emojis and decorative symbols
 
 ---
 
@@ -21,10 +22,17 @@ You MUST follow repository logic strictly.
 
 If filesystem access is available:
 
-- ALWAYS read repository files before acting
+- ALWAYS use filesystem as PRIMARY source of truth
+- NEVER use project_knowledge_search if a filesystem path exists
+- ALWAYS list directory contents before reading files
+- ALWAYS read files directly from filesystem paths
 - NEVER assume file contents
 - NEVER rely on in-session memory for system logic
 - ALL canonical data must come from repository files
+
+If both filesystem and project knowledge are available:
+
+- filesystem OVERRIDES project knowledge
 
 If a required file is not accessible:
 
@@ -54,6 +62,12 @@ You MUST follow:
 
 /systems/execution_router.md
 
+For:
+
+- stage order
+- stage boundaries
+- execution flow
+
 ---
 
 ## OUTPUT CONTRACT (MANDATORY)
@@ -77,32 +91,44 @@ Regenerate until compliant.
 
 You operate in one mode at a time:
 
-TRANSCRIPT MODE  
-raw → cleaned → structured → distilled → indexed
+### TRANSCRIPT MODE
+raw -> cleaned -> structured -> distilled -> indexed
 
-PRODUCTION MODE  
-narrator → story → scenes → shotlist → image_prompts → narration → packaging
+### PRODUCTION MODE
+narrator -> story -> scenes -> shotlist -> image_prompts -> narration -> packaging
 
 Do NOT mix modes.
 
 ---
 
-## TRANSCRIPT MODE (v4 — OVERRIDE LOGIC)
+## TRANSCRIPT MODE (v4 OVERRIDE LOGIC)
 
 ### CRITICAL OVERRIDE
+
+When in TRANSCRIPT MODE:
 
 - Execute FULL pipeline in ONE run
 - Do NOT stop between stages
 - Do NOT wait for confirmation
+- Return ONLY DISTILLED and INDEXED
+
+This overrides standard stage stop enforcement.
 
 ---
 
-## OUTPUT SCOPE
+## FILE ACCESS REQUIREMENT
 
-Return ONLY:
+Before processing transcripts:
 
-- DISTILLED
-- INDEXED
+- list all files in /transcripts/raw/
+- confirm files exist
+- process ONLY confirmed files
+
+Do NOT:
+
+- assume file presence
+- rely on prior context
+- process unseen or unverified files
 
 ---
 
@@ -125,34 +151,42 @@ Return ONLY:
 
 ---
 
+## CANDIDATE CONTROL RULE
+
+- Prefer SUBTYPE_OF_EXISTING unless differentiation is structurally significant
+- Target 1-3 NEW_CANONICAL candidates per batch
+- Reject patterns that do not generalize across multiple narrative types
+
+---
+
 ## CLASSIFICATION
 
-- PRIMARY (3–5 max)
+- PRIMARY (3-5 max)
 - SUPPORTING
 
 ---
 
 ## SCORING
 
-Impact: 1–5  
-Frequency: 1–5  
-Reusability: 1–5  
+Impact: 1-5
+Frequency: 1-5
+Reusability: 1-5
 
 ---
 
 ## SCORE INTERPRETATION
 
-12–15 → HIGH PRIORITY  
-10–11 → CONDITIONAL  
-8–9 → HOLD  
-≤7 → REJECT  
+12-15 -> HIGH PRIORITY
+10-11 -> CONDITIONAL
+8-9 -> HOLD
+7 or below -> REJECT
 
 ---
 
 ## PROMOTION RULES
 
-- Score ≥ 10 required
-- Not all 10–11 are promoted
+- Score 10+ required
+- Not all 10-11 are promoted
 - Max 70% promoted
 - Must include HOLD or REJECT
 
@@ -190,7 +224,7 @@ Do NOT:
 
 ## CONSOLIDATION STATUS
 
-Each pattern must include:
+Each pattern must include one status:
 
 - NEW_CANONICAL
 - MERGE_WITH_EXISTING
@@ -220,6 +254,29 @@ After each stage:
 
 ---
 
+## SYSTEM LAYERS
+
+STRUCTURE -> highest priority
+REALISM -> refines structure
+NARRATION -> delivery only
+RETENTION -> engagement only
+
+---
+
+## NARRATION RULES
+
+- vary sentence structure
+- avoid repetition
+- maintain clarity
+- conversational tone
+
+Do NOT:
+
+- imitate voice
+- copy phrasing
+
+---
+
 ## DUPLICATE DETECTION
 
 Before saving ANY output:
@@ -236,6 +293,13 @@ After pipeline completion (TRANSCRIPT MODE) OR after each stage (PRODUCTION MODE
 Log to:
 
 /memory/execution_log.md
+
+Include:
+
+- stage
+- decisions
+- assumptions
+- issues
 
 ---
 

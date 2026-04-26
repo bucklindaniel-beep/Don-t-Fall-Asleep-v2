@@ -2,117 +2,106 @@
 
 ## Purpose
 
-This file defines the authoritative execution flow of the Don't Fall Asleep production system.
-
-Claude must follow this routing logic strictly.
+Define authoritative execution flow for the Don't Fall Asleep production system.
 
 ---
 
-## Global Execution Order
+## Authority
 
-1. Transcript Pipeline (if applicable)
-2. Pattern Extraction / Analysis
-3. Story Generation
-4. Scene Breakdown
-5. Shotlist Generation
-6. Image Prompt Generation
-7. Narration Formatting
-8. Export Packaging
-9. Execution Logging
+This file controls stage order and stop behavior.
 
----
+Output format is controlled by:
 
-## Transcript Pipeline Route
+```text
+/systems/output_contract.md
+```
 
-Stages MUST execute in order:
+Transcript storage is controlled by:
 
-raw → cleaned → structured → distilled → indexed
-
-### Rules
-
-- Do NOT skip stages
-- Do NOT merge stages
-- Do NOT extract patterns before "structured"
-- Do NOT generate reusable logic before "distilled"
+```text
+/systems/transcript_storage_router.md
+```
 
 ---
 
-## Production Pipeline Route
+## Execution Modes
 
-Stages:
+Claude operates in one mode at a time:
 
-1. narrator_identity
-2. story
-3. scenes
-4. shotlist
-5. image_prompts
-6. narration
-7. packaging
+1. TRANSCRIPT MODE
+2. PRODUCTION MODE
+
+Do not mix modes.
 
 ---
 
-## Stop Points
+## TRANSCRIPT MODE Route
 
-After EVERY stage:
+Stages execute in order:
+
+```text
+raw -> cleaned -> structured -> distilled -> indexed
+```
+
+### TRANSCRIPT MODE v4 Exception
+
+During active transcript training runs:
+
+- execute full pipeline in one run
+- do not stop between transcript stages
+- return only DISTILLED and INDEXED
+- do not write files unless explicit write-back is requested
+
+---
+
+## PRODUCTION MODE Route
+
+Stages execute in order:
+
+```text
+narrator -> story -> scenes -> shotlist -> image_prompts -> narration -> packaging
+```
+
+After each production stage:
 
 - STOP execution
-- WAIT for user confirmation
-- DO NOT proceed automatically
+- wait for user confirmation
+- do not proceed automatically
+
+---
+
+## Global Rules
+
+Claude must not:
+
+- skip stages
+- merge stages incorrectly
+- invent missing stages
+- simulate file writes
+- claim storage occurred without actual write execution
+- trigger downstream processes unless explicitly requested
 
 ---
 
 ## Model Recommendation Logic
 
-Use:
+Use model recommendations only as guidance:
 
-- Sonnet → structure / logic / formatting stages
-- Opus → story / narration / creative generation
+- Opus: validation, complex reasoning, story, narration, architecture-critical checks
+- Sonnet: structured formatting, bulk cleanup, simple transformations
 
-Claude should recommend model switching after each stage group.
-
----
-
-## Logging Requirements
-
-Each stage MUST log to:
-
-/memory/execution_log.md
-
-Include:
-
-- stage
-- decisions
-- assumptions
-- issues
+Do not interrupt execution solely to recommend a model unless the stage boundary requires user action.
 
 ---
 
-## LAYER ISOLATION (CRITICAL)
+## Logging Boundary
 
-Each stage operates independently.
+Logging is deferred unless explicitly requested or write-back mode is active.
 
-During a stage, Claude MUST NOT:
+When active, logging routes to:
 
-- simulate file storage
-- execute logging systems
-- trigger downstream processes
-- evaluate output quality
+```text
+/logs/execution_log.md
+```
 
-Pipeline flow:
-
-Stage Output → STOP → User Approval → External Execution → Next Stage
-
----
-
-## Output Routing
-
-Outputs MUST be written to:
-
-/production_runs/{run_id}/
-
-Structure:
-
-- /inputs
-- /outputs/images
-- /outputs/audio
-- /outputs/logs
+Do not include verbose logging in user-facing outputs.
