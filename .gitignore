@@ -1,0 +1,13 @@
+# executables
+*.exe
+
+# specific tools
+ffmpeg.exe
+yt-dlp.exe
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# logs
+*.log
