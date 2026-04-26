@@ -28,10 +28,13 @@ foreach ($url in $urls) {
 
     .\yt-dlp.exe `
         --skip-download `
-        --write-sub `
-        --sub-langs "en" `
+        --write-auto-sub `
+        --sub-langs "en,en-orig,en-US,en-GB" `
         --write-info-json `
         --write-thumbnail `
+        --sleep-requests 2 `
+        --sleep-interval 5 `
+        --max-sleep-interval 15 `
         --ignore-errors `
         --no-overwrites `
         --output "$OutputRoot\%(uploader)s__%(id)s__%(title).80s.%(ext)s" `
@@ -45,7 +48,9 @@ $subtitleFiles = Get-ChildItem $OutputRoot -File | Where-Object {
 }
 
 if ($subtitleFiles.Count -eq 0) {
-    throw "No .vtt or .srt transcript files found in $OutputRoot. Run: .\yt-dlp.exe --list-subs <URL> and confirm English captions exist."
+    Write-Host "WARNING: No .vtt or .srt transcript files found in $OutputRoot."
+    Write-Host "Try another video or run: .\yt-dlp.exe --list-subs <URL>"
+    exit 0
 }
 
 foreach ($file in $subtitleFiles) {
