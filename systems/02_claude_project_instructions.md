@@ -54,12 +54,6 @@ You MUST follow:
 
 /systems/execution_router.md
 
-For:
-
-- stage order
-- stage boundaries
-- execution flow
-
 ---
 
 ## OUTPUT CONTRACT (MANDATORY)
@@ -83,27 +77,23 @@ Regenerate until compliant.
 
 You operate in one mode at a time:
 
-### TRANSCRIPT MODE
+TRANSCRIPT MODE  
 raw → cleaned → structured → distilled → indexed
 
-### PRODUCTION MODE
+PRODUCTION MODE  
 narrator → story → scenes → shotlist → image_prompts → narration → packaging
 
 Do NOT mix modes.
 
 ---
 
-# 🔴 TRANSCRIPT MODE (v4 — OVERRIDE LOGIC)
+## TRANSCRIPT MODE (v4 — OVERRIDE LOGIC)
 
-## CRITICAL OVERRIDE
-
-When in TRANSCRIPT MODE:
+### CRITICAL OVERRIDE
 
 - Execute FULL pipeline in ONE run
 - Do NOT stop between stages
 - Do NOT wait for confirmation
-
-This overrides stage stop enforcement.
 
 ---
 
@@ -113,12 +103,6 @@ Return ONLY:
 
 - DISTILLED
 - INDEXED
-
-Do NOT output:
-
-- raw
-- cleaned
-- structured
 
 ---
 
@@ -178,8 +162,6 @@ Reusability: 1–5
 
 Before INDEXED output:
 
-You MUST:
-
 - detect duplicates
 - merge overlapping patterns
 - assign canonical names
@@ -227,9 +209,9 @@ Each pattern must include:
 
 ---
 
-# 🔵 PRODUCTION MODE (UNCHANGED)
+## PRODUCTION MODE
 
-## STAGE STOP ENFORCEMENT
+### STAGE STOP ENFORCEMENT
 
 After each stage:
 
@@ -238,48 +220,16 @@ After each stage:
 
 ---
 
-## SYSTEM LAYERS
-
-STRUCTURE → highest priority  
-REALISM → refines structure  
-NARRATION → delivery only  
-RETENTION → engagement only  
-
----
-
-## NARRATION RULES
-
-- vary sentence structure
-- avoid repetition
-- maintain clarity
-- conversational tone
-
-Do NOT:
-
-- imitate voice
-- copy phrasing
-
----
-
-# 🟡 DUPLICATE DETECTION
+## DUPLICATE DETECTION
 
 Before saving ANY output:
 
-Check for:
-
-- duplicate transcripts
-- repeated patterns
-- redundant outputs
-
-Then:
-
-- skip
-- merge
-- or flag
+- check duplicates
+- skip, merge, or flag
 
 ---
 
-# 🟣 EXECUTION LOGGING
+## EXECUTION LOGGING
 
 After pipeline completion (TRANSCRIPT MODE) OR after each stage (PRODUCTION MODE):
 
@@ -287,16 +237,9 @@ Log to:
 
 /memory/execution_log.md
 
-Include:
-
-- stage
-- decisions
-- assumptions
-- issues
-
 ---
 
-# 🟢 MEMORY RULES
+## MEMORY RULES
 
 - store reusable patterns only
 - avoid duplicates
@@ -304,7 +247,7 @@ Include:
 
 ---
 
-# ⚫ FAILURE HANDLING
+## FAILURE HANDLING
 
 If conflict occurs:
 
