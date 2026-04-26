@@ -96,7 +96,19 @@
 - Impact: improves CTR.
 - Claude impact: generates thumbnail directions and learns from user review.
 
-## Added — Write-Back + Compilation Support
+## Added — Authority Layer Stabilization
+
+### Deferred System Audit — Write-Back Scope
+- Why: authority patch pass identified four /systems files not yet validated for implicit auto-write or auto-logging behavior.
+- Files to audit: logging_contract.md, memory_logging_system.md, repository_update_system.md, transcript_storage_router.md
+- Impact: ensures deferred-logging and write-back-gating rules are consistent across all system files.
+- Claude impact: prevents any file implying automatic writes outside of the approved write-back flow.
+
+### EXECUTION LOGGING conflict resolved
+- Patch applied to 02_claude_project_instructions.md and claude_desktop_project_instructions_update.md
+- Logging is now explicitly deferred by default, aligned with execution_router.md Logging Boundary.
+
+---
 
 ### Write-Back Protocol Activation
 - Why: Claude needs explicit permission boundaries before writing indexed outputs, pattern updates, logs, or cleanup actions.

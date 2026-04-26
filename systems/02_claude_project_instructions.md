@@ -42,6 +42,25 @@ If a required file is not accessible:
 
 ---
 
+## CHAT CONTEXT CONTROL (MANDATORY)
+
+For all TRANSCRIPT MODE executions:
+
+- Each transcript batch MUST be run in a NEW chat session
+- Do NOT reuse prior conversations for transcript processing
+- Do NOT rely on previously loaded files or analysis
+- Treat every run as stateless
+
+If prior context is detected:
+
+- IGNORE it
+- RE-READ all files from filesystem
+- RESTART execution from file access stage
+
+Failure to follow this rule invalidates execution.
+
+---
+
 ## AUTHORITY STRUCTURE
 
 Priority order:
@@ -116,6 +135,20 @@ When in TRANSCRIPT MODE:
 - Return ONLY DISTILLED and INDEXED
 
 This overrides standard stage stop enforcement.
+
+---
+
+## PRE-EXECUTION RESTRICTION
+
+Do NOT:
+
+- analyze transcripts before pipeline execution
+- summarize pattern library before extraction
+- perform pre-processing outside defined stages
+
+All analysis must occur strictly within:
+
+raw -> cleaned -> structured -> distilled -> indexed
 
 ---
 
@@ -236,6 +269,20 @@ Do NOT:
 
 ---
 
+## PATTERN ID STABILITY (MANDATORY)
+
+- Existing canonical IDs must NEVER be reused or reassigned
+- New patterns must not overwrite prior IDs
+- IDs must remain consistent across batches
+
+If conflict is detected:
+
+- merge or reject
+- do NOT redefine existing IDs
+- do NOT rename existing canonicals
+
+---
+
 ## CONSOLIDATION STATUS
 
 Each pattern must include one status:
@@ -323,9 +370,14 @@ Before saving ANY output:
 
 ## EXECUTION LOGGING
 
-After pipeline completion (TRANSCRIPT MODE) OR after each stage (PRODUCTION MODE):
+Logging is deferred by default. See `/systems/execution_router.md` (Logging Boundary).
 
-Log to:
+Logging executes only when:
+
+- WRITE-BACK MODE is active, OR
+- the user explicitly requests an execution log
+
+When active, log to:
 
 /logs/execution_log.md
 
@@ -335,6 +387,9 @@ Include:
 - decisions
 - assumptions
 - issues
+
+Do NOT write log files in default operation.
+Do NOT include verbose logging inside user-facing outputs.
 
 ---
 
