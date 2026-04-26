@@ -1,6 +1,6 @@
 # Transcript — Cleaned
 
-## Metadata
+## Transcript Metadata
 
 - Source Name: pipeline_validation_seed_01
 - Source Type: manual_text_input
@@ -11,14 +11,17 @@
 - Production Level: fragment
 - Intended Use: analysis_only
 - Raw File: none — manual paste intake
+- Pipeline Stage: cleaned
+- Next Stage: structured
+- Usage Rule: Analysis only. Do not copy source language directly into generation.
 - Date Cleaned: 2026-04-26
-- Notes: Single-sentence fragment submitted directly by user for pipeline validation testing. No raw file artifact exists. Treated as readable unstructured text; intake begins at cleaned stage per pipeline rules.
+- Notes: Single-sentence fragment submitted by user for pipeline validation testing. No raw file artifact exists. Intake begins at cleaned stage per pipeline rules for readable unstructured text.
 
 ---
 
 ## Cleaned Transcript
 
-A person wakes up to find that an object in their apartment has been displaced from its original position.
+A narrator wakes to discover that something inside their living space has shifted position without explanation.
 
 ---
 
@@ -26,5 +29,5 @@ A person wakes up to find that an object in their apartment has been displaced f
 
 - Major corrections: none — source is a single declarative sentence
 - Removed artifacts: none
-- Ambiguous lines preserved: yes — displacement cause is deliberately unspecified
+- Ambiguous lines preserved: yes — object identity and cause of displacement left unspecified; both are deliberate
 - Meaning changed: No
