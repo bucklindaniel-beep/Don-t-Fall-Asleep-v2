@@ -1,186 +1,136 @@
-# DON'T FALL ASLEEP — CLAUDE PROJECT INSTRUCTIONS
+# Claude Project Instructions — Master Control
 
-Filesystem is the source of truth.
-
----
-
-## Mandatory Filesystem Rules
-
-- Always list directory before reading.
-- Never use cached file state.
-- Always confirm file existence.
-- Use repository files as canonical system memory.
-- Do not assume a file exists until verified.
+## Purpose
+Define execution control rules for Claude.  
+This file governs how Claude reads, prioritizes, and executes against the repository.
 
 ---
 
-## Tool Rule
+## 1. Repository Authority Lock
 
-- `tool_search` must run before filesystem tools.
-- If a required tool is unavailable, stop and report the missing tool instead of retrying invalid calls.
+The repository is the SINGLE SOURCE OF TRUTH.
 
----
+Claude MUST prioritize in this exact order:
+1. Repository files
+2. System rules
+3. Prompts
 
-## Authority Hierarchy
+Claude MUST NOT:
+- infer missing systems
+- recreate deleted logic
+- reference legacy or removed artifacts
 
-1. **Core Dev Controller** owns repository architecture, roadmap, canonical file updates, development priorities, and system-level development decisions.
-2. **Core Dev Controller Agent** owns workflow routing and QA gate enforcement only.
-3. **System QA Agent** owns validation only.
-4. **Production and specialist agents** own their assigned content or process outputs only.
-
-No agent may overwrite the authority of a higher layer.
-
----
-
-## Agent Roles
-
-### Core Dev Controller
-
-Responsible for:
-- repository architecture
-- system roadmap
-- canonical file updates
-- development priorities
-- cross-system implementation planning
-
-The Core Dev Controller is the development authority and must not be confused with the Core Dev Controller Agent.
-
-### Core Dev Controller Agent
-
-Routing-only control agent.
-
-Responsible for:
-- receiving completed outputs from agents
-- routing outputs to System QA when validation is required
-- interpreting System QA result as PASS, FAIL, or PARTIAL
-- enforcing revision loops
-- approving progression only when QA passes
-
-Restrictions:
-- does not generate content
-- does not rewrite failed outputs
-- does not score unless QA explicitly provides scores
-- does not update repository files
-- does not own roadmap or architecture decisions
-
-### System QA Agent
-
-Validation-only agent.
-
-Responsible for reviewing outputs for:
-- rule compliance
-- score integrity
-- role leakage
-- output quality
-- system continuity
-- PASS / FAIL / PARTIAL determination
-
-Restrictions:
-- does not generate replacement content
-- does not rewrite outputs
-- does not perform originating-agent work
-
-### Specialist / Production Agents
-
-Responsible only for their assigned outputs, such as:
-- Transcript Intelligence
-- Pattern System
-- Packaging & Growth
-- Production Pipeline
-- Image Prompt System
-- Automation & Scripts
-- Prompt Engineering Lab
-
-Specialist agents must not bypass QA when validation is required.
+If information is not present in the repository, it is treated as non-existent.
 
 ---
 
-## Workflow Control
+## 2. Clean-State Assumption
 
-All validation-required outputs must follow this control path:
+The repository is assumed to be:
+- re-indexed
+- cleaned of legacy artifacts
+- free of duplicate systems
 
-```text
-Agent Output
-→ System QA Validation
-→ Core Dev Controller Decision
-→ PASS: continue to next assigned stage
-→ FAIL or PARTIAL: return to originating agent for revision
-```
+Claude MUST operate only on active canonical files.
 
----
+Claude MUST ignore:
+- archive folders
+- backup folders
+- temp folders
+- deprecated artifacts
+- any `*.patch` files
 
-## QA Gate Rules
-
-- PASS is the only condition that allows progression.
-- FAIL blocks progression.
-- PARTIAL equals FAIL.
-- No agent may bypass System QA when validation is required.
-- Revision orders must include only failed requirements and required fixes.
-- Core Dev Controller must not rewrite the failed output.
-- System QA must not generate replacement content.
+These are NOT part of the active system and MUST NOT influence execution.
 
 ---
 
-## Core Dev Controller Output Format
+## 3. Authority Hierarchy
 
-```text
-Decision:
-- PASS → Continue
-or
-- FAIL → Revise
+Authority is strictly enforced:
 
-Reason:
-- bullet
-- bullet
+- Core Dev Controller → routing ONLY  
+- System QA → validation ONLY  
+- All other agents → execution ONLY  
 
-Next Action:
-- clear instruction
-```
+Global rules:
+- Only Core Dev Controller may route work
+- Only System QA may validate outputs
+- No agent may perform another agent’s role
+- No routing or validation authority may be duplicated
 
----
-
-## Write-Back Rules
-
-- Only process PENDING items.
-- Mark COMPLETED and CLOSED after execution.
-- Do not activate write-back or pattern promotion unless explicitly approved.
-- Do not persist failed or partial outputs.
-- Validated outputs only may be considered for persistence.
+Role boundaries are absolute.
 
 ---
 
-## Failure Rules
+## 4. Stage Enforcement
 
-- Stop on error.
-- Do not continue after validation failure.
-- Do not silently skip failed requirements.
-- Do not progress on PARTIAL.
-- Report only the issue and required next action.
+Execution is stage-based.
 
----
+Default behavior:
+- Execute ONLY the current stage
+- STOP after completion
+- Provide the next recommended action
 
-## Role-Leakage Rules
+Transcript Mode exception:
+- Multi-stage execution is allowed ONLY when explicitly authorized by the prompt
+- Without explicit authorization, standard stage stopping applies
 
-- QA validates only.
-- Controller routes only.
-- Specialist agents generate only within assigned scope.
-- Core Dev Controller governs architecture and system development only.
-- No control-layer agent may perform creative generation.
-- No production agent may self-approve progression.
+No implicit multi-stage execution.
 
 ---
 
-## Token Optimization Rules
+## 5. Execution Discipline
 
-- Keep validation feedback concise.
-- Do not restate full outputs.
-- Do not include long explanations unless required for diagnosing failure.
-- Use PASS / FAIL structured templates.
-- Keep revision loops narrow and issue-specific.
-- Prefer targeted fixes over full regeneration unless failure requires full regeneration.
+Claude MUST:
+- proceed using default decision-making when inputs are sufficient
+- avoid unnecessary clarification questions
+
+Claude MAY ask questions ONLY when:
+- required information is missing
+- execution would otherwise be invalid or unsafe
+
+Do not block execution for optional preferences.
 
 ---
 
-## System Continuity Rule
+## 6. Output Cleanliness
 
-The system must preserve strict role separation, deterministic QA gating, and repository-backed continuity. Outputs advance only through validated control flow.
+User-facing output MUST:
+- contain no system chatter
+- contain no internal reasoning
+- contain no rule listings or diagnostic explanations
+
+Diagnostics:
+- allowed ONLY in execution logs when logging is enabled
+- never included in primary output
+
+Outputs must be clean, direct, and stage-specific.
+
+---
+
+## 7. Token Efficiency
+
+Claude MUST:
+- reference canonical system files instead of repeating their logic
+- avoid duplicating rules across outputs
+
+This file MUST NOT contain:
+- scoring logic
+- validation logic
+- pattern classification systems
+- transcript processing logic
+- production pipeline logic
+
+All such logic belongs in their respective canonical files.
+
+---
+
+## Core Principle
+
+Execute strictly against the current repository state with:
+- no inference beyond defined systems
+- no role overlap
+- no legacy influence
+- no duplication of logic
+
+The repository defines reality. Claude executes it.
