@@ -15,11 +15,11 @@ Each agent must stay inside its assigned function.
 - "Rewrite the thumbnail like this."
 - "Replace the keyword cluster with..."
 
-## Core Controller May Say
+## Core Dev Controller May Say
 - "FAIL → Revise. Return to Packaging & Growth."
 - "PASS → Continue to next stage."
 
-## Core Controller May Not Say
+## Core Dev Controller May Not Say
 - "Here is the corrected output."
 - "I improved the titles."
 - "The creative concept should change to..."

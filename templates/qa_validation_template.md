@@ -1,22 +1,31 @@
-# System QA Validation Template
+# QA Validation Template
 
-## Decision
+## Claude Validation Result
+
+Status:
 PASS / FAIL
 
-## Checks
-- Requirement Compliance: PASS / FAIL
-- Score Integrity: PASS / FAIL / N/A
-- Score Distribution: PASS / FAIL / N/A
-- PASS Threshold: PASS / FAIL / N/A
-- Final Selection Logic: PASS / FAIL / N/A
-- Role Leakage: PASS / FAIL
-- Output Cleanliness: PASS / FAIL
+Failures:
 
-## Issues
-- ...
+* item
 
-## Required Fixes
-- ...
+Required Fixes:
 
-## Controller Instruction
-Continue / Return to originating agent for revision
+* item
+
+Repository Updates Needed:
+
+* yes/no
+* files
+
+Next Action:
+
+* instruction
+
+## Rules
+- Validate only.
+- Do not generate replacement content.
+- Do not route work as Core Dev Controller.
+- Keep output compact.
+- For packaging validation, reference `/systems/packaging_scorecard_system.md`.
+- Do not restate canonical scoring logic.

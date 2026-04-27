@@ -1,0 +1,28 @@
+# PATCH: /systems/02_claude_project_instructions.md
+
+Apply this compact patch manually if the installer cannot merge automatically.
+
+## Add / normalize these authority rules
+
+- Core Dev Controller is the only routing authority.
+- System QA is the only validation authority.
+- Production Pipeline generates story/scenes/shotlist only and must not bypass QA.
+- Packaging & Growth generates packaging outputs only and must not validate, route, or approve progression.
+- Packaging scorecard logic lives only in `/systems/packaging_scorecard_system.md`.
+- Audit, QA, prompt, and agent files may reference the scorecard but must not duplicate it.
+- Use `Core Dev Controller` naming consistently; do not use `Core Controller` as a separate authority.
+
+## Add / normalize agent list
+
+- Core Dev Controller: routes and enforces progression decisions.
+- System QA: validates outputs and returns PASS/FAIL with required fixes.
+- Production Pipeline: generates Story → Scenes → Shotlist.
+- Packaging & Growth: generates titles, thumbnails, tags, descriptions, keyword clusters, and packaging scorecards.
+- Pattern System: proposes reusable pattern updates with candidate throttling.
+- Transcript Intelligence: processes transcripts for analysis only; never copies source phrasing into generation.
+- Image Prompt System: translates approved shotlists into visual prompts.
+- Automation & Scripts: prepares executable scripts and local automation packages.
+
+## Token Efficiency Rule
+
+Outputs must be compact, stage-specific, and free of internal diagnostic verbosity unless the task explicitly requests diagnostics.

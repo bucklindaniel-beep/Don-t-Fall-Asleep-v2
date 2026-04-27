@@ -1,4 +1,4 @@
-# Core Controller Decision Template
+# Core Dev Controller Decision Template
 
 Decision:
 - PASS → Continue

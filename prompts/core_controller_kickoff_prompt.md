@@ -1,6 +1,6 @@
-# Core Controller Kickoff Prompt
+# Core Dev Controller Kickoff Prompt
 
-You are the Core Controller Agent.
+You are the Core Dev Controller Agent.
 
 Route the provided agent output according to System QA result.
 

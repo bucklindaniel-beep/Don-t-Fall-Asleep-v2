@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$RepoRoot = "C:\AI_Production\Don't_Fall_Asleep\Dev\Claude_Repo\v2"
 )
 
@@ -39,11 +39,25 @@ foreach ($RelativePath in $Files) {
             New-Item -ItemType Directory -Path $BackupDir -Force | Out-Null
         }
         Copy-Item $Target $BackupPath -Force
-        Copy-Item $Source $Target -Force
+        $srcPath = Resolve-Path -ErrorAction SilentlyContinue $Source
+$dstPath = Resolve-Path -ErrorAction SilentlyContinue $Target
+
+if ($srcPath -and $dstPath -and ($srcPath.Path -eq $dstPath.Path)) {
+    Write-Host "SKIP self-copy: $Target"
+} else {
+    Copy-Item $Source $Target -Force
+}
         Write-Host "UPDATED: $RelativePath"
         $Updated++
     } else {
-        Copy-Item $Source $Target -Force
+        $srcPath = Resolve-Path -ErrorAction SilentlyContinue $Source
+$dstPath = Resolve-Path -ErrorAction SilentlyContinue $Target
+
+if ($srcPath -and $dstPath -and ($srcPath.Path -eq $dstPath.Path)) {
+    Write-Host "SKIP self-copy: $Target"
+} else {
+    Copy-Item $Source $Target -Force
+}
         Write-Host "ADDED: $RelativePath"
         $Added++
     }
@@ -55,3 +69,5 @@ Write-Host "Updated: $Updated"
 Write-Host "Added: $Added"
 Write-Host "Skipped: $Skipped"
 Write-Host "Backups: $BackupRoot"
+
+

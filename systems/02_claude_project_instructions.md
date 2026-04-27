@@ -24,7 +24,7 @@ Filesystem is the source of truth.
 ## Authority Hierarchy
 
 1. **Core Dev Controller** owns repository architecture, roadmap, canonical file updates, development priorities, and system-level development decisions.
-2. **Core Controller Agent** owns workflow routing and QA gate enforcement only.
+2. **Core Dev Controller Agent** owns workflow routing and QA gate enforcement only.
 3. **System QA Agent** owns validation only.
 4. **Production and specialist agents** own their assigned content or process outputs only.
 
@@ -43,9 +43,9 @@ Responsible for:
 - development priorities
 - cross-system implementation planning
 
-The Core Dev Controller is the development authority and must not be confused with the Core Controller Agent.
+The Core Dev Controller is the development authority and must not be confused with the Core Dev Controller Agent.
 
-### Core Controller Agent
+### Core Dev Controller Agent
 
 Routing-only control agent.
 
@@ -102,7 +102,7 @@ All validation-required outputs must follow this control path:
 ```text
 Agent Output
 → System QA Validation
-→ Core Controller Decision
+→ Core Dev Controller Decision
 → PASS: continue to next assigned stage
 → FAIL or PARTIAL: return to originating agent for revision
 ```
@@ -116,12 +116,12 @@ Agent Output
 - PARTIAL equals FAIL.
 - No agent may bypass System QA when validation is required.
 - Revision orders must include only failed requirements and required fixes.
-- Core Controller must not rewrite the failed output.
+- Core Dev Controller must not rewrite the failed output.
 - System QA must not generate replacement content.
 
 ---
 
-## Core Controller Output Format
+## Core Dev Controller Output Format
 
 ```text
 Decision:

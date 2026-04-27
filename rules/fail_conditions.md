@@ -1,31 +1,33 @@
-# System QA Fail Conditions
+# Fail Conditions
 
-FAIL if any condition applies.
+## Global Fail Conditions
+System QA must fail any output that violates:
+- agent separation
+- repository authority hierarchy
+- role boundaries
+- token efficiency requirements
+- continuity requirements
+- canonical file authority
 
-## Scoring Failures
-- No category-level breakdown when required.
-- Final averages are unsupported.
-- Scores are clustered too tightly without explanation.
-- Scores appear inflated.
-- PASS threshold is claimed but not proven.
-- Final selection does not match scorecard logic.
+## Packaging Fail Conditions
+Packaging outputs fail if they do not comply with:
+`/systems/packaging_scorecard_system.md`
 
-## Output Failures
-- Repetitive structure.
-- Generic phrasing.
-- Weak curiosity gap.
-- Twist revealed too early.
-- No clear differentiation among options.
-- Missing required output section.
+Do not duplicate scorecard logic here.
 
-## Role Failures
-- Agent performs another agent's role.
-- QA generates replacement content.
-- Controller rewrites output.
-- Agent bypasses required QA step.
+## Agent Boundary Fail Conditions
+Fail if:
+- Core Dev Controller generates content.
+- System QA generates content instead of validating.
+- Packaging & Growth validates or routes.
+- Production Pipeline bypasses QA.
+- Pattern System promotes too many new candidates.
+- Transcript Intelligence copies source material.
 
-## Continuity Failures
-- Output contradicts established rules.
-- Output ignores current scorecard.
-- Output bypasses revision loop.
-- PARTIAL result is treated as approval.
+## Required QA Response
+Return only:
+- Status
+- Failures
+- Required Fixes
+- Repository Updates Needed
+- Next Action
