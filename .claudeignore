@@ -1,0 +1,49 @@
+# Claude context minimization
+# Presence in repo is allowed. Active exposure is controlled.
+
+# Tools stay available for manual use but should not be loaded as knowledge.
+/tools/**
+**/tools/**
+
+# Git internals and backup artifacts.
+.git/**
+**/.git/**
+/v2/.git/**
+patch_backups/**
+_patch_archive/**
+_backup*/**
+_archive/**
+
+# Runtime, debug, temp, logs.
+logs/**
+dev_logs/**
+**/_logs/**
+**/_source_files/**
+**/_debug/**
+**/temp/**
+**/tmp/**
+
+# Heavy binaries and generated assets.
+*.exe
+*.dll
+*.zip
+*.7z
+*.tar
+*.gz
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Active transcript stages are allowed.
+!transcripts/raw/**/*.md
+!transcripts/cleaned/**/*.md
+!transcripts/structured/**/*.md
+!transcripts/distilled/**/*.md
+
+# Archive is preserved but not active context by default.
+transcripts/archive/**
