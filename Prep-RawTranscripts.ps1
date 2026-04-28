@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$InputFolder = ".\transcripts\incoming_raw_txt",
     [string]$RepoRoot = "C:\AI_Production\Don't_Fall_Asleep\Dev\Claude_Repo\v2",
     [switch]$Force,
@@ -37,7 +37,7 @@ function Test-RawOutputStructure {
     $content = Get-Content -LiteralPath $Path -Raw
 
     $required = @(
-        "# Transcript — Raw",
+        "# Transcript - Raw",
         "## Metadata",
         "- Source Name:",
         "- Source Type:",
@@ -48,7 +48,7 @@ function Test-RawOutputStructure {
         "- Story Count:",
         "- Pipeline Stage: raw",
         "---",
-        "## Story 01 —"
+        "## Story 01 â€”"
     )
 
     foreach ($item in $required) {
@@ -65,7 +65,7 @@ function New-RawTranscriptContent {
     )
 
     $lines = @(
-        "# Transcript — Raw",
+        "# Transcript - Raw",
         "",
         "## Metadata",
         "- Source Name: $SourceName",
@@ -79,7 +79,7 @@ function New-RawTranscriptContent {
         "",
         "---",
         "",
-        "## Story 01 — $SourceName",
+        "## Story 01 â€” $SourceName",
         "",
         $OriginalText
     )
