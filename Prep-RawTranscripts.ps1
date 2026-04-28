@@ -86,15 +86,18 @@ try {
     $rawOutputFolder = Join-Path $resolvedRepoRoot "transcripts\raw"
 
     New-Item -ItemType Directory -Force -Path $rawOutputFolder | Out-Null
+    $resolvedOutputFolder = Resolve-Path -LiteralPath $rawOutputFolder
 
-    if ($resolvedInputFolder.Path -eq (Resolve-Path -LiteralPath $rawOutputFolder).Path) {
+    if ($resolvedInputFolder.Path -eq $resolvedOutputFolder.Path) {
         throw "Input folder cannot be the same as output folder."
     }
 
-    $files = Get-ChildItem -LiteralPath $resolvedInputFolder -Filter "*.txt" -File | Sort-Object Name
+    $files = Get-ChildItem -LiteralPath $resolvedInputFolder -File |
+        Where-Object { $_.Extension -in @(".txt", ".md") } |
+        Sort-Object Name
 
     if ($files.Count -eq 0) {
-        Write-Status "SKIP" "No .txt files found"
+        Write-Status "SKIP" "No .txt or .md files found"
         exit 0
     }
 
