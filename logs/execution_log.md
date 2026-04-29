@@ -444,3 +444,89 @@ Do not default to `No durable repository update required` when user feedback or 
 
 ### Next Action
 - Awaiting user confirmation to proceed to Stage 2 → STRUCTURED
+
+---
+
+## Execution Entry: 2026-04-28 (Backfilled 2026-04-29)
+
+> Backfill note: This entry was not written during the original run. The session terminated due to a network interruption before log write-back completed. Entry reconstructed from confirmed repository state on 2026-04-29.
+
+### Run Type
+- stage_run — full pipeline batch RAW → INDEXED
+
+### User Input Summary
+- User initiated a batch transcript pipeline run processing 15 raw files (IDs 021–035) through all stages RAW → CLEANED → STRUCTURED → DISTILLED → INDEXED.
+
+### Stage Executed
+- Stage name: RAW → INDEXED (full pipeline)
+- Status: completed — outputs confirmed
+- Reason if partial, blocked, or skipped: n/a — outputs verified present in repository
+
+### Prompt Validation
+- Validation required: yes
+- Validation status: skipped at time of run — session interrupted before logging
+- Notes: Outputs are confirmed present and structurally valid; prompt validation logs were not captured
+
+### Pipeline Progress
+- RAW: completed — source files confirmed in v2/transcripts/raw/
+- CLEANED: completed
+- STRUCTURED: completed
+- DISTILLED: completed
+- INDEXED: completed — 15 indexed files confirmed in v2/transcripts/indexed/
+- Memory Logging: failed — network/session interruption
+- Execution Logging: failed — network/session interruption (this entry is the backfill)
+
+### Files Processed
+- 021_3_scary_true_lonely_cabin_horror_sto (Mr. Nightmare)
+- 022_the_disturbing_case_that_still_haunt (Scary Interesting)
+- 023_the_creepiest_cases_of_people_disapp (Scary Interesting)
+- 024_what_happened_to_this_caver_next_was (Scary Interesting)
+- 025_a_collection_of_horrible_fates (Scary Interesting)
+- 026_the_horrifying_story_of_the_black_ho (Scary Interesting)
+- 027_a_collection_of_horrible_fates (Scary Interesting)
+- 028_man_hunted_for_200_miles_tells_horri (Scary Interesting)
+- 029_the_most_dangerous_dive_site_in_sout (Scary Interesting)
+- 030_miners_discover_something_terrifying (Scary Interesting)
+- 031_urban_legends_that_turned_out_to_be (Chilling Scares)
+- 032_the_fbi_s_10_most_wanted_explained (Chilling Scares)
+- 033_6_most_disturbing_things_caught_on_p (Chilling Scares)
+- 034_5_most_disturbing_youtube_rabbit_hol (Chilling Scares)
+- 035_6_most_disturbing_websites_on_the_in (Chilling Scares)
+
+### Systems Applied
+- v2/systems/transcript_storage_router.md
+- v2/systems/pipeline_rules.md
+- v2/systems/transcript_duplicate_detection.md
+- v2/systems/transcript_stage_executor.md
+
+### Failure Detection
+- Failure triggered: yes
+- Failure type: api_or_script_failure / memory_routing_failure
+- Failure: Network/session interruption cut the run before durable log write-back completed
+- Correction made: Corrective write-back executed 2026-04-29 — logs backfilled, manifest verified
+- Prevention rule needed: Consider mid-batch checkpoint logging to prevent total log loss on interruption
+- Memory destination: v2/memory/failure_log.md (recommended)
+
+### Path Drift Note
+- Original indexed outputs landed in root transcripts/indexed/ rather than v2/transcripts/indexed/
+- v2/transcripts/indexed/ already contained full authoritative indexed files for 021–035
+- Root files (021–033) were stub-format only; v2 files were full indexed documents
+- No migration performed — v2 files are authoritative and were preserved
+- Root transcripts/ tree confirmed legacy/drifted
+
+### Pattern Extraction
+- Not activated — remained inactive per phase rules
+
+### YouTube Homebase
+- Not used — remained isolated per cross-system rules
+
+### Memory Routing
+- Memory evaluated: yes
+- Memory update required: yes
+- Destination: v2/memory/transcript_processing_log.md
+  - Entry type: current_state / batch log
+  - Summary: 15 entries backfilled for 2026-04-28 batch (IDs 021–035)
+  - Action: appended
+
+### Next Action
+- Path drift risk remains: root transcripts/ tree contains stub indexed files and a populated manifest that diverge from v2/. Recommend formal designation of root transcripts/ as legacy/archive and removal from active pipeline references.

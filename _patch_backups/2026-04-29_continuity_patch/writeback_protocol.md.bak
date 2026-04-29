@@ -1,10 +1,5 @@
 # System — Write-Back Protocol
 
-## Metadata
-- File Name: writeback_protocol.md
-- Location: v2/systems/writeback_protocol.md
-- Last Patched: 2026-04-29 (continuity patch — paths and filename convention aligned to live runtime)
-
 ## Purpose
 Define the mandatory lifecycle for pattern updates to prevent duplicate writes, ensure auditability, and maintain canonical integrity.
 
@@ -54,49 +49,35 @@ Casual requests such as "save this" or "update the repo" are not sufficient for 
 | Mode | Trigger | Allowed Writes |
 |---|---|---|
 | Audit Only | default | none |
-| Indexed Output Write | write back approved | transcript stage outputs, manifest row, and execution log |
-| Pattern Library Update | pattern promotion approved | v2/analysis/pattern_library.md and related index files |
+| Indexed Output Write | write back approved | transcript stage outputs and execution log |
+| Pattern Library Update | pattern promotion approved | /analysis/pattern_library.md and related index files |
 | Cleanup | artifact cleanup approved | archive or remove processed raw inputs |
 
 ---
 
 ## Approved Write Targets
 
-Transcript outputs write only to stage folders defined in `v2/systems/transcript_storage_router.md`.
+Transcript outputs write only to stage folders defined in /systems/transcript_storage_router.md.
 
 Default targets:
 
 ```text
-v2/transcripts/cleaned/{source_name}_cleaned.md
-v2/transcripts/structured/{source_name}_structured.md
-v2/transcripts/distilled/{source_name}_distilled.md
-v2/transcripts/indexed/{source_name}_indexed.md
-```
-
-The `{source_name}` is the raw filename minus the `.raw.md` suffix.
-
-Manifest update target (one row appended per processed file, after all four stage outputs are verified):
-
-```text
-v2/transcripts/indexed/manifest.md
+/transcripts/cleaned/{source_name}.cleaned.md
+/transcripts/structured/{source_name}.structured.md
+/transcripts/distilled/{source_name}.distilled.md
+/transcripts/indexed/{source_name}.indexed.md
 ```
 
 Approved canonical pattern updates write only to:
 
 ```text
-v2/analysis/pattern_library.md
+/analysis/pattern_library.md
 ```
 
 Concise execution notes write to:
 
 ```text
-v2/logs/execution_log.md
-```
-
-Secondary narrative log:
-
-```text
-v2/memory/transcript_processing_log.md
+/logs/execution_log.md
 ```
 
 ---
@@ -125,12 +106,11 @@ Required behavior:
 
 Before writing any file, check:
 
-1. existing target path in v2/transcripts/{stage}/
-2. v2/transcripts/indexed/manifest.md (primary source of truth)
-3. v2/memory/transcript_processing_log.md (secondary)
-4. v2/logs/execution_log.md when relevant
-5. source metadata if available
-6. story IDs for multi-story files
+1. existing target path
+2. /memory/transcript_processing_log.md
+3. /logs/execution_log.md when relevant
+4. source metadata if available
+5. story IDs for multi-story files
 
 If a duplicate exists:
 
@@ -146,9 +126,9 @@ Do not overwrite existing files unless the user explicitly requests replacement.
 
 Pattern library updates require separate approval after audit.
 
-Before editing v2/analysis/pattern_library.md:
+Before editing /analysis/pattern_library.md:
 
-1. Read v2/analysis/pattern_library.md.
+1. Read /analysis/pattern_library.md.
 2. Compare every candidate against existing canonicals.
 3. Prefer MERGE_WITH_EXISTING or SUBTYPE_OF_EXISTING.
 4. Promote only approved high-signal candidates.

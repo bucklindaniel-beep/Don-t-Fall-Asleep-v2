@@ -3,10 +3,9 @@
 ## Metadata
 
 **File Name:** transcript_duplicate_detection.md  
-**Location:** v2/systems/transcript_duplicate_detection.md  
+**Location:** /systems/transcript_duplicate_detection.md  
 **System Area:** Transcript Processing Pipeline  
-**Primary Role:** Prevent duplicate transcript intake, duplicate analysis, and repeated pattern indexing.  
-**Last Patched:** 2026-04-29 (continuity patch — paths aligned to live runtime; manifest designated primary)
+**Primary Role:** Prevent duplicate transcript intake, duplicate analysis, and repeated pattern indexing.
 
 ---
 
@@ -18,26 +17,17 @@ It protects the repository from redundant analysis, memory bloat, and repeated p
 
 ---
 
-## Source of Truth
-
-`v2/transcripts/indexed/manifest.md` is the primary source of truth for the existing transcript `file_id` set and processed-source state.
-
-`v2/memory/transcript_processing_log.md` and `v2/logs/execution_log.md` are secondary records (narrative and diagnostic, respectively). If these disagree with the manifest, the manifest wins.
-
----
-
 ## Duplicate Check Order
 
 Before processing any transcript, Claude must check in this order:
 
-1. `v2/transcripts/indexed/manifest.md` (primary; read live, do not memorize)
-2. `v2/transcripts/raw/`
-3. `v2/transcripts/cleaned/`
-4. `v2/transcripts/structured/`
-5. `v2/transcripts/distilled/`
-6. `v2/transcripts/indexed/`
-7. `v2/memory/transcript_processing_log.md` (secondary narrative record)
-8. `v2/logs/execution_log.md` (secondary diagnostic record, when resolving unclear conflicts)
+1. `/memory/transcript_processing_log.md`
+2. `/transcripts/raw/`
+3. `/transcripts/cleaned/`
+4. `/transcripts/structured/`
+5. `/transcripts/distilled/`
+6. `/transcripts/indexed/`
+7. `/logs/execution_log.md` when resolving unclear conflicts
 
 ---
 
@@ -64,9 +54,8 @@ If the same source ID or URL already exists:
 
 - do not reprocess
 - mark as skipped
-- log the skip in `v2/memory/transcript_processing_log.md`
-- log the decision in `v2/logs/execution_log.md`
-- if a manifest entry is appropriate, append a `SKIPPED_DUPLICATE` row to `v2/transcripts/indexed/manifest.md` (per existing convention, e.g. `006_DUP`, `020_DUP`)
+- log the skip in `/memory/transcript_processing_log.md`
+- log the decision in `/logs/execution_log.md`
 
 ### Partial Duplicate
 
@@ -148,11 +137,3 @@ Each duplicate check should record:
 - matching file or log entry
 - action taken
 - date checked
-
----
-
-## Related Systems
-
-- `v2/systems/transcript_storage_router.md`
-- `v2/systems/id_assignment_transcript_rules.md`
-- `v2/systems/writeback_protocol.md`

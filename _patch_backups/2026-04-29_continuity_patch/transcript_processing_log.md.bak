@@ -10,19 +10,11 @@ This file is the durable duplicate guard for the transcript pipeline.
 
 ## Source of Truth Rule
 
-The primary source of truth for processed transcript state is:
+This log is the source of truth.
 
-```text
-v2/transcripts/indexed/manifest.md
-```
+Existing files are the validation layer.
 
-This log is a SECONDARY narrative record. It is kept current per batch when possible, and may lag the manifest if a session is interrupted before durable log write-back completes.
-
-If this log and the manifest disagree, the manifest wins. Claude must record any inconsistency and treat the manifest as authoritative.
-
-`v2/logs/execution_log.md` is a SECONDARY diagnostic record with the same hierarchy: manifest first, then logs.
-
-(Updated 2026-04-29 — continuity patch. Prior version of this file declared this log as the source of truth; that designation is superseded.)
+If this log and repository files disagree, Claude must record the inconsistency before continuing.
 
 ---
 
@@ -43,7 +35,6 @@ If this log and the manifest disagree, the manifest wins. Claude must record any
 ```markdown
 ### {source_name}
 
-- file_id:
 - Source Type:
 - Source Category:
 - Channel / Creator:
@@ -51,21 +42,18 @@ If this log and the manifest disagree, the manifest wins. Claude must record any
 - Genre:
 - Production Level:
 - Intended Use: analysis_only
-- Raw file: `v2/transcripts/raw/{source_name}.raw.md`
-- Cleaned: `v2/transcripts/cleaned/{source_name}_cleaned.md`
-- Structured: `v2/transcripts/structured/{source_name}_structured.md`
-- Distilled: `v2/transcripts/distilled/{source_name}_distilled.md`
-- Indexed: `v2/transcripts/indexed/{source_name}_indexed.md`
+- Raw file: `/transcripts/raw/{source_name}.md`
+- Cleaned: `/transcripts/cleaned/{source_name}.md`
+- Structured: `/transcripts/structured/{source_name}.md`
+- Distilled: `/transcripts/distilled/{source_name}.md`
+- Indexed pattern(s):
+  - `/transcripts/indexed/{pattern_name}.md`
 - Status: pending / completed / skipped / reprocessed / incomplete
 - Date processed: YYYY-MM-DD
 - Reprocessing reason: none
 - Duplicate check result:
 - Notes:
 ```
-
-The `{source_name}` is the raw filename minus the `.raw.md` suffix.
-
-(Template paths updated 2026-04-29 — continuity patch. Prior template referenced root `/transcripts/...` paths and used `.cleaned.md` style suffixes; those are superseded.)
 
 ---
 

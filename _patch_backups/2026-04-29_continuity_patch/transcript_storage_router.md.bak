@@ -3,10 +3,9 @@
 ## Metadata
 
 - File Name: transcript_storage_router.md
-- Location: v2/systems/transcript_storage_router.md
+- Location: /systems/transcript_storage_router.md
 - System Area: Transcript Processing Pipeline
 - Primary Role: Route transcript pipeline files and outputs.
-- Last Patched: 2026-04-29 (continuity patch — paths and filename convention aligned to live runtime)
 
 ---
 
@@ -18,27 +17,19 @@ This prevents transcript artifacts, analysis outputs, and reusable insights from
 
 ---
 
-## Active Repository Tree
-
-The active transcript pipeline tree is rooted at `v2/transcripts/`.
-
-The root `transcripts/` tree is LEGACY/ARCHIVE only and must not receive active writes. See `transcripts/_LEGACY_DO_NOT_USE.md` for the legacy designation.
-
----
-
 ## Core Routing Rule
 
 Transcript pipeline storage follows:
 
 ```text
-v2/transcripts/raw/
-v2/transcripts/cleaned/
-v2/transcripts/structured/
-v2/transcripts/distilled/
-v2/transcripts/indexed/
+/transcripts/raw/
+/transcripts/cleaned/
+/transcripts/structured/
+/transcripts/distilled/
+/transcripts/indexed/
 ```
 
-Place ingestion-ready raw `.md` files directly in `v2/transcripts/raw/` unless the execution router is later updated for recursive folder scans.
+Place ingestion-ready raw `.md` files directly in `/transcripts/raw/` unless the execution router is later updated for recursive folder scans.
 
 Do not create source-type subfolders unless the user explicitly requests a future storage redesign.
 
@@ -102,27 +93,13 @@ Cleaned, structured, distilled, and indexed outputs use Markdown `.md`.
 
 | Stage | Folder | Filename |
 |---|---|---|
-| raw | v2/transcripts/raw/ | source-provided (canonical form: `{source_name}.raw.md`) |
-| cleaned | v2/transcripts/cleaned/ | {source_name}_cleaned.md |
-| structured | v2/transcripts/structured/ | {source_name}_structured.md |
-| distilled | v2/transcripts/distilled/ | {source_name}_distilled.md |
-| indexed | v2/transcripts/indexed/ | {source_name}_indexed.md |
-
-The `{source_name}` is the raw filename minus the `.raw.md` suffix (e.g. raw `007_3_true_scary_airbnb_horror_stories.raw.md` → cleaned `007_3_true_scary_airbnb_horror_stories_cleaned.md`).
+| raw | /transcripts/raw/ | source-provided |
+| cleaned | /transcripts/cleaned/ | {source_name}.cleaned.md |
+| structured | /transcripts/structured/ | {source_name}.structured.md |
+| distilled | /transcripts/distilled/ | {source_name}.distilled.md |
+| indexed | /transcripts/indexed/ | {source_name}.indexed.md |
 
 Indexed files store batch-level classification output, not permanent canonical memory.
-
----
-
-## Manifest
-
-The active transcript manifest is:
-
-```text
-v2/transcripts/indexed/manifest.md
-```
-
-This manifest is the source of truth for the existing transcript `file_id` set. See `v2/systems/id_assignment_transcript_rules.md` for `file_id` assignment rules.
 
 ---
 
@@ -131,7 +108,7 @@ This manifest is the source of truth for the existing transcript `file_id` set. 
 Approved transcript-derived patterns route only to:
 
 ```text
-v2/analysis/pattern_library.md
+/analysis/pattern_library.md
 ```
 
 Do not create new standalone pattern or technique files for transcript-derived canonicals.
@@ -144,11 +121,10 @@ Frameworks may reference canonical patterns, but they are not the canonical patt
 
 Before writing transcript pipeline outputs, check:
 
-1. v2/transcripts/indexed/manifest.md (primary source of truth)
-2. v2/memory/transcript_processing_log.md (secondary narrative record)
-3. v2/logs/execution_log.md when relevant (secondary diagnostic record)
-4. existing transcript stage files under v2/transcripts/
-5. source metadata where available
+1. /memory/transcript_processing_log.md
+2. /logs/execution_log.md when relevant
+3. existing transcript stage files
+4. source metadata where available
 
 Strongest duplicate identifiers:
 
@@ -167,7 +143,7 @@ Do not overwrite or duplicate files unless the user explicitly requests reproces
 Persistent write-back is controlled by:
 
 ```text
-v2/systems/writeback_protocol.md
+/systems/write_back_protocol.md
 ```
 
 Until WRITE-BACK MODE is explicitly activated:
@@ -183,9 +159,8 @@ After WRITE-BACK MODE is activated, raw cleanup still requires separate artifact
 
 ## Related Systems
 
-- v2/systems/01_transcript_pipeline_guide.md
-- v2/systems/transcript_duplicate_detection.md
-- v2/systems/pattern_promotion_bridge.md
-- v2/systems/writeback_protocol.md
-- v2/systems/id_assignment_transcript_rules.md
-- v2/analysis/pattern_library.md
+- /systems/01_transcript_pipeline_guide.md
+- /systems/transcript_duplicate_detection.md
+- /systems/pattern_promotion_bridge.md
+- /systems/write_back_protocol.md
+- /analysis/pattern_library.md

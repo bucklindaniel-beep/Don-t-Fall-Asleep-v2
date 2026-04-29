@@ -30,16 +30,11 @@ Raw Data
 
 ### 1. Transcripts (Input Layer)
 Location:
-- v2/transcripts/raw
-- v2/transcripts/cleaned
-- v2/transcripts/structured
-- v2/transcripts/distilled
-- v2/transcripts/indexed
-
-Manifest (source of truth for processed transcript state):
-- v2/transcripts/indexed/manifest.md
-
-Note: Root `transcripts/` is LEGACY/ARCHIVE only — see `transcripts/_LEGACY_DO_NOT_USE.md`.
+- /transcripts/raw
+- /transcripts/cleaned
+- /transcripts/structured
+- /transcripts/distilled
+- /transcripts/indexed
 
 Role:
 - Source material ingestion
@@ -174,14 +169,14 @@ Maps → Prompts
 
 ## Example End-to-End Flow
 
-1. Transcript added to v2/transcripts/raw  
-2. Cleaned version created in v2/transcripts/cleaned  
-3. Structured analysis created in v2/transcripts/structured  
-4. Techniques extracted into v2/analysis/techniques  
-5. Patterns added to v2/analysis/patterns  
-6. Systems built in v2/frameworks  
-7. Execution logic defined in v2/playbooks  
-8. Prompts created in v2/prompts  
+1. Transcript added to /transcripts/raw  
+2. Cleaned version created in /transcripts/cleaned  
+3. Structured analysis created in /transcripts/structured  
+4. Techniques extracted into /analysis/techniques  
+5. Patterns added to /analysis/patterns  
+6. Systems built in /frameworks  
+7. Execution logic defined in /playbooks  
+8. Prompts created in /prompts  
 9. Output generated (scripts, scenes, visuals)
 
 ---
@@ -221,13 +216,7 @@ Maps control how the system behaves, not just how it is organized.
 
 ## Recent System Additions
 
-- `v2/systems/transcript_duplicate_detection.md` prevents duplicate transcript intake, duplicate script analysis, and repeated pattern indexing.
-- `v2/frameworks/15_narration_pacing_system.md` defines source-safe narration pacing mechanics.
-- `v2/playbooks/05_narration_delivery_playbook.md` prepares approved scripts for voice generation without copying creator style.
-- `v2/analysis/narration_patterns/` stores generalized narration mechanics only.
-- `v2/systems/id_assignment_transcript_rules.md` codifies transcript file_id assignment (added 2026-04-29).
-
----
-
-## Patch Note — 2026-04-29
-Path references in this map updated from root `/transcripts/...` and `/analysis/...` etc. to `v2/transcripts/...` and `v2/analysis/...` etc. to align with the active runtime tree. Root `transcripts/` is now LEGACY/ARCHIVE only. The other layer locations (analysis, frameworks, wordbanks, playbooks, prompts, reference, systems, templates, maps) are documented here in their abbreviated `/...` shorthand for readability of the high-level map; their concrete active locations all reside under `v2/`.
+- `/systems/transcript_duplicate_detection.md` prevents duplicate transcript intake, duplicate script analysis, and repeated pattern indexing.
+- `/frameworks/15_narration_pacing_system.md` defines source-safe narration pacing mechanics.
+- `/playbooks/05_narration_delivery_playbook.md` prepares approved scripts for voice generation without copying creator style.
+- `/analysis/narration_patterns/` stores generalized narration mechanics only.
